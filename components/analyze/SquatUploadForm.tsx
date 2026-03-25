@@ -48,8 +48,8 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
           Video file
         </label>
         <p className="mt-1 text-xs text-zinc-500">
-          MP4 or MOV, up to 100 MB. Files are accepted for this demo; swap in
-          storage + a real pipeline when you ship analysis.
+          MP4 or MOV, up to 100 MB. Upload is encrypted in transit; analysis
+          runs on our side after you submit.
         </p>
         <div className="mt-3">
           <label

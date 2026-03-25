@@ -6,7 +6,7 @@ export function FilmingGuidelines() {
       </h2>
       <p className="mt-2 text-sm text-zinc-400">
         Full body in frame, hip height or slightly below, 3–5 meters back. One
-        smooth rep is enough for this MVP.
+        smooth rep is enough for a solid read.
       </p>
       <ul className="mt-4 space-y-2 text-sm text-zinc-300">
         <li className="flex gap-2">

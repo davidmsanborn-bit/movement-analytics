@@ -44,8 +44,8 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
           Upload your video
         </h1>
         <p className="mt-4 max-w-2xl text-zinc-400">
-          This MVP analyzes one movement from one angle. Use a clear side-view
-          clip so we can score depth, trunk position, and alignment fairly.
+          Bodyweight squat, side view only. A clear clip lets us assess depth,
+          trunk control, and lower-body alignment the same way every time.
         </p>
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
           <FilmingGuidelines />
@@ -54,9 +54,9 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
               Your clip
             </h2>
             <p className="mt-2 text-sm text-zinc-500">
-              Select a file to run the flow. The response is a structured demo
-              for product development—swap in your model when you&apos;re
-              ready.
+              Upload your clip. You&apos;ll get scores, observations, and
+              coaching cues built from what we can see in your video—not generic
+              filler.
             </p>
             {previousResult ? (
               <div className="mt-6 rounded-lg border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-3 text-sm text-zinc-200">
