@@ -203,6 +203,11 @@ export async function analyzeSquatVideo(
   storagePath: string,
   analysisId: string,
 ): Promise<SquatAnalysisResult> {
+  console.log(
+    "[analyze] API key prefix:",
+    process.env.ANTHROPIC_API_KEY?.slice(0, 20),
+  );
+
   const frames = await extractFrames(storagePath, analysisId);
 
   const controller = new AbortController();
