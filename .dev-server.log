@@ -1,0 +1,158 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> movement-analytics@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.154:3000
+- Environments: .env.local
+✓ Ready in 295ms
+
+ GET /analyze/squat 200 in 555ms (next.js: 286ms, application-code: 269ms)
+ GET / 200 in 552ms (next.js: 224ms, application-code: 328ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 587ms (next.js: 485ms, application-code: 102ms)
+ GET /analyze/squat/processing/88bedcc6-cef9-4e8a-8883-fc99be7d5c95 200 in 474ms (next.js: 366ms, application-code: 109ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 98c9f449-def9-40f6-9554-0af4649e217c Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+[api/status] 88bedcc6-cef9-4e8a-8883-fc99be7d5c95 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 500 in 692ms (next.js: 552ms, application-code: 139ms)
+ GET /api/status/88bedcc6-cef9-4e8a-8883-fc99be7d5c95 500 in 605ms (next.js: 466ms, application-code: 138ms)
+ GET / 200 in 21ms (next.js: 1938µs, application-code: 19ms)
+ POST /api/analyze 200 in 27ms (next.js: 21ms, application-code: 6ms)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 91ms (next.js: 3ms, application-code: 88ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 54ms (next.js: 4ms, application-code: 50ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 54ms (next.js: 3ms, application-code: 51ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 46ms (next.js: 2ms, application-code: 43ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 45ms (next.js: 2ms, application-code: 42ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 72ms (next.js: 4ms, application-code: 68ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 42ms (next.js: 1814µs, application-code: 40ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[api/status] 212a580d-cd86-4b3c-b90b-c7de2ee4ed24 Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:23:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/212a580d-cd86-4b3c-b90b-c7de2ee4ed24 500 in 46ms (next.js: 4ms, application-code: 42ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+[?25h

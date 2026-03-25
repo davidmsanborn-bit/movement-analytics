@@ -1,0 +1,939 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> movement-analytics@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.154:3000
+- Environments: .env.local
+✓ Ready in 312ms
+
+ GET / 200 in 1774ms (next.js: 1572ms, application-code: 202ms)
+ GET / 200 in 46ms (next.js: 1553µs, application-code: 45ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 1977ms (next.js: 1946ms, application-code: 31ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 1679ms (next.js: 713ms, application-code: 966ms)
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 283ms (next.js: 14ms, application-code: 269ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 283ms (next.js: 6ms, application-code: 277ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 192ms (next.js: 3ms, application-code: 190ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 273ms (next.js: 4ms, application-code: 269ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 118ms (next.js: 7ms, application-code: 110ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 144ms (next.js: 6ms, application-code: 138ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 129ms (next.js: 8ms, application-code: 121ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 114ms (next.js: 6ms, application-code: 108ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 98ms (next.js: 4ms, application-code: 94ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 100ms (next.js: 3ms, application-code: 97ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /analyze/squat 200 in 204ms (next.js: 186ms, application-code: 17ms)
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 109ms (next.js: 4ms, application-code: 105ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 116ms (next.js: 3ms, application-code: 112ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /analyze/squat/processing/79da5b67-f9b4-4d41-805d-315b69725231 200 in 22ms (next.js: 5ms, application-code: 18ms)
+ GET /api/status/79da5b67-f9b4-4d41-805d-315b69725231 202 in 96ms (next.js: 5ms, application-code: 91ms)
+[analyze] received file {
+  analysisId: '79da5b67-f9b4-4d41-805d-315b69725231',
+  name: 'IMG_0855.MOV',
+  type: 'video/quicktime',
+  sizeBytes: 7172248
+}
+[analyze] starting analyzeSquatVideo {
+  analysisId: '79da5b67-f9b4-4d41-805d-315b69725231',
+  bufferBytes: 7172248
+}
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 120ms (next.js: 5ms, application-code: 115ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 96ms (next.js: 7ms, application-code: 89ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 101ms (next.js: 5ms, application-code: 96ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 91ms (next.js: 5ms, application-code: 86ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+[analyze] analyzeSquatVideo done {
+  analysisId: '79da5b67-f9b4-4d41-805d-315b69725231',
+  overallScore: 35,
+  confidence: 'low'
+}
+[analyze] saveAnalysis done { analysisId: '79da5b67-f9b4-4d41-805d-315b69725231' }
+ POST /api/analyze 200 in 11.5s (next.js: 195ms, application-code: 11.3s)
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 100ms (next.js: 7ms, application-code: 92ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 101ms (next.js: 5ms, application-code: 96ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 106ms (next.js: 7ms, application-code: 99ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 102ms (next.js: 5ms, application-code: 97ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 236ms (next.js: 5ms, application-code: 231ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 108ms (next.js: 5ms, application-code: 103ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 108ms (next.js: 5ms, application-code: 103ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 111ms (next.js: 3ms, application-code: 108ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 106ms (next.js: 6ms, application-code: 100ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 102ms (next.js: 4ms, application-code: 98ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 111ms (next.js: 6ms, application-code: 106ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 109ms (next.js: 5ms, application-code: 105ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 113ms (next.js: 5ms, application-code: 108ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 97ms (next.js: 2ms, application-code: 95ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 109ms (next.js: 5ms, application-code: 104ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 103ms (next.js: 5ms, application-code: 97ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 113ms (next.js: 5ms, application-code: 109ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 107ms (next.js: 6ms, application-code: 101ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 107ms (next.js: 7ms, application-code: 99ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 106ms (next.js: 5ms, application-code: 101ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 216ms (next.js: 5ms, application-code: 212ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 107ms (next.js: 5ms, application-code: 102ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 202 in 98ms (next.js: 5ms, application-code: 93ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /analyze/squat 200 in 22ms (next.js: 5ms, application-code: 17ms)
+ GET /analyze/squat 200 in 25ms (next.js: 3ms, application-code: 22ms)
+ GET /analyze/squat/processing/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 200 in 30ms (next.js: 6ms, application-code: 24ms)
+[analyze] received file {
+  analysisId: 'a6897b02-e262-4d7d-9b9e-4dd48cc9b377',
+  name: 'IMG_0854.MOV',
+  type: 'video/quicktime',
+  sizeBytes: 16788243
+}
+[analyze] starting analyzeSquatVideo {
+  analysisId: 'a6897b02-e262-4d7d-9b9e-4dd48cc9b377',
+  bufferBytes: 16788243
+}
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 202 in 661ms (next.js: 5ms, application-code: 657ms)
+[analyze] analyzeSquatVideo done {
+  analysisId: 'a6897b02-e262-4d7d-9b9e-4dd48cc9b377',
+  overallScore: 35,
+  confidence: 'low'
+}
+[analyze] saveAnalysis done { analysisId: 'a6897b02-e262-4d7d-9b9e-4dd48cc9b377' }
+ POST /api/analyze 200 in 10.6s (next.js: 13ms, application-code: 10.6s)
+ GET /analyze/squat/processing/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 200 in 57ms (next.js: 7ms, application-code: 50ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: https://nxnc…upabase.co
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: sb_sec…6QJ6 (length 41)
+ENV CHECK https://nxncduirezxv sb_secret_
+ GET /api/status/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 200 in 632ms (next.js: 7ms, application-code: 625ms)
+⨯ ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+  [90m 8 |[0m [36mimport[0m { [33mPageSection[0m } [36mfrom[0m [32m"@/components/layout/PageSection"[0m;
+  [90m 9 |[0m [36mimport[0m { isValidAnalysisId } [36mfrom[0m [32m"@/lib/analysis/analysisId"[0m;
+[31m[1m>[0m [90m10 |[0m [36mimport[0m { buildSquatAnalysis } [36mfrom[0m [32m"@/lib/analysis/buildSquatAnalysis"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m11 |[0m [36mimport[0m [33mLink[0m [36mfrom[0m [32m"next/link"[0m;
+  [90m12 |[0m [36mimport[0m [36mtype[0m { [33mMetadata[0m } [36mfrom[0m [32m"next"[0m;
+  [90m13 |[0m [36mimport[0m { notFound } [36mfrom[0m [32m"next/navigation"[0m;
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+ GET /results/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 500 in 682ms (next.js: 620ms, application-code: 62ms)
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+  [90m 8 |[0m [36mimport[0m { [33mPageSection[0m } [36mfrom[0m [32m"@/components/layout/PageSection"[0m;
+  [90m 9 |[0m [36mimport[0m { isValidAnalysisId } [36mfrom[0m [32m"@/lib/analysis/analysisId"[0m;
+[31m[1m>[0m [90m10 |[0m [36mimport[0m { buildSquatAnalysis } [36mfrom[0m [32m"@/lib/analysis/buildSquatAnalysis"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m11 |[0m [36mimport[0m [33mLink[0m [36mfrom[0m [32m"next/link"[0m;
+  [90m12 |[0m [36mimport[0m [36mtype[0m { [33mMetadata[0m } [36mfrom[0m [32m"next"[0m;
+  [90m13 |[0m [36mimport[0m { notFound } [36mfrom[0m [32m"next/navigation"[0m;
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ GET /results/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 500 in 19ms (next.js: 7ms, application-code: 13ms)
+[browser] Uncaught Error: ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/results/[id]/page.tsx:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/results/[id]/page.tsx:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+  [90m 8 |[0m [36mimport[0m { [33mPageSection[0m } [36mfrom[0m [32m"@/components/layout/PageSection"[0m;
+  [90m 9 |[0m [36mimport[0m { isValidAnalysisId } [36mfrom[0m [32m"@/lib/analysis/analysisId"[0m;
+[31m[1m>[0m [90m10 |[0m [36mimport[0m { buildSquatAnalysis } [36mfrom[0m [32m"@/lib/analysis/buildSquatAnalysis"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m11 |[0m [36mimport[0m [33mLink[0m [36mfrom[0m [32m"next/link"[0m;
+  [90m12 |[0m [36mimport[0m [36mtype[0m { [33mMetadata[0m } [36mfrom[0m [32m"next"[0m;
+  [90m13 |[0m [36mimport[0m { notFound } [36mfrom[0m [32m"next/navigation"[0m;
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ GET /results/a6897b02-e262-4d7d-9b9e-4dd48cc9b377 500 in 66ms (next.js: 44ms, application-code: 22ms)
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] Uncaught Error: ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/results/[id]/page.tsx:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/results/[id]/page.tsx:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+Persisting failed: Unable to write SST file 00000065.sst
+
+Caused by:
+    No such file or directory (os error 2)
+Compaction failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+Compaction failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: ENOENT: no such file or directory, open '/Users/thesanbox/movement-analytics/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/thesanbox/movement-analytics/.next/dev/server/app/page/build-manifest.json'
+}
+Error: ENOENT: no such file or directory, open '/Users/thesanbox/movement-analytics/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/thesanbox/movement-analytics/.next/dev/server/app/page/build-manifest.json'
+}
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+Error: ENOENT: no such file or directory, open '/Users/thesanbox/movement-analytics/.next/dev/server/pages/_app/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/thesanbox/movement-analytics/.next/dev/server/pages/_app/build-manifest.json'
+}
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/results/[id]/page.tsx:10:1
+Module not found: Can't resolve '@/lib/analysis/buildSquatAnalysis'
+   8 | import { PageSection } from "@/components/layout/PageSection";
+   9 | import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+> 10 | import { buildSquatAnalysis } from "@/lib/analysis/buildSquatAnalysis";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import Link from "next/link";
+  12 | import type { Metadata } from "next";
+  13 | import { notFound } from "next/navigation";
+
+Import map: aliased to relative './lib/analysis/buildSquatAnalysis' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+[?25h

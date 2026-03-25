@@ -1,0 +1,50 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> movement-analytics@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.154:3000
+- Environments: .env.local
+✓ Ready in 322ms
+
+ GET / 200 in 328ms (next.js: 171ms, application-code: 157ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+ENV CHECK your-supabase-projec your-supab
+ GET /analyze/squat 200 in 415ms (next.js: 262ms, application-code: 153ms)
+ GET / 200 in 431ms (next.js: 134ms, application-code: 297ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 561ms (next.js: 527ms, application-code: 34ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+ENV CHECK your-supabase-projec your-supab
+[api/status] 98c9f449-def9-40f6-9554-0af4649e217c Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:29:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/test-id 400 in 615ms (next.js: 524ms, application-code: 90ms)
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 500 in 349ms (next.js: 259ms, application-code: 90ms)
+  Reload env: .env.local
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 111ms (next.js: 67ms, application-code: 44ms)
+ GET / 200 in 117ms (next.js: 45ms, application-code: 72ms)
+ GET /analyze/squat 200 in 118ms (next.js: 91ms, application-code: 27ms)
+  Reload env: .env.local
+ GET /analyze/squat 200 in 117ms (next.js: 71ms, application-code: 46ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 38ms (next.js: 13ms, application-code: 25ms)
+ GET / 200 in 126ms (next.js: 47ms, application-code: 79ms)
+  Reload env: .env.local
+ GET /analyze/squat 200 in 79ms (next.js: 20ms, application-code: 59ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 23ms (next.js: 6ms, application-code: 17ms)
+ GET / 200 in 48ms (next.js: 11ms, application-code: 37ms)
+ GET / 200 in 96ms (next.js: 27ms, application-code: 69ms)
+ GET /analyze/squat 200 in 55ms (next.js: 8ms, application-code: 47ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 29ms (next.js: 6ms, application-code: 23ms)
+[?25h

@@ -1,0 +1,37 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> movement-analytics@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.154:3000
+- Environments: .env.local
+✓ Ready in 230ms
+
+ GET /analyze/squat 200 in 257ms (next.js: 86ms, application-code: 171ms)
+ GET / 200 in 97ms (next.js: 20ms, application-code: 77ms)
+ GET /analyze/squat/processing/98c9f449-def9-40f6-9554-0af4649e217c 200 in 306ms (next.js: 274ms, application-code: 33ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+ENV CHECK your-supabase-projec your-supab
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+ENV CHECK your-supabase-projec your-supab
+[api/status] 98c9f449-def9-40f6-9554-0af4649e217c Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at getServiceClient (lib/analysis/analysisStore.ts:53:22)
+    at fetchAnalysis (lib/analysis/analysisStore.ts:71:20)
+    at GET (app/api/status/[id]/route.ts:29:39)
+  51 |   }
+  52 |
+> 53 |   return createClient(url, key);
+     |                      ^
+  54 | }
+  55 |
+  56 | export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+ GET /api/status/98c9f449-def9-40f6-9554-0af4649e217c 500 in 561ms (next.js: 481ms, application-code: 79ms)
+ GET /api/status/test-id 400 in 8ms (next.js: 4ms, application-code: 4ms)
+[analysisStore] NEXT_PUBLIC_SUPABASE_URL: your-s…-url
+[analysisStore] SUPABASE_SERVICE_ROLE_KEY: your-s…-key (length 30)
+ENV CHECK your-supabase-projec your-supab
+[?25h
