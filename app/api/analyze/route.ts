@@ -1,4 +1,7 @@
 import { analyzeSquatVideo } from "@/lib/analysis/analyzeWithAI";
+
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
 import { saveAnalysis } from "@/lib/analysis/analysisStore";
 import { setProgress } from "@/lib/analysis/progressStore";
