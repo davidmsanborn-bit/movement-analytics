@@ -245,33 +245,128 @@ export function ProcessingPageClient({ id, previousId }: Props) {
     <div className="flex min-h-[60vh] w-full flex-col items-center justify-center text-center">
       <div className="max-w-md space-y-10">
         <div className="flex justify-center">
-          <div className="relative h-24 w-24">
-            <svg className="h-24 w-24 -rotate-90" viewBox="0 0 96 96">
+          <div className="relative h-32 w-32">
+            <svg className="h-32 w-32" viewBox="0 0 128 128">
+              {/* Outer ring - slow rotate */}
               <circle
-                cx="48"
-                cy="48"
-                r="40"
+                cx="64"
+                cy="64"
+                r="58"
                 fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                className="text-white/5"
+                stroke="#00ff88"
+                strokeWidth="0.5"
+                strokeOpacity="0.2"
               />
+              {/* Outer arc - fast spin */}
               <circle
-                cx="48"
-                cy="48"
-                r="40"
+                cx="64"
+                cy="64"
+                r="58"
                 fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeDasharray="251"
-                strokeDashoffset="60"
+                stroke="#00ff88"
+                strokeWidth="1.5"
+                strokeDasharray="40 325"
                 strokeLinecap="round"
-                className="animate-spin text-[var(--accent)]"
-                style={{ animationDuration: "1.8s" }}
+                style={{
+                  transformOrigin: "64px 64px",
+                  animation: "spin 1.2s linear infinite",
+                }}
               />
+              {/* Middle ring */}
+              <circle
+                cx="64"
+                cy="64"
+                r="44"
+                fill="none"
+                stroke="#00ff88"
+                strokeWidth="0.5"
+                strokeOpacity="0.15"
+              />
+              {/* Middle arc - reverse spin */}
+              <circle
+                cx="64"
+                cy="64"
+                r="44"
+                fill="none"
+                stroke="#00ff88"
+                strokeWidth="1"
+                strokeDasharray="25 252"
+                strokeLinecap="round"
+                style={{
+                  transformOrigin: "64px 64px",
+                  animation: "spin 2s linear infinite reverse",
+                }}
+              />
+              {/* Inner ring */}
+              <circle
+                cx="64"
+                cy="64"
+                r="30"
+                fill="none"
+                stroke="#00ff88"
+                strokeWidth="0.5"
+                strokeOpacity="0.1"
+              />
+              {/* Corner tick marks */}
+              <line
+                x1="64"
+                y1="6"
+                x2="64"
+                y2="14"
+                stroke="#00ff88"
+                strokeWidth="1"
+                strokeOpacity="0.6"
+              />
+              <line
+                x1="122"
+                y1="64"
+                x2="114"
+                y2="64"
+                stroke="#00ff88"
+                strokeWidth="1"
+                strokeOpacity="0.6"
+              />
+              <line
+                x1="64"
+                y1="122"
+                x2="64"
+                y2="114"
+                stroke="#00ff88"
+                strokeWidth="1"
+                strokeOpacity="0.6"
+              />
+              <line
+                x1="6"
+                y1="64"
+                x2="14"
+                y2="64"
+                stroke="#00ff88"
+                strokeWidth="1"
+                strokeOpacity="0.6"
+              />
+              {/* Center crosshair */}
+              <line
+                x1="64"
+                y1="54"
+                x2="64"
+                y2="74"
+                stroke="#00ff88"
+                strokeWidth="0.5"
+                strokeOpacity="0.4"
+              />
+              <line
+                x1="54"
+                y1="64"
+                x2="74"
+                y2="64"
+                stroke="#00ff88"
+                strokeWidth="0.5"
+                strokeOpacity="0.4"
+              />
+              <circle cx="64" cy="64" r="2" fill="#00ff88" strokeOpacity="0.8" />
             </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[3px] text-[#00ff88]">
                 AI
               </span>
             </div>

@@ -74,6 +74,15 @@ body {
   }
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .hero-squat-figure {
   transform-origin: 160px 498px;
   transform-box: fill-box;
