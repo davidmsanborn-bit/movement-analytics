@@ -5,7 +5,6 @@ import type {
   SubScore,
   SubScoreDimension,
 } from "./types";
-import { getFfmpeg } from "./ffmpegWasm";
 
 const client = new Anthropic();
 const ANALYSIS_TIMEOUT_MS = 30_000;
@@ -40,61 +39,90 @@ Scoring guide:
 
 Return ONLY the JSON object. No markdown, no explanation, no backticks.`;
 
-/** Seconds into the clip for each extracted frame (fast input seek: `-ss` before `-i`). */
-const FRAME_TIMESTAMPS_SEC = [1, 2, 3] as const;
-
-const FFMPEG_VF = "scale=800:-1";
+type FrameImage = { base64: string; mediaType: "image/jpeg" };
 
 async function extractFrames(
-  videoBuffer: Buffer,
+  videoStoragePath: string,
   analysisId: string,
-): Promise<{ base64: string; mediaType: "image/jpeg" }[]> {
-  const ffmpeg = await getFfmpeg();
-  // Match the storage path extension so ffmpeg can reliably detect the container.
-  const inputName = `mv-input-${analysisId}.mov`;
-  const results: { base64: string; mediaType: "image/jpeg" }[] = [];
+): Promise<FrameImage[]> {
+  const baseUrl = process.env.FRAMES_SERVICE_URL?.replace(/\/+$/, "");
+  const secret = process.env.FRAMES_SERVICE_SECRET;
 
-  try {
-    await ffmpeg.writeFile(inputName, new Uint8Array(videoBuffer));
-    for (let i = 0; i < FRAME_TIMESTAMPS_SEC.length; i++) {
-      const sec = FRAME_TIMESTAMPS_SEC[i];
-      const frameName = `mv-frame-${analysisId}-${i}.jpg`;
-      const ss = `00:00:${String(sec).padStart(2, "0")}`;
-      const code = await ffmpeg.exec([
-        "-ss",
-        ss,
-        "-i",
-        inputName,
-        "-vframes",
-        "1",
-        "-vf",
-        FFMPEG_VF,
-        "-pix_fmt",
-        "yuvj420p",
-        "-q:v",
-        "2",
-        frameName,
-      ]);
-      if (code !== 0) {
-        throw new Error(`ffmpeg extract failed at ${sec}s (exit ${code})`);
-      }
-      const raw = await ffmpeg.readFile(frameName, "binary");
-      const jpegBuf = Buffer.from(raw as Uint8Array);
-      results.push({
-        base64: jpegBuf.toString("base64"),
-        mediaType: "image/jpeg",
-      });
-      await ffmpeg.deleteFile(frameName);
-    }
-  } finally {
-    try {
-      await ffmpeg.deleteFile(inputName);
-    } catch {
-      /* ignore cleanup errors */
-    }
+  if (!baseUrl || !secret) {
+    throw new Error(
+      "Frame extraction is not configured (missing FRAMES_SERVICE_URL or FRAMES_SERVICE_SECRET).",
+    );
   }
 
-  return results;
+  const url = `${baseUrl}/extract-frames`;
+
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${secret}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        analysisId,
+        storagePath: videoStoragePath,
+      }),
+    });
+  } catch {
+    throw new Error(
+      "Frame extraction service is unavailable (network error). Check FRAMES_SERVICE_URL and that the service is running.",
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await res.json();
+  } catch {
+    throw new Error(
+      `Frame extraction service returned an invalid response (HTTP ${res.status}).`,
+    );
+  }
+
+  if (!res.ok) {
+    const errMsg =
+      typeof body === "object" &&
+      body !== null &&
+      "error" in body &&
+      typeof (body as { error?: unknown }).error === "string"
+        ? (body as { error: string }).error
+        : `HTTP ${res.status}`;
+    throw new Error(
+      `Frame extraction failed (${errMsg}). The frame service may be down or misconfigured.`,
+    );
+  }
+
+  const parsed = body as { frames?: unknown };
+  if (!Array.isArray(parsed.frames) || parsed.frames.length === 0) {
+    throw new Error("Frame extraction returned no frames.");
+  }
+
+  const frames: FrameImage[] = [];
+  for (const item of parsed.frames) {
+    if (
+      typeof item !== "object" ||
+      item === null ||
+      typeof (item as { base64?: unknown }).base64 !== "string" ||
+      typeof (item as { mediaType?: unknown }).mediaType !== "string"
+    ) {
+      throw new Error("Frame extraction returned an invalid frame shape.");
+    }
+    const mediaType = (item as { mediaType: string }).mediaType;
+    if (mediaType !== "image/jpeg") {
+      throw new Error(`Unexpected frame media type: ${mediaType}`);
+    }
+    frames.push({
+      base64: (item as { base64: string }).base64,
+      mediaType: "image/jpeg",
+    });
+  }
+
+  return frames;
 }
 
 const DIMENSIONS: SubScoreDimension[] = [
@@ -172,10 +200,10 @@ function parseAIResponse(raw: string): Omit<
 }
 
 export async function analyzeSquatVideo(
-  videoBuffer: Buffer,
+  storagePath: string,
   analysisId: string,
 ): Promise<SquatAnalysisResult> {
-  const frames = await extractFrames(videoBuffer, analysisId);
+  const frames = await extractFrames(storagePath, analysisId);
 
   const controller = new AbortController();
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
