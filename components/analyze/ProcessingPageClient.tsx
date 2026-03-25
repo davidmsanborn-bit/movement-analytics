@@ -363,12 +363,19 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 strokeWidth="0.5"
                 strokeOpacity="0.4"
               />
-              <circle cx="64" cy="64" r="2" fill="#00ff88" strokeOpacity="0.8" />
             </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[3px] text-[#00ff88]">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[4px] text-[#00ff88]">
                 AI
               </span>
+              <div
+                className="flex items-center justify-center gap-1.5"
+                aria-hidden
+              >
+                <span className="processing-hud-dot" />
+                <span className="processing-hud-dot" />
+                <span className="processing-hud-dot" />
+              </div>
             </div>
           </div>
         </div>
