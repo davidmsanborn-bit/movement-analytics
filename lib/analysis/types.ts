@@ -1,5 +1,5 @@
 /**
- * Squat MVP analysis shapes. Keep names stable when wiring real pipeline + DB.
+ * Squat analysis shapes stored in DB. Keep names stable when changing the AI contract.
  */
 export type ConfidenceLevel = "high" | "medium" | "low";
 
@@ -20,8 +20,16 @@ export interface SubScore {
 
 export interface SquatAnalysisResult {
   id: string;
-  movementLabel: "Bodyweight squat";
-  cameraAngle: "Side view";
+  /** Model-inferred movement name for display, e.g. "Barbell back squat" */
+  movementLabel: string;
+  /** Model-inferred camera relationship to the athlete */
+  cameraAngle: string;
+  /** Model-inferred external load category */
+  loadType: string;
+  /** Null when side / current angle is enough; otherwise a concrete capture suggestion */
+  angleRecommendation: string | null;
+  /** Brief note on what another angle would clarify (depth, knees, hips, etc.) */
+  additionalAngleBenefit: string | null;
   overallScore: number;
   confidence: ConfidenceLevel;
   confidenceNote: string;

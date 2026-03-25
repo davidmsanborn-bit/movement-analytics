@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   return {
     title: `Squat assessment — ${id.slice(0, 8)}…`,
-    description: "Side-view bodyweight squat movement quality assessment.",
+    description: "Squat movement quality assessment from your uploaded video.",
   };
 }
 
@@ -75,6 +75,9 @@ export default async function ResultsPage({ params, searchParams }: Props) {
         <ResultsHeader
           movementLabel={result.movementLabel}
           cameraAngle={result.cameraAngle}
+          loadType={result.loadType}
+          angleRecommendation={result.angleRecommendation}
+          additionalAngleBenefit={result.additionalAngleBenefit}
           analyzedAt={result.analyzedAt}
           id={result.id}
         />

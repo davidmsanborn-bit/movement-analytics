@@ -2,7 +2,13 @@ import type { SquatAnalysisResult } from "@/lib/analysis/types";
 
 type Props = Pick<
   SquatAnalysisResult,
-  "movementLabel" | "cameraAngle" | "analyzedAt" | "id"
+  | "movementLabel"
+  | "cameraAngle"
+  | "loadType"
+  | "angleRecommendation"
+  | "additionalAngleBenefit"
+  | "analyzedAt"
+  | "id"
 >;
 
 function formatTime(iso: string) {
@@ -16,9 +22,21 @@ function formatTime(iso: string) {
   }
 }
 
+function formatLoadLabel(loadType: string): string {
+  if (!loadType.trim()) return "Unknown load";
+  return loadType
+    .split(/[\s_]+/)
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+}
+
 export function ResultsHeader({
   movementLabel,
   cameraAngle,
+  loadType,
+  angleRecommendation,
+  additionalAngleBenefit,
   analyzedAt,
   id,
 }: Props) {
@@ -32,8 +50,18 @@ export function ResultsHeader({
           {movementLabel}
         </h1>
         <p className="mt-2 text-sm text-zinc-400">
-          {cameraAngle} · {formatTime(analyzedAt)}
+          {cameraAngle} · {formatLoadLabel(loadType)} · {formatTime(analyzedAt)}
         </p>
+        {angleRecommendation ? (
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-amber-200/90">
+            {angleRecommendation}
+          </p>
+        ) : null}
+        {additionalAngleBenefit ? (
+          <p className="mt-2 max-w-xl text-xs leading-relaxed text-zinc-500">
+            {additionalAngleBenefit}
+          </p>
+        ) : null}
       </div>
       <p className="font-mono text-xs text-zinc-600">
         ID · {id.slice(0, 8)}…

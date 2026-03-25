@@ -11,11 +11,25 @@ const ANALYSIS_TIMEOUT_MS = 30_000;
 
 const SYSTEM_PROMPT = `You are an expert movement coach and biomechanics analyst specializing in squat assessment.
 
-Analyze the three side-view images from the squat video (captured at about 1s, 2s, and 3s) and return a JSON object with this exact shape:
+You receive three still frames from one video (captured at about 1s, 2s, and 3s). First infer context from what is visible, then assess movement quality.
+
+## Detection (from the frames only)
+- **movement type**: Prefer one of: "barbell back squat", "front squat", "goblet squat", "bodyweight squat", "split squat", "sumo squat". If unclear, use "squat".
+- **load**: One of: "barbell", "dumbbell", "kettlebell", "resistance band", "bodyweight". If unsure, use "bodyweight" when no external load is visible, otherwise use your best guess.
+- **camera angle**: One of: "side view", "front view", "rear view", "diagonal" — relative to the athlete.
+- **confidence** ("high" | "medium" | "low"): Based on resolution, lighting, occlusion, and whether key joints (hip, knee, ankle, spine) are visible enough to judge fairly. "low" if major blind spots.
+
+## Output
+Return a single JSON object with this exact shape (no extra keys):
 {
+  "movementLabel": <string — human-readable title, e.g. "Barbell back squat">,
+  "cameraAngle": <string — e.g. "Side view", matching your detection>,
+  "loadType": <"barbell" | "dumbbell" | "kettlebell" | "resistance band" | "bodyweight" | "unknown">,
+  "angleRecommendation": <string | null> — null only if the current camera angle is sufficient for a fair squat assessment from these frames; otherwise one specific sentence on how to film next time (e.g. adding front view for knee tracking)>,
+  "additionalAngleBenefit": <string — one short sentence on what a second angle (e.g. front or 45°) would clarify, even if the current angle is acceptable>,
   "overallScore": <number 0-100>,
   "confidence": <"high" | "medium" | "low">,
-  "confidenceNote": <string — one sentence about video quality and what you could/couldn't see>,
+  "confidenceNote": <string — one sentence tying confidence to video quality and visibility>,
   "subScores": [
     { "dimension": "depth", "label": "Depth", "score": <0-100>, "summary": <short phrase> },
     { "dimension": "trunkControl", "label": "Trunk control", "score": <0-100>, "summary": <short phrase> },
@@ -23,16 +37,16 @@ Analyze the three side-view images from the squat video (captured at about 1s, 2
     { "dimension": "balanceStability", "label": "Balance / stability", "score": <0-100>, "summary": <short phrase> },
     { "dimension": "controlTempo", "label": "Control / tempo", "score": <0-100>, "summary": <short phrase> }
   ],
-  "observations": [<4 strings — each describing something SPECIFIC you actually observed in this exact video — joint angles, body position, movement patterns. Never use generic placeholder text.>],
-  "coachingCues": [<exactly 3 strings — each a specific actionable correction directly tied to a fault you observed in THIS video. Be precise about what body part and what correction.>],
-  "nextStep": <one specific string identifying the single most important thing to fix first based on what you saw, with a concrete drill or cue to address it>
+  "observations": [<4+ strings — each SPECIFIC to this video; joint angles, positions, patterns. No generic filler>],
+  "coachingCues": [<exactly 3 strings — actionable, tied to faults you saw>],
+  "nextStep": <one string — top priority fix with a concrete drill or cue>
 }
 
-Every piece of text you return must be specific to this exact video. If you cannot see something clearly, say so specifically (e.g. "knee alignment unclear due to camera angle") rather than giving generic feedback.
+Frame your feedback as movement quality assessment, not medical diagnosis.
 
 Scoring guide:
 - 90-100: Excellent form, competition ready
-- 75-89: Good form, minor improvements available  
+- 75-89: Good form, minor improvements available
 - 60-74: Functional but clear faults to address
 - 45-59: Several issues limiting safety or performance
 - Below 45: Significant intervention needed
@@ -137,9 +151,39 @@ function isSubScoreDimension(d: string): d is SubScoreDimension {
   return (DIMENSIONS as readonly string[]).includes(d);
 }
 
+const LOAD_TYPES = new Set([
+  "barbell",
+  "dumbbell",
+  "kettlebell",
+  "resistance band",
+  "bodyweight",
+  "unknown",
+]);
+
+function normalizeLoadType(raw: unknown): string {
+  if (typeof raw !== "string") return "unknown";
+  const s = raw.trim().toLowerCase();
+  if (LOAD_TYPES.has(s)) return s;
+  if (s === "band" || s === "resistance_band") return "resistance band";
+  return "unknown";
+}
+
+function nonEmptyString(raw: unknown, fallback: string): string {
+  if (typeof raw !== "string") return fallback;
+  const t = raw.trim();
+  return t.length ? t : fallback;
+}
+
+function nullableRecommendation(raw: unknown): string | null {
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw !== "string") return null;
+  const t = raw.trim();
+  return t.length ? t : null;
+}
+
 function parseAIResponse(raw: string): Omit<
   SquatAnalysisResult,
-  "id" | "movementLabel" | "cameraAngle" | "analyzedAt"
+  "id" | "analyzedAt"
 > {
   const cleaned = raw.replace(/```json|```/g, "").trim();
   const parsed = JSON.parse(cleaned) as Record<string, unknown>;
@@ -155,6 +199,14 @@ function parseAIResponse(raw: string): Omit<
   ) {
     throw new Error("AI response missing required fields");
   }
+
+  const movementLabel = nonEmptyString(parsed.movementLabel, "Squat");
+  const cameraAngle = nonEmptyString(parsed.cameraAngle, "Unknown angle");
+  const loadType = normalizeLoadType(parsed.loadType);
+  const angleRecommendation = nullableRecommendation(parsed.angleRecommendation);
+  const additionalAngleBenefit = nullableRecommendation(
+    parsed.additionalAngleBenefit,
+  );
 
   const subScores: SubScore[] = (parsed.subScores as unknown[]).map(
     (row) => {
@@ -178,6 +230,11 @@ function parseAIResponse(raw: string): Omit<
   );
 
   return {
+    movementLabel,
+    cameraAngle,
+    loadType,
+    angleRecommendation,
+    additionalAngleBenefit,
     overallScore: Math.min(
       100,
       Math.max(0, Math.round(parsed.overallScore as number)),
@@ -203,11 +260,6 @@ export async function analyzeSquatVideo(
   storagePath: string,
   analysisId: string,
 ): Promise<SquatAnalysisResult> {
-  console.log(
-    "[analyze] API key prefix:",
-    process.env.ANTHROPIC_API_KEY?.slice(0, 20),
-  );
-
   const frames = await extractFrames(storagePath, analysisId);
 
   const controller = new AbortController();
@@ -216,7 +268,7 @@ export async function analyzeSquatVideo(
     const messagePromise = client.messages.create(
       {
         model: "claude-opus-4-5",
-        max_tokens: 1024,
+        max_tokens: 2048,
         system: SYSTEM_PROMPT,
         messages: [
           {
@@ -232,7 +284,7 @@ export async function analyzeSquatVideo(
               })),
               {
                 type: "text",
-                text: "These images are side-view snapshots at roughly 1s, 2s, and 3s into the clip. Analyze the squat using all three. Return only the JSON assessment.",
+                text: "These images are frames from the same clip at roughly 1s, 2s, and 3s. Infer movement type, external load, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.",
               },
             ],
           },
@@ -260,8 +312,6 @@ export async function analyzeSquatVideo(
     return {
       ...parsed,
       id: analysisId,
-      movementLabel: "Bodyweight squat",
-      cameraAngle: "Side view",
       analyzedAt: new Date().toISOString(),
     };
   } finally {

@@ -1,6 +1,44 @@
 import { createClient } from "@supabase/supabase-js";
 import type { SquatAnalysisResult } from "./types";
 
+function normalizeStoredAnalysis(raw: unknown): SquatAnalysisResult {
+  const r = raw as Partial<SquatAnalysisResult> & {
+    id?: string;
+    movementLabel?: unknown;
+    cameraAngle?: unknown;
+  };
+  const angleRec = r.angleRecommendation;
+  const angleBenefit = r.additionalAngleBenefit;
+
+  return {
+    ...(r as SquatAnalysisResult),
+    movementLabel:
+      typeof r.movementLabel === "string" && r.movementLabel.trim()
+        ? r.movementLabel.trim()
+        : "Squat",
+    cameraAngle:
+      typeof r.cameraAngle === "string" && r.cameraAngle.trim()
+        ? r.cameraAngle.trim()
+        : "Unknown angle",
+    loadType:
+      typeof r.loadType === "string" && r.loadType.trim()
+        ? r.loadType.trim()
+        : "unknown",
+    angleRecommendation:
+      angleRec == null
+        ? null
+        : typeof angleRec === "string" && angleRec.trim()
+          ? angleRec.trim()
+          : null,
+    additionalAngleBenefit:
+      angleBenefit == null
+        ? null
+        : typeof angleBenefit === "string" && angleBenefit.trim()
+          ? angleBenefit.trim()
+          : null,
+  };
+}
+
 /** Safe preview for logs — never log full secrets. */
 function maskUrl(url: string | undefined): string {
   if (!url) return "(not set)";
@@ -81,5 +119,5 @@ export async function fetchAnalysis(
     throw new Error(`Failed to fetch analysis: ${error.message}`);
   }
 
-  return data.result as SquatAnalysisResult;
+  return normalizeStoredAnalysis(data.result);
 }
