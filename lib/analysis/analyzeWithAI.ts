@@ -50,7 +50,8 @@ async function extractFrames(
   analysisId: string,
 ): Promise<{ base64: string; mediaType: "image/jpeg" }[]> {
   const ffmpeg = await getFfmpeg();
-  const inputName = `mv-input-${analysisId}.mp4`;
+  // Match the storage path extension so ffmpeg can reliably detect the container.
+  const inputName = `mv-input-${analysisId}.mov`;
   const results: { base64: string; mediaType: "image/jpeg" }[] = [];
 
   try {

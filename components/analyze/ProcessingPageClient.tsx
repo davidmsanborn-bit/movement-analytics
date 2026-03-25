@@ -1,5 +1,6 @@
 "use client";
 
+import { createClient } from "@supabase/supabase-js";
 import { consumePendingUpload } from "@/lib/analysis/pendingUpload";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
 import { useRouter } from "next/navigation";
@@ -85,11 +86,25 @@ export function ProcessingPageClient({ id, previousId }: Props) {
         return;
       }
 
-      const body = new FormData();
-      body.set("video", file);
-      body.set("analysisId", id);
-
       try {
+        setProgressStage("Uploading video...");
+
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        if (!supabaseUrl || !supabaseAnonKey) {
+          throw new Error("Missing Supabase env vars (NEXT_PUBLIC_SUPABASE_URL/ANON_KEY).");
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+        const storagePath = `${id}/input.mov`;
+        const { error: uploadError } = await supabase.storage
+          .from("videos")
+          .upload(storagePath, file);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
         console.log("[processing] POST /api/analyze start", {
           analysisId: id,
           fileName: file.name,
@@ -97,7 +112,8 @@ export function ProcessingPageClient({ id, previousId }: Props) {
         });
         const res = await fetch("/api/analyze", {
           method: "POST",
-          body,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ analysisId: id }),
         });
         const data = (await res.json()) as { analysisId?: string; error?: string };
         console.log("[processing] POST /api/analyze response", {
@@ -124,13 +140,16 @@ export function ProcessingPageClient({ id, previousId }: Props) {
           return;
         }
         console.log("[processing] upload accepted", { analysisId: id });
-      } catch {
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Upload failed. Please try again.";
+
         console.log("[processing] POST /api/analyze network failure", {
           analysisId: id,
         });
         clearPollInterval();
         closeEventSource();
-        setError("Network error while uploading your clip.");
+        setError(message);
       }
     };
 
