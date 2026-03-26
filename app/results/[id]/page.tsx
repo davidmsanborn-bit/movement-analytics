@@ -13,6 +13,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { SquatAnalysisResult } from "@/lib/analysis/types";
+import { ShareResultsButton } from "@/components/results/ShareResultsButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -63,12 +64,17 @@ export default async function ResultsPage({ params, searchParams }: Props) {
   return (
     <main className="min-h-full pb-24 pt-12 md:pt-16">
       <PageSection className="space-y-12">
-        <Link
-          href={`/analyze/squat?previousId=${encodeURIComponent(result.id)}`}
-          className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--accent)] px-5 text-sm font-semibold text-[var(--accent-foreground)] transition hover:bg-[var(--accent-hover)]"
-        >
-          Beat your score →
-        </Link>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Link
+            href={`/analyze/squat?previousId=${encodeURIComponent(result.id)}`}
+            className="inline-flex h-11 flex-1 items-center justify-center rounded-lg bg-[var(--accent)] px-5 text-sm font-semibold text-[var(--accent-foreground)] transition hover:bg-[var(--accent-hover)] sm:flex-none sm:px-6"
+          >
+            Beat your score →
+          </Link>
+          <div className="sm:ml-auto">
+            <ShareResultsButton />
+          </div>
+        </div>
         {previousAnalysis ? (
           <ScoreComparison previous={previousAnalysis} current={result} />
         ) : null}

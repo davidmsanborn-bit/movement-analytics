@@ -17,9 +17,11 @@ type Props = {
   id: string;
   /** Prior analysis id for comparison on the results page (from query string). */
   previousId?: string;
+  /** When true, merge scores by averaging with the previous analysis. */
+  addAngle?: boolean;
 };
 
-export function ProcessingPageClient({ id, previousId }: Props) {
+export function ProcessingPageClient({ id, previousId, addAngle }: Props) {
   const router = useRouter();
   const [progressStage, setProgressStage] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -121,6 +123,11 @@ export function ProcessingPageClient({ id, previousId }: Props) {
           body: JSON.stringify({
             analysisId: id,
             weight: weight ?? null,
+            previousId:
+              addAngle && previousId && isValidAnalysisId(previousId)
+                ? previousId
+                : null,
+            addAngle: addAngle ? true : false,
           }),
         });
         const data = (await res.json()) as { analysisId?: string; error?: string };
@@ -231,7 +238,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
       stopped = true;
       clearPollInterval();
     };
-  }, [id, previousId, router]);
+  }, [id, previousId, addAngle, router]);
 
   if (error) {
     return (

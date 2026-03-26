@@ -12,7 +12,10 @@ export const metadata: Metadata = {
 };
 
 type PageProps = {
-  searchParams: Promise<{ previousId?: string | string[] }>;
+  searchParams: Promise<{
+    previousId?: string | string[];
+    addAngle?: string | string[];
+  }>;
 };
 
 export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
@@ -34,6 +37,15 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
     ? await fetchAnalysis(validPreviousId)
     : null;
 
+  const addAngleRaw = sp.addAngle;
+  const addAngleParam =
+    typeof addAngleRaw === "string"
+      ? addAngleRaw
+      : Array.isArray(addAngleRaw)
+        ? addAngleRaw[0]
+        : undefined;
+  const addAngle = addAngleParam === "true" || addAngleParam === "1";
+
   return (
     <main className="min-h-full bg-[var(--bg-page)] pb-24 pt-12 md:pt-16">
       <PageSection>
@@ -41,11 +53,12 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
           Squat · Side view
         </p>
         <h1 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-tight text-[var(--text-primary)] md:text-4xl">
-          Upload your video
+          {addAngle ? "Add another angle" : "Upload your video"}
         </h1>
         <p className="mt-4 max-w-2xl text-[var(--text-secondary)]">
-          Bodyweight squat, side view only. A clear clip lets us assess depth,
-          trunk control, and lower-body alignment the same way every time.
+          {addAngle
+            ? "Upload a clip from a different angle to improve your assessment accuracy"
+            : "Bodyweight squat, side view only. A clear clip lets us assess depth, trunk control, and lower-body alignment the same way every time."}
         </p>
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
           <FilmingGuidelines />
@@ -63,11 +76,14 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
                 <span className="font-medium text-[var(--text-primary)]">
                   Previous score: {previousResult.overallScore}/100
                 </span>
-                <span className="text-[var(--text-secondary)]"> — can you beat it?</span>
+                <span className="text-[var(--text-secondary)]">
+                  {" "}
+                  {addAngle ? " — tighten your accuracy?" : " — can you beat it?"}
+                </span>
               </div>
             ) : null}
             <div className="mt-6">
-              <SquatUploadForm previousId={validPreviousId} />
+              <SquatUploadForm previousId={validPreviousId} addAngle={addAngle} />
             </div>
           </div>
         </div>

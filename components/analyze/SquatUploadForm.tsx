@@ -6,9 +6,13 @@ import { useCallback, useId, useState } from "react";
 
 type SquatUploadFormProps = {
   previousId?: string;
+  addAngle?: boolean;
 };
 
-export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
+export function SquatUploadForm({
+  previousId,
+  addAngle,
+}: SquatUploadFormProps) {
   const router = useRouter();
   const inputId = useId();
   const weightInputId = useId();
@@ -34,12 +38,15 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
       setPendingUpload(analysisId, file);
       const weightTrimmed = weight.trim();
       setPendingWeight(analysisId, weightTrimmed ? weightTrimmed : null);
-      const qs = previousId
-        ? `?previousId=${encodeURIComponent(previousId)}`
-        : "";
-      router.push(`/analyze/squat/processing/${analysisId}${qs}`);
+      const qs = new URLSearchParams();
+      if (previousId) qs.set("previousId", previousId);
+      if (addAngle) qs.set("addAngle", "true");
+      const qsStr = qs.toString();
+      router.push(
+        `/analyze/squat/processing/${analysisId}${qsStr ? `?${qsStr}` : ""}`,
+      );
     },
-    [file, weight, previousId, router],
+    [file, weight, previousId, addAngle, router],
   );
 
   return (

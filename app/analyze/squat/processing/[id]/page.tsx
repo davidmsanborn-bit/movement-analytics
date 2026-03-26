@@ -16,7 +16,17 @@ function ProcessingWithQuery({ id }: { id: string }) {
   const previousId =
     raw && isValidAnalysisId(raw) ? raw : undefined;
 
-  return <ProcessingPageClient id={id} previousId={previousId} />;
+  const addAngleRaw = searchParams.get("addAngle");
+  const addAngle =
+    addAngleRaw === "true" || addAngleRaw === "1" ? true : false;
+
+  return (
+    <ProcessingPageClient
+      id={id}
+      previousId={previousId}
+      addAngle={addAngle}
+    />
+  );
 }
 
 export default function SquatProcessingPage({ params }: Props) {

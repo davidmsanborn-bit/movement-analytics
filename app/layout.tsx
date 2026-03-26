@@ -30,13 +30,33 @@ export default async function RootLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
+  const fullName =
+    user?.user_metadata && typeof user.user_metadata.full_name === "string"
+      ? user.user_metadata.full_name
+      : null;
+  const metadataName =
+    user?.user_metadata && typeof user.user_metadata.name === "string"
+      ? user.user_metadata.name
+      : null;
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--bg-page)] text-[var(--text-primary)]">
-        <SiteHeader user={user ? { id: user.id, email: user.email ?? null } : null} />
+        <SiteHeader
+          user={
+            user
+              ? {
+                  id: user.id,
+                  email: user.email ?? null,
+                  fullName,
+                  metadataName,
+                }
+              : null
+          }
+        />
         <div className="flex-1">{children}</div>
       </body>
     </html>
