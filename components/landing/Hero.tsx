@@ -59,16 +59,16 @@ export function Hero() {
             }}
           />
 
-          <div className="relative z-10 flex justify-center py-2">
-            <div className="absolute -top-2 right-10 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#1d1d1f] shadow-[0_8px_20px_rgba(0,0,0,0.12)]">
+          <div className="relative z-10 flex min-h-[620px] items-center justify-center py-2">
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#1d1d1f] shadow-[0_8px_20px_rgba(0,0,0,0.12)]">
               <span className="mr-1.5 inline-block text-[#0A84FF]">◷</span>
               Results in ~15 seconds
             </div>
 
-            <div className="rotate-[4deg] rounded-[42px] bg-[#1d1d1f] p-2.5 shadow-[0_26px_40px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
-              <div className="relative h-[560px] w-[280px] overflow-hidden rounded-[34px] bg-white">
+            <div className="rounded-[44px] bg-[#1d1d1f] p-2.5 shadow-[0_14px_28px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.1)]">
+              <div className="relative h-[590px] w-[286px] overflow-hidden rounded-[36px] bg-white">
                 <div className="absolute left-1/2 top-2 h-6 w-28 -translate-x-1/2 rounded-full bg-[#0e0e10]" />
-                <div className="px-5 pb-6 pt-10">
+                <div className="px-5 pb-8 pt-10">
                   <div className="mb-5 flex items-center justify-between text-[10px] text-[#86868b]">
                     <div className="flex gap-1">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#86868b]" />
