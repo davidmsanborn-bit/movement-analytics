@@ -1,295 +1,199 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function Hero() {
+  const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    const target = 84;
+    const timer = setInterval(() => {
+      setScore((prev) => {
+        if (prev >= target) {
+          clearInterval(timer);
+          return target;
+        }
+        return prev + 3;
+      });
+    }, 35);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="relative min-h-[600px] bg-[#050508] pb-20 pt-20 md:pb-28 md:pt-28">
-      <div className="relative mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-2 lg:items-center lg:gap-10">
-        {/* Left column */}
-        <div className="relative z-10 max-w-xl">
-          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.35em] text-[#00ff88]">
-            ◆ MOVEMENT ANALYTICS ◆
+    <section className="bg-[#f5f5f7] pb-20 pt-20 md:pb-24 md:pt-24">
+      <div className="mx-auto grid min-h-[600px] max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:items-center">
+        <div className="max-w-xl">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.35em] text-[#0A84FF]">
+            MOVEMENT ANALYTICS
           </p>
-          <h1 className="mt-5 font-sans text-[40px] font-extrabold leading-[1.05] tracking-[-2px] text-white md:text-[56px]">
+          <h1 className="mt-5 font-sans text-[42px] font-extrabold leading-[1.05] tracking-[-2px] text-[#1d1d1f] md:text-[56px]">
             Your coach is in your camera.
           </h1>
-          <p className="mt-6 flex flex-wrap items-center gap-1 font-mono text-sm font-medium uppercase tracking-[0.2em] text-[rgba(0,255,136,0.5)]">
-            <span>FILM IT. SCORE IT. FIX IT.</span>
-            <span
-              className="hero-cursor-blink ml-0.5 inline-block h-[1.1em] w-0.5 bg-[#00ff88]"
-              aria-hidden
-            />
+          <p className="mt-5 text-lg font-normal text-[#86868b]">
+            Film it. Score it. Fix it.
           </p>
-          <p className="mt-8 max-w-md text-base leading-relaxed text-[rgba(255,255,255,0.6)]">
-            Upload a short side-view bodyweight squat video and get a movement
-            quality assessment with scores, key observations, and three coaching
-            cues—grounded in what we can see from phone video, not generic
-            advice.
+          <p className="mt-7 max-w-md text-base leading-relaxed text-[rgba(0,0,0,0.5)]">
+            Upload a short side-view squat clip and get movement quality feedback
+            with a clear score, targeted observations, and coaching cues you can
+            apply in your next session.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
               href="/analyze/squat"
-              className="inline-flex h-12 items-center justify-center rounded-md bg-[#00ff88] px-8 text-xs font-extrabold uppercase tracking-wider text-[#050508] transition hover:brightness-110"
+              className="inline-flex h-12 items-center justify-center rounded-md bg-[#0A84FF] px-8 text-sm font-semibold text-white transition hover:bg-[#0066CC]"
             >
-              Analyze my squat
+              Analyze my squat -&gt;
             </Link>
             <a
               href="#how-it-works"
-              className="inline-flex h-12 items-center justify-center rounded-md border border-[rgba(0,255,136,0.2)] px-8 text-xs font-extrabold uppercase tracking-wider text-white transition hover:border-[rgba(0,255,136,0.45)]"
+              className="inline-flex h-12 items-center justify-center rounded-md border border-[#e5e5ea] px-8 text-sm font-semibold text-[#1d1d1f] transition hover:bg-white"
             >
               How it works
             </a>
           </div>
-          <div className="mt-12 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[rgba(0,255,136,0.55)]">
-            <span>◆ AI-POWERED</span>
-            <span>◆ UNDER 15 SEC</span>
-            <span>◆ ANY MOVEMENT</span>
+          <div className="mt-10 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium uppercase tracking-[0.2em] text-[#aeaeb2]">
+            <span>AI-POWERED</span>
+            <span>UNDER 15 SEC</span>
+            <span>ANY MOVEMENT</span>
           </div>
         </div>
 
-        {/* Right column — HUD wireframe */}
-        <div className="relative mx-auto w-full max-w-[360px] overflow-visible lg:mx-0 lg:max-w-none">
+        <div className="relative mx-auto w-full max-w-[500px] rounded-3xl border border-[#e5e5ea] bg-[#f5f5f7] p-6 shadow-[0_10px_35px_rgba(0,0,0,0.08)]">
           <div
-            className="pointer-events-none absolute inset-0 rounded-2xl opacity-[0.03]"
+            className="pointer-events-none absolute inset-6 rounded-2xl opacity-[0.02]"
             style={{
-              backgroundImage: `
-                linear-gradient(rgba(0,255,136,0.9) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,255,136,0.9) 1px, transparent 1px)
-              `,
-              backgroundSize: "24px 24px",
+              backgroundImage:
+                "linear-gradient(rgba(29,29,31,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(29,29,31,0.9) 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
             }}
-            aria-hidden
           />
           <div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[80px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(0,255,136,0.35) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(10,132,255,0.22) 0%, rgba(10,132,255,0.06) 45%, transparent 70%)",
             }}
-            aria-hidden
           />
+
           <svg
-            viewBox="0 0 320 520"
-            className="relative z-[1] h-auto w-full max-w-[320px] drop-shadow-[0_0_28px_rgba(0,255,136,0.12)] lg:max-w-none"
+            viewBox="0 0 400 500"
+            className="hero-figure relative z-10 h-auto w-full"
             role="img"
-            aria-label="Wireframe athlete in squat with live scan overlay"
+            aria-label="Motion capture heat map squat visualization"
           >
             <defs>
-              <filter id="heroJointGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2" result="b" />
-                <feMerge>
-                  <feMergeNode in="b" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <linearGradient id="heroScanFade" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#00ff88" stopOpacity="0" />
-                <stop offset="50%" stopColor="#00ff88" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#00ff88" stopOpacity="0" />
+              <linearGradient id="scanBand" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#0A84FF" stopOpacity="0" />
+                <stop offset="50%" stopColor="#0A84FF" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="#0A84FF" stopOpacity="0" />
               </linearGradient>
             </defs>
 
-            <g className="hero-squat-figure">
-              {/* Ground */}
-              <line
-                x1="40"
-                y1="498"
-                x2="280"
-                y2="498"
-                stroke="rgba(0,255,136,0.25)"
-                strokeWidth="1"
-              />
+            <g className="hero-breath">
+              <circle cx="200" cy="78" r="26" fill="rgba(10,132,255,0.18)" stroke="#0A84FF" strokeWidth="2" />
+              <rect x="152" y="108" rx="34" ry="34" width="96" height="136" fill="rgba(255,149,0,0.2)" stroke="#FF9500" strokeWidth="2.5" />
+              <rect x="92" y="148" rx="14" ry="14" width="78" height="24" transform="rotate(-16 92 148)" fill="rgba(10,132,255,0.16)" stroke="#0A84FF" strokeWidth="2" />
+              <rect x="228" y="132" rx="14" ry="14" width="78" height="24" transform="rotate(16 228 132)" fill="rgba(10,132,255,0.16)" stroke="#0A84FF" strokeWidth="2" />
 
-              {/* Wireframe body — angular head */}
-              <polygon
-                points="160,38 178,52 182,78 160,88 138,78 142,52"
-                fill="none"
-                stroke="#00ff88"
-                strokeWidth="1.5"
-                strokeLinejoin="miter"
-              />
+              <rect x="134" y="236" rx="30" ry="30" width="72" height="136" transform="rotate(18 134 236)" fill="rgba(52,199,89,0.2)" stroke="#34C759" strokeWidth="2.5" />
+              <rect x="194" y="240" rx="30" ry="30" width="72" height="136" transform="rotate(-18 194 240)" fill="rgba(255,149,0,0.2)" stroke="#FF9500" strokeWidth="2.5" />
 
-              {/* Torso / chest muscle hints */}
-              <path
-                d="M 160 88 L 160 125 M 135 118 L 185 118 M 142 108 L 178 108 M 150 132 L 170 132"
-                fill="none"
-                stroke="rgba(0,255,136,0.85)"
-                strokeWidth="1.25"
-              />
-              <path
-                d="M 160 125 L 160 255 M 125 140 L 195 140 M 132 175 L 188 175 M 128 210 L 192 210"
-                fill="none"
-                stroke="#00ff88"
-                strokeWidth="1.5"
-              />
+              <rect x="154" y="356" rx="20" ry="20" width="44" height="96" transform="rotate(10 154 356)" fill="rgba(52,199,89,0.2)" stroke="#34C759" strokeWidth="2" />
+              <rect x="202" y="356" rx="20" ry="20" width="44" height="96" transform="rotate(-10 202 356)" fill="rgba(255,149,0,0.2)" stroke="#FF9500" strokeWidth="2" />
 
-              {/* Arms — counterbalance forward */}
-              <path
-                d="M 125 140 L 108 198 L 92 248 M 195 140 L 212 198 L 228 248"
-                fill="none"
-                stroke="#00ff88"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 118 165 L 100 215 M 202 165 L 220 215"
-                fill="none"
-                stroke="rgba(0,255,136,0.45)"
-                strokeWidth="1"
-              />
-
-              {/* Pelvis */}
-              <path
-                d="M 128 255 L 160 268 L 192 255"
-                fill="none"
-                stroke="rgba(0,255,136,0.7)"
-                strokeWidth="1.25"
-              />
-
-              {/* Legs — 90° squat */}
-              <path
-                d="M 128 255 L 118 360 L 132 455 L 145 498 M 192 255 L 202 360 L 188 455 L 175 498"
-                fill="none"
-                stroke="#00ff88"
-                strokeWidth="1.5"
-                strokeLinejoin="miter"
-              />
-              <path
-                d="M 118 360 L 202 360"
-                fill="none"
-                stroke="rgba(0,255,136,0.35)"
-                strokeWidth="1"
-                strokeDasharray="4 4"
-              />
-
-              {/* Joint markers */}
-              {[
-                { cx: 125, cy: 140, r: 4 },
-                { cx: 195, cy: 140, r: 4 },
-                { cx: 128, cy: 255, r: 4.5 },
-                { cx: 192, cy: 255, r: 4.5 },
-                { cx: 118, cy: 360, r: 4 },
-                { cx: 202, cy: 360, r: 4 },
-                { cx: 132, cy: 455, r: 3.5 },
-                { cx: 188, cy: 455, r: 3.5 },
-              ].map((j, i) => (
-                <circle
-                  key={i}
-                  cx={j.cx}
-                  cy={j.cy}
-                  r={j.r}
-                  fill="#00ff88"
-                  filter="url(#heroJointGlow)"
-                />
-              ))}
-
-              {/* Angle readouts */}
-              <path
-                d="M 55 200 L 95 168"
-                fill="none"
-                stroke="rgba(0,255,136,0.4)"
-                strokeWidth="1"
-                strokeDasharray="3 3"
-              />
-              <text
-                x="12"
-                y="198"
-                className="fill-[rgba(0,255,136,0.75)] font-mono text-[9px] font-bold"
-                style={{ fontFamily: "var(--font-geist-mono), ui-monospace" }}
-              >
-                HIP 91°
-              </text>
-              <path
-                d="M 255 395 L 220 368"
-                fill="none"
-                stroke="rgba(0,255,136,0.4)"
-                strokeWidth="1"
-                strokeDasharray="3 3"
-              />
-              <text
-                x="248"
-                y="412"
-                className="fill-[rgba(0,255,136,0.75)] font-mono text-[9px] font-bold"
-                style={{ fontFamily: "var(--font-geist-mono), ui-monospace" }}
-              >
-                KNEE 88°
-              </text>
+              <ellipse cx="200" cy="250" rx="36" ry="22" fill="rgba(52,199,89,0.2)" stroke="#34C759" strokeWidth="2.5" />
+              <circle cx="257" cy="300" r="15" fill="rgba(255,59,48,0.2)" stroke="#FF3B30" strokeWidth="2.5" />
             </g>
 
-            {/* Scan line — over figure */}
-            <rect
-              x="0"
-              y="0"
-              width="320"
-              height="40"
-              fill="url(#heroScanFade)"
-              className="hero-scan-line pointer-events-none"
-              style={{ mixBlendMode: "screen" }}
-            />
+            <rect x="112" y="0" width="176" height="58" fill="url(#scanBand)" className="hero-scan" />
 
-            {/* HUD badges — on top */}
-            <rect
-              x="8"
-              y="10"
-              width="78"
-              height="22"
-              rx="3"
-              fill="rgba(5,5,8,0.65)"
-              stroke="rgba(0,255,136,0.45)"
-              strokeWidth="1"
-            />
-            <text
-              x="47"
-              y="25"
-              textAnchor="middle"
-              className="fill-[#00ff88] font-mono text-[9px] font-bold uppercase"
-              style={{ fontFamily: "var(--font-geist-mono), ui-monospace" }}
-            >
-              LIVE SCAN
-            </text>
-            <rect
-              x="214"
-              y="10"
-              width="98"
-              height="22"
-              rx="3"
-              fill="rgba(5,5,8,0.65)"
-              stroke="rgba(0,255,136,0.45)"
-              strokeWidth="1"
-            />
-            <text
-              x="263"
-              y="25"
-              textAnchor="middle"
-              className="fill-[#00ff88] font-mono text-[9px] font-bold uppercase"
-              style={{ fontFamily: "var(--font-geist-mono), ui-monospace" }}
-            >
-              SCORE: 84
-            </text>
+            <g className="hero-tag hero-tag-1">
+              <line x1="106" y1="300" x2="165" y2="258" stroke="#34C759" strokeWidth="1.5" />
+              <rect x="18" y="278" width="92" height="34" rx="17" fill="#fff" />
+              <text x="33" y="300" className="fill-[#1d1d1f] text-[12px] font-medium">Depth</text>
+              <text x="82" y="300" className="fill-[#34C759] text-[12px] font-bold">85</text>
+            </g>
+            <g className="hero-tag hero-tag-2">
+              <line x1="326" y1="182" x2="244" y2="168" stroke="#FF9500" strokeWidth="1.5" />
+              <rect x="328" y="164" width="86" height="34" rx="17" fill="#fff" />
+              <text x="342" y="186" className="fill-[#1d1d1f] text-[12px] font-medium">Trunk</text>
+              <text x="386" y="186" className="fill-[#FF9500] text-[12px] font-bold">74</text>
+            </g>
+            <g className="hero-tag hero-tag-3">
+              <line x1="330" y1="314" x2="271" y2="298" stroke="#34C759" strokeWidth="1.5" />
+              <rect x="328" y="298" width="86" height="34" rx="17" fill="#fff" />
+              <text x="343" y="320" className="fill-[#1d1d1f] text-[12px] font-medium">Knees</text>
+              <text x="388" y="320" className="fill-[#34C759] text-[12px] font-bold">88</text>
+            </g>
 
-            {/* Sin waves — bottom */}
-            <path
-              d="M 20 472 Q 60 452 100 472 T 180 472 T 260 472 T 300 472"
-              fill="none"
-              stroke="rgba(0,255,136,0.45)"
-              strokeWidth="1.25"
-              strokeLinecap="round"
-              strokeDasharray="14 10"
-              strokeDashoffset={0}
-              className="hero-wave-path"
-            />
-            <path
-              d="M 20 488 Q 70 508 120 488 T 220 488 T 300 488"
-              fill="none"
-              stroke="rgba(0,255,136,0.28)"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeDasharray="10 12"
-              strokeDashoffset={0}
-              className="hero-wave-path-alt"
-            />
+            <g className="hero-score-card">
+              <rect x="300" y="24" width="84" height="78" rx="16" fill="#fff" />
+              <text x="342" y="66" textAnchor="middle" className="fill-[#0A84FF] text-[36px] font-bold">
+                {score}
+              </text>
+              <text x="342" y="86" textAnchor="middle" className="fill-[#86868b] text-[12px] font-medium">
+                /100
+              </text>
+            </g>
           </svg>
         </div>
       </div>
-    </div>
+
+      <style jsx>{`
+        .hero-figure .hero-breath {
+          transform-origin: 200px 250px;
+          animation: breathe 3s ease-in-out infinite;
+        }
+        .hero-figure .hero-tag {
+          filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+          opacity: 0;
+          animation: tagIn 600ms ease forwards;
+        }
+        .hero-figure .hero-tag-1 {
+          animation-delay: 180ms;
+        }
+        .hero-figure .hero-tag-2 {
+          animation-delay: 380ms;
+        }
+        .hero-figure .hero-tag-3 {
+          animation-delay: 580ms;
+        }
+        .hero-figure .hero-score-card {
+          filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.12));
+        }
+        .hero-figure .hero-scan {
+          animation: scanDown 4s linear infinite;
+        }
+        @keyframes breathe {
+          0%,
+          100% {
+            transform: scale(0.98);
+          }
+          50% {
+            transform: scale(1);
+          }
+        }
+        @keyframes tagIn {
+          0% {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes scanDown {
+          0% {
+            transform: translateY(-60px);
+          }
+          100% {
+            transform: translateY(500px);
+          }
+        }
+      `}</style>
+    </section>
   );
 }
