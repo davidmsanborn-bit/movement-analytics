@@ -17,7 +17,10 @@ const items = [
 
 export function ValueProps() {
   return (
-    <PageSection id="how-it-works" className="border-t border-white/10 py-20">
+    <PageSection
+      id="how-it-works"
+      className="border-t border-white/10 bg-[#0a0a0f] py-20"
+    >
       <h2 className="font-sans text-2xl font-semibold tracking-tight text-white md:text-3xl">
         Built for lifters who care about form
       </h2>

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <div className="relative overflow-hidden bg-[#050508] pb-20 pt-20 md:pb-28 md:pt-28">
+    <div className="relative min-h-[600px] bg-[#050508] pb-20 pt-20 md:pb-28 md:pt-28">
       <div className="relative mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-2 lg:items-center lg:gap-10">
         {/* Left column */}
         <div className="relative z-10 max-w-xl">
@@ -47,7 +47,7 @@ export function Hero() {
         </div>
 
         {/* Right column — HUD wireframe */}
-        <div className="relative mx-auto w-full max-w-[360px] lg:mx-0 lg:max-w-none">
+        <div className="relative mx-auto w-full max-w-[360px] overflow-visible lg:mx-0 lg:max-w-none">
           <div
             className="pointer-events-none absolute inset-0 rounded-2xl opacity-[0.03]"
             style={{

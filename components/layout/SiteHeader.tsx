@@ -38,7 +38,7 @@ export function SiteHeader({ user }: Props) {
     : "flex flex-wrap items-center justify-end gap-4 text-sm text-[var(--text-secondary)] sm:gap-6";
 
   return (
-    <header className={headerClass}>
+    <header className={headerClass} style={isHome ? { background: "transparent" } : undefined}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className={titleClass}>
           Movement Analytics
@@ -48,7 +48,7 @@ export function SiteHeader({ user }: Props) {
             <>
               <Link
                 href="/dashboard"
-                className={isHome ? "text-white transition hover:text-white" : "transition hover:text-black"}
+                className={isHome ? "!text-white transition hover:!text-white/80" : "transition hover:text-black"}
               >
                 Dashboard
               </Link>
@@ -62,7 +62,7 @@ export function SiteHeader({ user }: Props) {
                 <span
                   className={
                     isHome
-                      ? "hidden max-w-[160px] truncate text-xs text-white sm:inline"
+                      ? "hidden max-w-[160px] truncate text-xs !text-white sm:inline"
                       : "hidden max-w-[160px] truncate text-xs text-[var(--text-tertiary)] sm:inline"
                   }
                 >
@@ -74,7 +74,7 @@ export function SiteHeader({ user }: Props) {
                   type="submit"
                   className={
                     isHome
-                      ? "text-white transition hover:text-white"
+                      ? "!text-white transition hover:!text-white/80"
                       : "text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
                   }
                 >
@@ -85,14 +85,14 @@ export function SiteHeader({ user }: Props) {
           ) : (
             <Link
               href="/login"
-              className={isHome ? "text-white transition hover:text-white" : "transition hover:text-black"}
+              className={isHome ? "!text-white transition hover:!text-white/80" : "transition hover:text-black"}
             >
               Sign in
             </Link>
           )}
           <Link
             href="/analyze/squat"
-            className={isHome ? "text-[#00ff88] transition hover:brightness-110" : "text-[var(--accent)] transition hover:text-[var(--accent-hover)]"}
+            className={isHome ? "!text-[#00ff88] transition hover:brightness-110" : "text-[var(--accent)] transition hover:text-[var(--accent-hover)]"}
           >
             Analyze squat
           </Link>
