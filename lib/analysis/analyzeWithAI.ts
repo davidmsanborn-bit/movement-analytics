@@ -25,7 +25,20 @@ Return a single JSON object with this exact shape (no extra keys):
   "movementLabel": <string — human-readable title, e.g. "Barbell back squat">,
   "cameraAngle": <string — e.g. "Side view", matching your detection>,
   "loadType": <"barbell" | "dumbbell" | "kettlebell" | "resistance band" | "bodyweight" | "unknown">,
-  "angleRecommendation": <string | null> — null only if the current camera angle is sufficient for a fair squat assessment from these frames; otherwise one specific sentence on how to film next time (e.g. adding front view for knee tracking)>,
+  "angleRecommendation": <string | null> — specific complementary angle suggestion string, or null only if (confidence is "high" AND cameraAngle is "side view"). NEVER recommend the same cameraAngle as the user already filmed from.
+  
+  For squats, use this complementary multi-angle mapping (always prefer these sentences exactly):
+  - If cameraAngle is "side view": recommend front view with this exact sentence:
+    "A front-view clip would let us assess knee cave, foot pressure distribution, and lateral hip shift more precisely"
+  - If cameraAngle is "front view": recommend side view with this exact sentence:
+    "A side-view clip would let us assess squat depth, trunk lean angle, and hip hinge pattern more precisely"
+  - If cameraAngle is "rear view": recommend side view with this exact sentence:
+    "A side-view clip would let us assess depth and trunk position more accurately"
+  - If cameraAngle is "diagonal": recommend side view as the priority using this exact sentence:
+    "A side-view clip would let us assess squat depth, trunk lean angle, and hip hinge pattern more precisely"
+  
+  Always return a non-null angleRecommendation unless (confidence is "high" AND cameraAngle is "side view").
+  For "medium" or "low" confidence on any angle, ALWAYS recommend the complementary angle above (never null).
   "additionalAngleBenefit": <string — one short sentence on what a second angle (e.g. front or 45°) would clarify, even if the current angle is acceptable>,
   "overallScore": <number 0-100>,
   "confidence": <"high" | "medium" | "low">,
