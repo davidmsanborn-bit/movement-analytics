@@ -1,7 +1,10 @@
 "use client";
 
 import { createClient } from "@supabase/supabase-js";
-import { consumePendingUpload } from "@/lib/analysis/pendingUpload";
+import {
+  consumePendingUpload,
+  consumePendingWeight,
+} from "@/lib/analysis/pendingUpload";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -68,6 +71,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
       console.log("[processing] startUpload begin", { analysisId: id });
 
       const file = consumePendingUpload(id);
+      const weight = consumePendingWeight(id);
       console.log("[processing] consumePendingUpload result", {
         analysisId: id,
         found: Boolean(file),
@@ -113,7 +117,10 @@ export function ProcessingPageClient({ id, previousId }: Props) {
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ analysisId: id }),
+          body: JSON.stringify({
+            analysisId: id,
+            weight: weight ?? null,
+          }),
         });
         const data = (await res.json()) as { analysisId?: string; error?: string };
         console.log("[processing] POST /api/analyze response", {

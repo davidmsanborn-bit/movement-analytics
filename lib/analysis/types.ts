@@ -30,6 +30,8 @@ export interface SquatAnalysisResult {
   angleRecommendation: string | null;
   /** Brief note on what another angle would clarify (depth, knees, hips, etc.) */
   additionalAngleBenefit: string | null;
+  /** Athlete-reported load / weight (free text), if provided at upload */
+  weight: string | null;
   overallScore: number;
   confidence: ConfidenceLevel;
   confidenceNote: string;

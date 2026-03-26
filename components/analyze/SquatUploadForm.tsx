@@ -1,6 +1,6 @@
 "use client";
 
-import { setPendingUpload } from "@/lib/analysis/pendingUpload";
+import { setPendingUpload, setPendingWeight } from "@/lib/analysis/pendingUpload";
 import { useRouter } from "next/navigation";
 import { useCallback, useId, useState } from "react";
 
@@ -11,8 +11,10 @@ type SquatUploadFormProps = {
 export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
   const router = useRouter();
   const inputId = useId();
+  const weightInputId = useId();
   const [fileName, setFileName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [weight, setWeight] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,12 +32,14 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
       setError(null);
       const analysisId = crypto.randomUUID();
       setPendingUpload(analysisId, file);
+      const weightTrimmed = weight.trim();
+      setPendingWeight(analysisId, weightTrimmed ? weightTrimmed : null);
       const qs = previousId
         ? `?previousId=${encodeURIComponent(previousId)}`
         : "";
       router.push(`/analyze/squat/processing/${analysisId}${qs}`);
     },
-    [file, previousId, router],
+    [file, weight, previousId, router],
   );
 
   return (
@@ -72,6 +76,24 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
             />
           </label>
         </div>
+      </div>
+      <div>
+        <label
+          htmlFor={weightInputId}
+          className="block text-sm font-medium text-zinc-300"
+        >
+          Weight (optional)
+        </label>
+        <input
+          id={weightInputId}
+          name="weight"
+          type="text"
+          autoComplete="off"
+          placeholder="e.g. Bodyweight, 135 lbs, 60 kg"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+          className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none transition focus:border-[var(--accent)]/40 focus:ring-1 focus:ring-[var(--accent)]/30"
+        />
       </div>
       {error ? (
         <p

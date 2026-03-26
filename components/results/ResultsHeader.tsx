@@ -5,6 +5,7 @@ type Props = Pick<
   | "movementLabel"
   | "cameraAngle"
   | "loadType"
+  | "weight"
   | "angleRecommendation"
   | "additionalAngleBenefit"
   | "analyzedAt"
@@ -35,6 +36,7 @@ export function ResultsHeader({
   movementLabel,
   cameraAngle,
   loadType,
+  weight,
   angleRecommendation,
   additionalAngleBenefit,
   analyzedAt,
@@ -50,7 +52,9 @@ export function ResultsHeader({
           {movementLabel}
         </h1>
         <p className="mt-2 text-sm text-zinc-400">
-          {cameraAngle} · {formatLoadLabel(loadType)} · {formatTime(analyzedAt)}
+          {cameraAngle} · {formatLoadLabel(loadType)}
+          {weight?.trim() ? ` · Weight: ${weight.trim()}` : ""} ·{" "}
+          {formatTime(analyzedAt)}
         </p>
         {angleRecommendation ? (
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-amber-200/90">

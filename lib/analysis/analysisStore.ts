@@ -36,6 +36,12 @@ function normalizeStoredAnalysis(raw: unknown): SquatAnalysisResult {
         : typeof angleBenefit === "string" && angleBenefit.trim()
           ? angleBenefit.trim()
           : null,
+    weight:
+      r.weight === null || r.weight === undefined
+        ? null
+        : typeof r.weight === "string" && r.weight.trim()
+          ? r.weight.trim()
+          : null,
   };
 }
 

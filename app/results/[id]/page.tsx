@@ -76,6 +76,7 @@ export default async function ResultsPage({ params, searchParams }: Props) {
           movementLabel={result.movementLabel}
           cameraAngle={result.cameraAngle}
           loadType={result.loadType}
+          weight={result.weight}
           angleRecommendation={result.angleRecommendation}
           additionalAngleBenefit={result.additionalAngleBenefit}
           analyzedAt={result.analyzedAt}

@@ -16,13 +16,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const parsed = body as { analysisId?: unknown };
+  const parsed = body as { analysisId?: unknown; weight?: unknown };
   const analysisId =
     typeof parsed.analysisId === "string" ? parsed.analysisId : "";
 
   if (!isValidAnalysisId(analysisId)) {
     return NextResponse.json({ error: "Invalid analysisId" }, { status: 400 });
   }
+
+  const weightRaw = parsed.weight;
+  const weight =
+    weightRaw === null || weightRaw === undefined
+      ? null
+      : typeof weightRaw === "string" && weightRaw.trim()
+        ? weightRaw.trim()
+        : null;
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -47,7 +55,7 @@ export async function POST(request: Request) {
 
     setProgress(analysisId, "Sending to AI for analysis...");
 
-    const result = await analyzeSquatVideo(storagePath, analysisId);
+    const result = await analyzeSquatVideo(storagePath, analysisId, weight);
 
     console.log("[analyze] analyzeSquatVideo done", {
       analysisId,

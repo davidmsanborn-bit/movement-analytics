@@ -183,7 +183,7 @@ function nullableRecommendation(raw: unknown): string | null {
 
 function parseAIResponse(raw: string): Omit<
   SquatAnalysisResult,
-  "id" | "analyzedAt"
+  "id" | "analyzedAt" | "weight"
 > {
   const cleaned = raw.replace(/```json|```/g, "").trim();
   const parsed = JSON.parse(cleaned) as Record<string, unknown>;
@@ -259,8 +259,16 @@ function parseAIResponse(raw: string): Omit<
 export async function analyzeSquatVideo(
   storagePath: string,
   analysisId: string,
+  weight: string | null,
 ): Promise<SquatAnalysisResult> {
   const frames = await extractFrames(storagePath, analysisId);
+
+  const weightLine =
+    typeof weight === "string" && weight.trim()
+      ? `\n\nWeight used: ${weight.trim()}`
+      : "";
+
+  const userText = `These images are frames from the same clip at roughly 1s, 2s, and 3s. Infer movement type, external load, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.${weightLine}`;
 
   const controller = new AbortController();
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -284,7 +292,7 @@ export async function analyzeSquatVideo(
               })),
               {
                 type: "text",
-                text: "These images are frames from the same clip at roughly 1s, 2s, and 3s. Infer movement type, external load, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.",
+                text: userText,
               },
             ],
           },
@@ -308,11 +316,14 @@ export async function analyzeSquatVideo(
       .join("");
 
     const parsed = parseAIResponse(rawText);
+    const weightStored =
+      typeof weight === "string" && weight.trim() ? weight.trim() : null;
 
     return {
       ...parsed,
       id: analysisId,
       analyzedAt: new Date().toISOString(),
+      weight: weightStored,
     };
   } finally {
     if (timeoutId) {
