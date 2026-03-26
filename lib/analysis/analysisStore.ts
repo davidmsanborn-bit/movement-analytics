@@ -97,16 +97,55 @@ function getServiceClient() {
   return createClient(url, key);
 }
 
-export async function saveAnalysis(result: SquatAnalysisResult): Promise<void> {
+export async function saveAnalysis(
+  result: SquatAnalysisResult,
+  userId?: string | null,
+): Promise<void> {
   const supabase = getServiceClient();
 
-  const { error } = await supabase
-    .from("analyses")
-    .insert({ id: result.id, result });
+  const { error } = await supabase.from("analyses").insert({
+    id: result.id,
+    result,
+    user_id: userId ?? null,
+  });
 
   if (error) {
     throw new Error(`Failed to save analysis: ${error.message}`);
   }
+}
+
+const MAX_USER_ANALYSES = 50;
+
+export async function getUserAnalyses(
+  userId: string,
+): Promise<SquatAnalysisResult[]> {
+  const supabase = getServiceClient();
+
+  const { data, error } = await supabase
+    .from("analyses")
+    .select("result, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(MAX_USER_ANALYSES);
+
+  if (error) {
+    throw new Error(`Failed to list analyses: ${error.message}`);
+  }
+
+  const rows = data ?? [];
+  return rows.map((row) => {
+    const base = normalizeStoredAnalysis(row.result);
+    const created =
+      row.created_at != null
+        ? typeof row.created_at === "string"
+          ? row.created_at
+          : new Date(row.created_at as string | number | Date).toISOString()
+        : base.analyzedAt;
+    return {
+      ...base,
+      analyzedAt: created,
+    };
+  });
 }
 
 export async function fetchAnalysis(

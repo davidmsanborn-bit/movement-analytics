@@ -3,6 +3,7 @@ import { analyzeSquatVideo } from "@/lib/analysis/analyzeWithAI";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
 import { saveAnalysis } from "@/lib/analysis/analysisStore";
 import { setProgress } from "@/lib/analysis/progressStore";
+import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -32,6 +33,20 @@ export async function POST(request: Request) {
         ? weightRaw.trim()
         : null;
 
+  const authSupabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await authSupabase.auth.getUser();
+  const userId = user?.id ?? null;
+
+  console.log(
+    "[analyze] userId:",
+    user?.id ?? "not logged in",
+  );
+
+  const cookieHeader = request.headers.get("cookie") ?? "";
+  console.log("[analyze] has sb-access-token cookie:", cookieHeader.includes("sb-access-token"));
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceRoleKey) {
@@ -55,7 +70,12 @@ export async function POST(request: Request) {
 
     setProgress(analysisId, "Sending to AI for analysis...");
 
-    const result = await analyzeSquatVideo(storagePath, analysisId, weight);
+    const result = await analyzeSquatVideo(
+      storagePath,
+      analysisId,
+      weight,
+      userId,
+    );
 
     console.log("[analyze] analyzeSquatVideo done", {
       analysisId,
@@ -65,7 +85,7 @@ export async function POST(request: Request) {
 
     setProgress(analysisId, "Scoring your movement...");
     setProgress(analysisId, "Saving your results...");
-    await saveAnalysis(result);
+    await saveAnalysis(result, userId);
 
     console.log("[analyze] saveAnalysis done", { analysisId });
 

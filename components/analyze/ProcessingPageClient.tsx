@@ -117,6 +117,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             analysisId: id,
             weight: weight ?? null,

@@ -260,7 +260,9 @@ export async function analyzeSquatVideo(
   storagePath: string,
   analysisId: string,
   weight: string | null,
+  userId: string | null,
 ): Promise<SquatAnalysisResult> {
+  void userId;
   const frames = await extractFrames(storagePath, analysisId);
 
   const weightLine =
