@@ -5,22 +5,22 @@ type Props = {
 export function CoachingCues({ cues }: Props) {
   return (
     <div>
-      <h2 className="font-sans text-lg font-semibold text-white">
+      <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
         Fix these first
       </h2>
-      <p className="mt-1 text-sm text-zinc-500">
+      <p className="mt-1 text-sm text-[var(--text-secondary)]">
         Top three coaching cues for your next session.
       </p>
       <ol className="mt-6 space-y-4">
         {cues.map((cue, i) => (
           <li
             key={i}
-            className="flex gap-4 rounded-xl border border-white/10 bg-black/40 p-4"
+            className="flex gap-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
           >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--accent)]/15 font-mono text-sm font-semibold text-[var(--accent)]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--accent)] font-mono text-sm font-semibold text-[var(--accent-foreground)]">
               {i + 1}
             </span>
-            <p className="pt-0.5 text-sm leading-relaxed text-zinc-200">
+            <p className="pt-0.5 text-sm leading-relaxed text-[var(--text-primary)]">
               {cue}
             </p>
           </li>

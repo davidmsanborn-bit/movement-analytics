@@ -1,0 +1,53 @@
+---
+description: Persistent context and coding guardrails for Movement Analytics
+alwaysApply: true
+---
+
+# Movement Analytics Context
+
+## Project Name & Purpose
+- **Project:** Movement Analytics
+- **Purpose:** Analyze user-uploaded squat videos and return practical movement-quality feedback (scores, observations, coaching cues) from computer-vision-derived frames plus AI interpretation.
+- **Positioning:** Premium sports-tech coaching feedback; not medical diagnosis.
+
+## Complete Tech Stack
+- **Framework:** Next.js App Router (`next@16`), React 19
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 + design tokens in `app/globals.css`
+- **Auth / DB / Storage:** Supabase (`@supabase/supabase-js`, `@supabase/ssr`)
+- **AI:** Anthropic SDK (`@anthropic-ai/sdk`)
+- **Frame extraction:** External Railway service via HTTP (`FRAMES_SERVICE_URL`)
+
+## Styling Conventions
+- Use global token variables from `app/globals.css` (`--bg-page`, `--bg-card`, `--text-*`, `--accent`, `--border`, `--score-*`, `--shadow-card`).
+- Keep landing marketing section (`components/landing/Hero.tsx`) dramatic dark HUD style.
+- Keep product pages (analyze, processing, results, dashboard, auth) in the light Apple-style system.
+- Prefer tokenized color usage (`text-[var(--text-primary)]`) over hardcoded values in product UI.
+
+## API Integrations & Environment Variables
+- Required app env vars:
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `SUPABASE_SERVICE_ROLE_KEY`
+  - `ANTHROPIC_API_KEY`
+  - `FRAMES_SERVICE_URL`
+  - `FRAMES_SERVICE_SECRET`
+- Supabase auth session refresh is handled in `middleware.ts`.
+- Auth callback route: `app/auth/callback/route.ts`.
+- Analysis pipeline route: `app/api/analyze/route.ts`.
+
+## Coding Conventions
+- TypeScript-first. Keep explicit request/response typing in API routes.
+- Server/client split:
+  - Browser Supabase client: `lib/supabase/client.ts`
+  - Server Supabase client: `lib/supabase/server.ts`
+- Keep AI parsing defensive and normalize persisted rows before UI consumption.
+- Keep presentational UI in `components/`, business/data logic in `lib/`.
+- Preserve API JSON contracts and `SquatAnalysisResult` shape stability.
+
+## Things To Never Do
+- Never log full secrets or credentials.
+- Never use medical diagnosis language in prompts or user-facing copy.
+- Never remove auth cookie propagation for protected client->API calls (`credentials: "include"` where needed).
+- Never break the core flow contract: upload -> processing -> status/progress -> results.
+- Never introduce broad multi-movement abstractions unless explicitly requested.

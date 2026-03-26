@@ -43,31 +43,31 @@ export function ResultsHeader({
   id,
 }: Props) {
   return (
-    <div className="flex flex-col gap-2 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between">
+    <div className="flex flex-col gap-2 border-b border-[var(--border)] pb-8 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
           Assessment
         </p>
-        <h1 className="mt-2 font-sans text-3xl font-semibold tracking-tight text-white md:text-4xl">
+        <h1 className="mt-2 font-sans text-3xl font-semibold tracking-tight text-[var(--text-primary)] md:text-4xl">
           {movementLabel}
         </h1>
-        <p className="mt-2 text-sm text-zinc-400">
+        <p className="mt-2 text-sm text-[var(--text-secondary)]">
           {cameraAngle} · {formatLoadLabel(loadType)}
           {weight?.trim() ? ` · Weight: ${weight.trim()}` : ""} ·{" "}
           {formatTime(analyzedAt)}
         </p>
         {angleRecommendation ? (
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-amber-200/90">
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-amber-700">
             {angleRecommendation}
           </p>
         ) : null}
         {additionalAngleBenefit ? (
-          <p className="mt-2 max-w-xl text-xs leading-relaxed text-zinc-500">
+          <p className="mt-2 max-w-xl text-xs leading-relaxed text-[var(--text-tertiary)]">
             {additionalAngleBenefit}
           </p>
         ) : null}
       </div>
-      <p className="font-mono text-xs text-zinc-600">
+      <p className="font-mono text-xs text-[var(--text-tertiary)]">
         ID · {id.slice(0, 8)}…
       </p>
     </div>

@@ -235,12 +235,12 @@ export function ProcessingPageClient({ id, previousId }: Props) {
 
   if (error) {
     return (
-      <div className="flex min-h-[60vh] w-full flex-col items-center justify-center text-center">
-        <div className="max-w-md space-y-6">
-          <p className="text-sm text-red-400">{error}</p>
+      <div className="flex min-h-[60vh] w-full flex-col items-center justify-center bg-[var(--bg-page)] text-center">
+        <div className="max-w-md space-y-6 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-8 shadow-[var(--shadow-card)]">
+          <p className="text-sm text-[var(--score-low)]">{error}</p>
           <a
             href="/analyze/squat"
-            className="inline-flex h-11 items-center justify-center rounded-lg border border-white/10 px-6 text-sm text-zinc-300 transition hover:border-white/20 hover:text-white"
+            className="inline-flex h-11 items-center justify-center rounded-lg border border-[var(--border)] px-6 text-sm text-[var(--text-primary)] transition hover:border-[var(--accent-hover)]"
           >
             ← Try again
           </a>
@@ -250,8 +250,8 @@ export function ProcessingPageClient({ id, previousId }: Props) {
   }
 
   return (
-    <div className="flex min-h-[60vh] w-full flex-col items-center justify-center text-center">
-      <div className="max-w-md space-y-10">
+    <div className="flex min-h-[60vh] w-full flex-col items-center justify-center bg-[var(--bg-page)] text-center">
+      <div className="max-w-md space-y-10 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-10 shadow-[var(--shadow-card)]">
         <div className="flex justify-center">
           <div className="relative h-32 w-32">
             <svg className="h-32 w-32" viewBox="0 0 128 128">
@@ -261,7 +261,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 cy="64"
                 r="58"
                 fill="none"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="0.5"
                 strokeOpacity="0.2"
               />
@@ -271,7 +271,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 cy="64"
                 r="58"
                 fill="none"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="1.5"
                 strokeDasharray="40 325"
                 strokeLinecap="round"
@@ -286,7 +286,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 cy="64"
                 r="44"
                 fill="none"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="0.5"
                 strokeOpacity="0.15"
               />
@@ -296,7 +296,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 cy="64"
                 r="44"
                 fill="none"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="1"
                 strokeDasharray="25 252"
                 strokeLinecap="round"
@@ -311,7 +311,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 cy="64"
                 r="30"
                 fill="none"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="0.5"
                 strokeOpacity="0.1"
               />
@@ -321,7 +321,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 y1="6"
                 x2="64"
                 y2="14"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="1"
                 strokeOpacity="0.6"
               />
@@ -330,7 +330,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 y1="64"
                 x2="114"
                 y2="64"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="1"
                 strokeOpacity="0.6"
               />
@@ -339,7 +339,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 y1="122"
                 x2="64"
                 y2="114"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="1"
                 strokeOpacity="0.6"
               />
@@ -348,7 +348,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 y1="64"
                 x2="14"
                 y2="64"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="1"
                 strokeOpacity="0.6"
               />
@@ -358,7 +358,7 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 y1="54"
                 x2="64"
                 y2="74"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="0.5"
                 strokeOpacity="0.4"
               />
@@ -367,13 +367,13 @@ export function ProcessingPageClient({ id, previousId }: Props) {
                 y1="64"
                 x2="74"
                 y2="64"
-                stroke="#00ff88"
+                stroke="var(--accent)"
                 strokeWidth="0.5"
                 strokeOpacity="0.4"
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
-              <span className="font-mono text-[11px] font-bold uppercase tracking-[4px] text-[#00ff88]">
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[4px] text-[var(--accent)]">
                 AI
               </span>
               <div
@@ -389,10 +389,10 @@ export function ProcessingPageClient({ id, previousId }: Props) {
         </div>
 
         <div className="space-y-3">
-          <p className="text-lg font-semibold tracking-tight text-white transition-all duration-500">
+          <p className="text-lg font-semibold tracking-tight text-[var(--text-primary)] transition-all duration-500">
             {progressStage.trim() ? progressStage : "Preparing…"}
           </p>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-[var(--text-secondary)]">
             We’ll open your results as soon as they’re ready.
           </p>
         </div>

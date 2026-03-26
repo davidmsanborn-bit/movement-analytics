@@ -14,12 +14,12 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center bg-[#050508] px-6 py-16">
-      <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[0.03] p-8 shadow-xl shadow-black/40">
-        <p className="text-center font-sans text-lg font-semibold tracking-tight text-white">
+    <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center bg-[var(--bg-page)] px-6 py-16">
+      <div className="w-full max-w-sm rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-8 shadow-[var(--shadow-card)]">
+        <p className="text-center font-sans text-lg font-semibold tracking-tight text-[var(--text-primary)]">
           Movement Analytics
         </p>
-        <p className="mt-3 text-center text-sm leading-relaxed text-zinc-500">
+        <p className="mt-3 text-center text-sm leading-relaxed text-[var(--text-secondary)]">
           Track your progress. Fix your form.
         </p>
         <div className="mt-8 flex justify-center">
@@ -28,7 +28,7 @@ export default async function LoginPage() {
         <p className="mt-8 text-center">
           <Link
             href="/"
-            className="text-sm text-zinc-500 transition hover:text-zinc-300"
+            className="text-sm text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
           >
             ← Back to home
           </Link>

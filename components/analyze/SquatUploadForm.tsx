@@ -47,23 +47,23 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
       <div>
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-zinc-300"
+          className="block text-sm font-medium text-[var(--text-primary)]"
         >
           Video file
         </label>
-        <p className="mt-1 text-xs text-zinc-500">
+        <p className="mt-1 text-xs text-[var(--text-secondary)]">
           MP4 or MOV, up to 100 MB. Upload is encrypted in transit; analysis
           runs on our side after you submit.
         </p>
         <div className="mt-3">
           <label
             htmlFor={inputId}
-            className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-white/20 bg-black/40 px-6 py-12 transition hover:border-[var(--accent)]/45 hover:bg-white/[0.02]"
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-[var(--bg-card-secondary)] px-6 py-10 transition hover:border-[var(--accent-hover)]/70"
           >
-            <span className="font-mono text-xs uppercase tracking-wider text-zinc-500 transition group-hover:text-zinc-400">
+            <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-secondary)] transition group-hover:text-[var(--text-primary)]">
               Drop a file or browse
             </span>
-            <span className="mt-2 text-sm text-zinc-300">
+            <span className="mt-2 text-sm text-[var(--text-primary)]">
               {fileName ?? "No file selected"}
             </span>
             <input
@@ -80,7 +80,7 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
       <div>
         <label
           htmlFor={weightInputId}
-          className="block text-sm font-medium text-zinc-300"
+          className="block text-sm font-medium text-[var(--text-primary)]"
         >
           Weight (optional)
         </label>
@@ -92,12 +92,12 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
           placeholder="e.g. Bodyweight, 135 lbs, 60 kg"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none transition focus:border-[var(--accent)]/40 focus:ring-1 focus:ring-[var(--accent)]/30"
+          className="mt-2 w-full rounded-lg border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] outline-none transition focus:border-[var(--accent)]/60 focus:ring-1 focus:ring-[var(--accent)]/20"
         />
       </div>
       {error ? (
         <p
-          className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200/90"
+          className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700"
           role="alert"
         >
           {error}

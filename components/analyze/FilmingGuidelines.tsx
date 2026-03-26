@@ -1,14 +1,14 @@
 export function FilmingGuidelines() {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6">
-      <h2 className="font-sans text-lg font-semibold text-white">
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-[var(--shadow-card)]">
+      <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
         Film from the side
       </h2>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-[var(--text-secondary)]">
         Full body in frame, hip height or slightly below, 3–5 meters back. One
         smooth rep is enough for a solid read.
       </p>
-      <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+      <ul className="mt-4 space-y-2 text-sm text-[var(--text-secondary)]">
         <li className="flex gap-2">
           <span className="font-mono text-[var(--accent)]">·</span>
           Stand the phone vertically or horizontally—just keep you centered.

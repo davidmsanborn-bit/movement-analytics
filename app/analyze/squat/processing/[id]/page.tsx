@@ -30,7 +30,7 @@ export default function SquatProcessingPage({ params }: Props) {
       <div className="mx-auto w-full max-w-6xl pt-8 pb-4">
         <Link
           href="/analyze/squat"
-          className="inline-flex text-sm text-zinc-500 transition hover:text-[var(--accent)]"
+          className="inline-flex text-sm text-[var(--text-secondary)] transition hover:text-[var(--accent)]"
         >
           ← Back to upload
         </Link>
@@ -38,7 +38,7 @@ export default function SquatProcessingPage({ params }: Props) {
       <div className="flex flex-1 flex-col items-center pb-24">
         <Suspense
           fallback={
-            <div className="flex min-h-[40vh] items-center justify-center text-sm text-zinc-500">
+            <div className="flex min-h-[40vh] items-center justify-center text-sm text-[var(--text-secondary)]">
               Loading…
             </div>
           }

@@ -22,45 +22,45 @@ export async function SiteHeader() {
   } = await supabase.auth.getUser();
 
   return (
-    <header className="border-b border-white/10 bg-[var(--surface)]/80 backdrop-blur-md">
+    <header className="border-b border-[var(--border)] bg-[#ffffff]">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link
           href="/"
-          className="font-sans text-sm font-semibold tracking-tight text-white"
+          className="font-sans text-sm font-semibold tracking-tight text-[var(--text-primary)]"
         >
           Movement Analytics
         </Link>
-        <nav className="flex flex-wrap items-center justify-end gap-4 text-sm text-zinc-400 sm:gap-6">
+        <nav className="flex flex-wrap items-center justify-end gap-4 text-sm text-[var(--text-secondary)] sm:gap-6">
           {user ? (
             <>
               <Link
                 href="/dashboard"
-                className="transition hover:text-white"
+                className="transition hover:text-black"
               >
                 Dashboard
               </Link>
               <div className="flex items-center gap-2">
                 <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-xs font-semibold text-white"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-xs font-semibold text-[var(--accent-foreground)]"
                   aria-hidden
                 >
                   {userInitial(user)}
                 </span>
-                <span className="hidden max-w-[160px] truncate text-xs text-zinc-500 sm:inline">
+                <span className="hidden max-w-[160px] truncate text-xs text-[var(--text-tertiary)] sm:inline">
                   {user.email ?? user.id}
                 </span>
               </div>
               <form action={signOut} className="inline">
                 <button
                   type="submit"
-                  className="text-zinc-400 transition hover:text-white"
+                  className="text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
                 >
                   Sign out
                 </button>
               </form>
             </>
           ) : (
-            <Link href="/login" className="transition hover:text-white">
+            <Link href="/login" className="transition hover:text-black">
               Sign in
             </Link>
           )}

@@ -5,10 +5,10 @@ type Props = {
 export function ObservationsList({ observations }: Props) {
   return (
     <div>
-      <h2 className="font-sans text-lg font-semibold text-white">
+      <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
         What we noticed
       </h2>
-      <p className="mt-1 text-sm text-zinc-500">
+      <p className="mt-1 text-sm text-[var(--text-secondary)]">
         Observed mechanics from this recording—worded for coaching, not
         diagnosis.
       </p>
@@ -16,7 +16,7 @@ export function ObservationsList({ observations }: Props) {
         {observations.map((line, i) => (
           <li
             key={i}
-            className="flex gap-3 border-l-2 border-[var(--accent)]/40 pl-4 text-sm leading-relaxed text-zinc-300"
+            className="flex gap-3 border-l-2 border-[var(--accent)]/40 pl-4 text-sm leading-relaxed text-[var(--text-secondary)]"
           >
             {line}
           </li>

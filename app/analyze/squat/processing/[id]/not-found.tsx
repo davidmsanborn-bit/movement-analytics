@@ -3,15 +3,15 @@ import { PageSection } from "@/components/layout/PageSection";
 
 export default function ProcessingNotFound() {
   return (
-    <main className="min-h-full pb-24 pt-20 md:pt-28">
+    <main className="min-h-full bg-[var(--bg-page)] pb-24 pt-20 md:pt-28">
       <PageSection className="text-center">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-600">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
           Invalid session
         </p>
-        <h1 className="mt-4 font-sans text-2xl font-semibold text-white">
+        <h1 className="mt-4 font-sans text-2xl font-semibold text-[var(--text-primary)]">
           This processing link isn&apos;t valid
         </h1>
-        <p className="mx-auto mt-3 max-w-md text-sm text-zinc-400">
+        <p className="mx-auto mt-3 max-w-md text-sm text-[var(--text-secondary)]">
           Start a new upload to run an analysis.
         </p>
         <Link

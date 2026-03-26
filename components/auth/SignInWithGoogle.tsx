@@ -18,7 +18,7 @@ export function SignInWithGoogle() {
     <button
       type="button"
       onClick={() => void signIn()}
-      className="inline-flex h-11 items-center justify-center rounded-lg border border-white/15 bg-white/5 px-6 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/[0.08]"
+      className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--accent)] px-6 text-sm font-semibold text-[var(--accent-foreground)] transition hover:bg-[var(--accent-hover)]"
     >
       Continue with Google
     </button>

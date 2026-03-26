@@ -35,35 +35,35 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
     : null;
 
   return (
-    <main className="min-h-full pb-24 pt-12 md:pt-16">
+    <main className="min-h-full bg-[var(--bg-page)] pb-24 pt-12 md:pt-16">
       <PageSection>
         <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
           Squat · Side view
         </p>
-        <h1 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-tight text-white md:text-4xl">
+        <h1 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-tight text-[var(--text-primary)] md:text-4xl">
           Upload your video
         </h1>
-        <p className="mt-4 max-w-2xl text-zinc-400">
+        <p className="mt-4 max-w-2xl text-[var(--text-secondary)]">
           Bodyweight squat, side view only. A clear clip lets us assess depth,
           trunk control, and lower-body alignment the same way every time.
         </p>
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
           <FilmingGuidelines />
-          <div>
-            <h2 className="font-sans text-lg font-semibold text-white">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-[var(--shadow-card)]">
+            <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
               Your clip
             </h2>
-            <p className="mt-2 text-sm text-zinc-500">
+            <p className="mt-2 text-sm text-[var(--text-secondary)]">
               Upload your clip. You&apos;ll get scores, observations, and
               coaching cues built from what we can see in your video—not generic
               filler.
             </p>
             {previousResult ? (
-              <div className="mt-6 rounded-lg border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-3 text-sm text-zinc-200">
-                <span className="font-medium text-white">
+              <div className="mt-6 rounded-xl border border-[var(--accent)]/25 bg-[var(--bg-card-secondary)] px-4 py-3 text-sm text-[var(--text-primary)]">
+                <span className="font-medium text-[var(--text-primary)]">
                   Previous score: {previousResult.overallScore}/100
                 </span>
-                <span className="text-zinc-400"> — can you beat it?</span>
+                <span className="text-[var(--text-secondary)]"> — can you beat it?</span>
               </div>
             ) : null}
             <div className="mt-6">
