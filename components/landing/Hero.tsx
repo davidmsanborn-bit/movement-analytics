@@ -1,26 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export function Hero() {
-  const [score, setScore] = useState(0);
-
-  useEffect(() => {
-    const target = 84;
-    const timer = setInterval(() => {
-      setScore((prev) => {
-        if (prev >= target) {
-          clearInterval(timer);
-          return target;
-        }
-        return prev + 3;
-      });
-    }, 35);
-
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <section className="bg-[#f5f5f7] pb-20 pt-20 md:pb-24 md:pt-24">
       <div className="mx-auto grid min-h-[600px] max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:items-center">
@@ -70,130 +52,91 @@ export function Hero() {
             }}
           />
           <div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(10,132,255,0.22) 0%, rgba(10,132,255,0.06) 45%, transparent 70%)",
+                "radial-gradient(circle, rgba(10,132,255,0.18) 0%, rgba(174,198,255,0.12) 45%, transparent 72%)",
             }}
           />
 
-          <svg
-            viewBox="0 0 400 500"
-            className="hero-figure relative z-10 h-auto w-full"
-            role="img"
-            aria-label="Motion capture heat map squat visualization"
-          >
-            <defs>
-              <linearGradient id="scanBand" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#0A84FF" stopOpacity="0" />
-                <stop offset="50%" stopColor="#0A84FF" stopOpacity="0.18" />
-                <stop offset="100%" stopColor="#0A84FF" stopOpacity="0" />
-              </linearGradient>
-            </defs>
+          <div className="relative z-10 flex justify-center py-2">
+            <div className="absolute -top-2 right-10 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#1d1d1f] shadow-[0_8px_20px_rgba(0,0,0,0.12)]">
+              <span className="mr-1.5 inline-block text-[#0A84FF]">◷</span>
+              Results in ~15 seconds
+            </div>
 
-            <g className="hero-breath">
-              <circle cx="200" cy="78" r="26" fill="rgba(10,132,255,0.18)" stroke="#0A84FF" strokeWidth="2" />
-              <rect x="152" y="108" rx="34" ry="34" width="96" height="136" fill="rgba(255,149,0,0.2)" stroke="#FF9500" strokeWidth="2.5" />
-              <rect x="92" y="148" rx="14" ry="14" width="78" height="24" transform="rotate(-16 92 148)" fill="rgba(10,132,255,0.16)" stroke="#0A84FF" strokeWidth="2" />
-              <rect x="228" y="132" rx="14" ry="14" width="78" height="24" transform="rotate(16 228 132)" fill="rgba(10,132,255,0.16)" stroke="#0A84FF" strokeWidth="2" />
+            <div className="rotate-[4deg] rounded-[42px] bg-[#1d1d1f] p-2.5 shadow-[0_26px_40px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
+              <div className="relative h-[560px] w-[280px] overflow-hidden rounded-[34px] bg-white">
+                <div className="absolute left-1/2 top-2 h-6 w-28 -translate-x-1/2 rounded-full bg-[#0e0e10]" />
+                <div className="px-5 pb-6 pt-10">
+                  <div className="mb-5 flex items-center justify-between text-[10px] text-[#86868b]">
+                    <div className="flex gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#86868b]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#86868b]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#86868b]" />
+                    </div>
+                    <span>9:41</span>
+                  </div>
 
-              <rect x="134" y="236" rx="30" ry="30" width="72" height="136" transform="rotate(18 134 236)" fill="rgba(52,199,89,0.2)" stroke="#34C759" strokeWidth="2.5" />
-              <rect x="194" y="240" rx="30" ry="30" width="72" height="136" transform="rotate(-18 194 240)" fill="rgba(255,149,0,0.2)" stroke="#FF9500" strokeWidth="2.5" />
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0A84FF]">
+                    Assessment
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-[#1d1d1f]">
+                    Bodyweight squat
+                  </h3>
+                  <p className="mt-1 text-sm text-[#86868b]">
+                    Side view · Bodyweight
+                  </p>
 
-              <rect x="154" y="356" rx="20" ry="20" width="44" height="96" transform="rotate(10 154 356)" fill="rgba(52,199,89,0.2)" stroke="#34C759" strokeWidth="2" />
-              <rect x="202" y="356" rx="20" ry="20" width="44" height="96" transform="rotate(-10 202 356)" fill="rgba(255,149,0,0.2)" stroke="#FF9500" strokeWidth="2" />
+                  <div className="mt-5 flex items-end justify-between">
+                    <div className="flex items-end gap-2">
+                      <span className="text-6xl font-bold leading-none text-[#0A84FF]">
+                        82
+                      </span>
+                      <span className="pb-1 text-base text-[#aeaeb2]">/100</span>
+                    </div>
+                    <span className="rounded-full bg-[rgba(52,199,89,0.16)] px-3 py-1 text-xs font-semibold text-[#34C759]">
+                      HIGH
+                    </span>
+                  </div>
 
-              <ellipse cx="200" cy="250" rx="36" ry="22" fill="rgba(52,199,89,0.2)" stroke="#34C759" strokeWidth="2.5" />
-              <circle cx="257" cy="300" r="15" fill="rgba(255,59,48,0.2)" stroke="#FF3B30" strokeWidth="2.5" />
-            </g>
+                  <div className="mt-6 space-y-3">
+                    {[
+                      { label: "Depth", score: 85, color: "#34C759" },
+                      { label: "Trunk control", score: 74, color: "#FF9500" },
+                      { label: "Alignment", score: 88, color: "#34C759" },
+                    ].map((row) => (
+                      <div key={row.label}>
+                        <div className="mb-1.5 flex items-center justify-between text-sm">
+                          <span className="text-[#1d1d1f]">{row.label}</span>
+                          <span className="font-medium" style={{ color: row.color }}>
+                            {row.score}
+                          </span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-[#f2f2f7]">
+                          <div
+                            className="h-full rounded-full"
+                            style={{ width: `${row.score}%`, backgroundColor: row.color }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-            <rect x="112" y="0" width="176" height="58" fill="url(#scanBand)" className="hero-scan" />
-
-            <g className="hero-tag hero-tag-1">
-              <line x1="106" y1="300" x2="165" y2="258" stroke="#34C759" strokeWidth="1.5" />
-              <rect x="18" y="278" width="92" height="34" rx="17" fill="#fff" />
-              <text x="33" y="300" className="fill-[#1d1d1f] text-[12px] font-medium">Depth</text>
-              <text x="82" y="300" className="fill-[#34C759] text-[12px] font-bold">85</text>
-            </g>
-            <g className="hero-tag hero-tag-2">
-              <line x1="326" y1="182" x2="244" y2="168" stroke="#FF9500" strokeWidth="1.5" />
-              <rect x="328" y="164" width="86" height="34" rx="17" fill="#fff" />
-              <text x="342" y="186" className="fill-[#1d1d1f] text-[12px] font-medium">Trunk</text>
-              <text x="386" y="186" className="fill-[#FF9500] text-[12px] font-bold">74</text>
-            </g>
-            <g className="hero-tag hero-tag-3">
-              <line x1="330" y1="314" x2="271" y2="298" stroke="#34C759" strokeWidth="1.5" />
-              <rect x="328" y="298" width="86" height="34" rx="17" fill="#fff" />
-              <text x="343" y="320" className="fill-[#1d1d1f] text-[12px] font-medium">Knees</text>
-              <text x="388" y="320" className="fill-[#34C759] text-[12px] font-bold">88</text>
-            </g>
-
-            <g className="hero-score-card">
-              <rect x="300" y="24" width="84" height="78" rx="16" fill="#fff" />
-              <text x="342" y="66" textAnchor="middle" className="fill-[#0A84FF] text-[36px] font-bold">
-                {score}
-              </text>
-              <text x="342" y="86" textAnchor="middle" className="fill-[#86868b] text-[12px] font-medium">
-                /100
-              </text>
-            </g>
-          </svg>
+                  <div className="mt-6 rounded-2xl border border-[#e5e5ea] bg-[#fafafa] p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#86868b]">
+                      Coaching cue
+                    </p>
+                    <p className="mt-1 text-sm text-[#1d1d1f]">
+                      Drive knees out over pinky toes...
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .hero-figure .hero-breath {
-          transform-origin: 200px 250px;
-          animation: breathe 3s ease-in-out infinite;
-        }
-        .hero-figure .hero-tag {
-          filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
-          opacity: 0;
-          animation: tagIn 600ms ease forwards;
-        }
-        .hero-figure .hero-tag-1 {
-          animation-delay: 180ms;
-        }
-        .hero-figure .hero-tag-2 {
-          animation-delay: 380ms;
-        }
-        .hero-figure .hero-tag-3 {
-          animation-delay: 580ms;
-        }
-        .hero-figure .hero-score-card {
-          filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.12));
-        }
-        .hero-figure .hero-scan {
-          animation: scanDown 4s linear infinite;
-        }
-        @keyframes breathe {
-          0%,
-          100% {
-            transform: scale(0.98);
-          }
-          50% {
-            transform: scale(1);
-          }
-        }
-        @keyframes tagIn {
-          0% {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes scanDown {
-          0% {
-            transform: translateY(-60px);
-          }
-          100% {
-            transform: translateY(500px);
-          }
-        }
-      `}</style>
     </section>
   );
 }
