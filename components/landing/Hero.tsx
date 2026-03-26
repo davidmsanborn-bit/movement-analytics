@@ -19,7 +19,7 @@ export function Hero() {
               aria-hidden
             />
           </p>
-          <p className="mt-8 max-w-md text-base leading-relaxed text-[rgba(255,255,255,0.4)]">
+          <p className="mt-8 max-w-md text-base leading-relaxed text-[rgba(255,255,255,0.6)]">
             Upload a short side-view bodyweight squat video and get a movement
             quality assessment with scores, key observations, and three coaching
             cues—grounded in what we can see from phone video, not generic

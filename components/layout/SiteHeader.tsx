@@ -34,7 +34,7 @@ export function SiteHeader({ user }: Props) {
     : "font-sans text-sm font-semibold tracking-tight text-[var(--text-primary)]";
 
   const navClass = isHome
-    ? "flex flex-wrap items-center justify-end gap-4 text-sm text-white/80 sm:gap-6"
+    ? "flex flex-wrap items-center justify-end gap-4 text-sm text-white sm:gap-6"
     : "flex flex-wrap items-center justify-end gap-4 text-sm text-[var(--text-secondary)] sm:gap-6";
 
   return (
@@ -48,7 +48,7 @@ export function SiteHeader({ user }: Props) {
             <>
               <Link
                 href="/dashboard"
-                className={isHome ? "transition hover:text-white" : "transition hover:text-black"}
+                className={isHome ? "text-white transition hover:text-white" : "transition hover:text-black"}
               >
                 Dashboard
               </Link>
@@ -62,7 +62,7 @@ export function SiteHeader({ user }: Props) {
                 <span
                   className={
                     isHome
-                      ? "hidden max-w-[160px] truncate text-xs text-white/65 sm:inline"
+                      ? "hidden max-w-[160px] truncate text-xs text-white sm:inline"
                       : "hidden max-w-[160px] truncate text-xs text-[var(--text-tertiary)] sm:inline"
                   }
                 >
@@ -74,7 +74,7 @@ export function SiteHeader({ user }: Props) {
                   type="submit"
                   className={
                     isHome
-                      ? "text-white/80 transition hover:text-white"
+                      ? "text-white transition hover:text-white"
                       : "text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
                   }
                 >
@@ -85,14 +85,14 @@ export function SiteHeader({ user }: Props) {
           ) : (
             <Link
               href="/login"
-              className={isHome ? "transition hover:text-white" : "transition hover:text-black"}
+              className={isHome ? "text-white transition hover:text-white" : "transition hover:text-black"}
             >
               Sign in
             </Link>
           )}
           <Link
             href="/analyze/squat"
-            className="text-[var(--accent)] transition hover:text-[var(--accent-hover)]"
+            className={isHome ? "text-[#00ff88] transition hover:brightness-110" : "text-[var(--accent)] transition hover:text-[var(--accent-hover)]"}
           >
             Analyze squat
           </Link>

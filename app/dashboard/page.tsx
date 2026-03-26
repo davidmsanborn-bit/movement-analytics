@@ -1,14 +1,40 @@
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
 import { getUserAnalyses } from "@/lib/analysis/analysisStore";
 import { createClient } from "@/lib/supabase/server";
+import type { User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
-function formatFirstName(emailOrId: string) {
-  const base = emailOrId.includes("@")
-    ? emailOrId.split("@")[0] ?? emailOrId
-    : emailOrId;
-  if (!base) return "Athlete";
-  return base.charAt(0).toUpperCase() + base.slice(1);
+function toNameCase(value: string) {
+  if (!value) return value;
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
+
+function deriveFirstName(user: User) {
+  const fullName =
+    typeof user.user_metadata?.full_name === "string"
+      ? user.user_metadata.full_name.trim()
+      : typeof user.user_metadata?.name === "string"
+        ? user.user_metadata.name.trim()
+        : "";
+
+  if (fullName.length > 0) {
+    const first = fullName.split(/\s+/)[0] ?? "";
+    if (first) return toNameCase(first);
+  }
+
+  const email = user.email ?? "";
+  const local = email.includes("@") ? (email.split("@")[0] ?? "") : "";
+  if (!local) return "Athlete";
+
+  const firstPart = local.split(/[._-]/)[0] ?? "";
+  if (firstPart.length > 0) {
+    if (firstPart.length > 10 && !/[._-]/.test(local)) {
+      return "Athlete";
+    }
+    return toNameCase(firstPart.slice(0, 10));
+  }
+
+  return "Athlete";
 }
 
 export default async function DashboardPage() {
@@ -21,8 +47,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const email = user.email ?? user.id;
-  const firstName = formatFirstName(email);
+  const firstName = deriveFirstName(user);
   const analyses = await getUserAnalyses(user.id);
   return <DashboardClient firstName={firstName} analyses={analyses} />;
 }
