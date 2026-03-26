@@ -39,6 +39,15 @@ export function SubScoreGrid({ subScores }: Props) {
             <p className="mt-3 text-xs leading-relaxed text-[var(--text-secondary)]">
               {s.summary}
             </p>
+            <div className="mt-4 h-1.5 w-full rounded-full bg-[var(--bg-card-secondary)]">
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${Math.max(0, Math.min(100, s.score))}%`,
+                  background: scoreColor(s.score),
+                }}
+              />
+            </div>
           </li>
         ))}
       </ul>

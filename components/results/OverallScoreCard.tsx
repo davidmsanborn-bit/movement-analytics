@@ -25,22 +25,66 @@ export function OverallScoreCard({
       : overallScore >= 60
         ? "var(--score-mid)"
         : "var(--score-low)";
+  const normalized = Math.max(0, Math.min(100, overallScore));
+  const size = 220;
+  const stroke = 16;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const progress = (normalized / 100) * circumference;
 
   return (
     <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-8 shadow-[var(--shadow-card)] md:p-10">
-      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-secondary)]">
             Movement quality
           </p>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span
-              className="font-sans text-7xl font-semibold tabular-nums tracking-tight md:text-8xl"
-              style={{ color: scoreColor }}
+          <div className="mt-5">
+            <svg
+              width={size}
+              height={size}
+              viewBox={`0 0 ${size} ${size}`}
+              role="img"
+              aria-label={`Overall score ${overallScore} out of 100`}
             >
-              {overallScore}
-            </span>
-            <span className="text-lg text-[var(--text-secondary)]">/ 100</span>
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke="var(--border)"
+                strokeWidth={stroke}
+              />
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={scoreColor}
+                strokeWidth={stroke}
+                strokeLinecap="round"
+                strokeDasharray={`${progress} ${circumference - progress}`}
+                transform={`rotate(-90 ${size / 2} ${size / 2})`}
+              />
+              <text
+                x="50%"
+                y="46%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="fill-[var(--text-primary)] font-sans text-[56px] font-semibold tracking-tight"
+              >
+                {overallScore}
+              </text>
+              <text
+                x="50%"
+                y="61%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="fill-[var(--text-secondary)] font-mono text-[14px]"
+              >
+                / 100
+              </text>
+            </svg>
           </div>
         </div>
         <div className="max-w-md rounded-xl border border-[var(--border)] bg-[var(--bg-card-secondary)] px-4 py-3">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,18 +20,23 @@ export const metadata: Metadata = {
     "Upload a side-view bodyweight squat video and get movement quality feedback—scores, observations, and coaching cues.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--bg-page)] text-[var(--text-primary)]">
-        <SiteHeader />
+        <SiteHeader user={user ? { id: user.id, email: user.email ?? null } : null} />
         <div className="flex-1">{children}</div>
       </body>
     </html>

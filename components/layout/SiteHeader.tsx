@@ -1,41 +1,54 @@
-import { signOut } from "@/app/actions/auth";
-import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
-import type { User } from "@supabase/supabase-js";
+"use client";
 
-function userInitial(user: User): string {
+import { signOut } from "@/app/actions/auth";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+type HeaderUser = {
+  id: string;
+  email: string | null;
+};
+
+function userInitial(user: HeaderUser): string {
   const email = user.email;
   if (email && email.length > 0) {
     return email[0]!.toUpperCase();
   }
-  const name = user.user_metadata?.full_name;
-  if (typeof name === "string" && name.trim().length > 0) {
-    return name.trim()[0]!.toUpperCase();
-  }
   return "?";
 }
 
-export async function SiteHeader() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+type Props = {
+  user: HeaderUser | null;
+};
+
+export function SiteHeader({ user }: Props) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const headerClass = isHome
+    ? "border-b border-transparent bg-transparent"
+    : "border-b border-[var(--border)] bg-[#ffffff]";
+
+  const titleClass = isHome
+    ? "font-sans text-sm font-semibold tracking-tight text-white"
+    : "font-sans text-sm font-semibold tracking-tight text-[var(--text-primary)]";
+
+  const navClass = isHome
+    ? "flex flex-wrap items-center justify-end gap-4 text-sm text-white/80 sm:gap-6"
+    : "flex flex-wrap items-center justify-end gap-4 text-sm text-[var(--text-secondary)] sm:gap-6";
 
   return (
-    <header className="border-b border-[var(--border)] bg-[#ffffff]">
+    <header className={headerClass}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link
-          href="/"
-          className="font-sans text-sm font-semibold tracking-tight text-[var(--text-primary)]"
-        >
+        <Link href="/" className={titleClass}>
           Movement Analytics
         </Link>
-        <nav className="flex flex-wrap items-center justify-end gap-4 text-sm text-[var(--text-secondary)] sm:gap-6">
+        <nav className={navClass}>
           {user ? (
             <>
               <Link
                 href="/dashboard"
-                className="transition hover:text-black"
+                className={isHome ? "transition hover:text-white" : "transition hover:text-black"}
               >
                 Dashboard
               </Link>
@@ -46,21 +59,34 @@ export async function SiteHeader() {
                 >
                   {userInitial(user)}
                 </span>
-                <span className="hidden max-w-[160px] truncate text-xs text-[var(--text-tertiary)] sm:inline">
+                <span
+                  className={
+                    isHome
+                      ? "hidden max-w-[160px] truncate text-xs text-white/65 sm:inline"
+                      : "hidden max-w-[160px] truncate text-xs text-[var(--text-tertiary)] sm:inline"
+                  }
+                >
                   {user.email ?? user.id}
                 </span>
               </div>
               <form action={signOut} className="inline">
                 <button
                   type="submit"
-                  className="text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
+                  className={
+                    isHome
+                      ? "text-white/80 transition hover:text-white"
+                      : "text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
+                  }
                 >
                   Sign out
                 </button>
               </form>
             </>
           ) : (
-            <Link href="/login" className="transition hover:text-black">
+            <Link
+              href="/login"
+              className={isHome ? "transition hover:text-white" : "transition hover:text-black"}
+            >
               Sign in
             </Link>
           )}

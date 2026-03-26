@@ -7,13 +7,13 @@
   --text-primary: #1d1d1f;
   --text-secondary: #86868b;
   --text-tertiary: #aeaeb2;
-  --accent: #00c46a;
-  --accent-hover: #00a857;
+  --accent: #0a84ff;
+  --accent-hover: #0066cc;
   --accent-foreground: #ffffff;
   --border: #e5e5ea;
-  --score-high: #00c46a;
-  --score-mid: #f59e0b;
-  --score-low: #ef4444;
+  --score-high: #34c759;
+  --score-mid: #ff9500;
+  --score-low: #ff3b30;
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
 
   /* Back-compat vars used across the existing codebase */

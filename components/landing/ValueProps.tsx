@@ -31,7 +31,7 @@ export function ValueProps() {
             key={item.title}
             className="rounded-xl border border-white/10 bg-white/[0.03] p-6"
           >
-            <h3 className="font-mono text-xs font-medium uppercase tracking-wider text-[var(--accent)]">
+            <h3 className="font-mono text-xs font-medium uppercase tracking-wider text-[#00ff88]">
               {item.title}
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-zinc-400">

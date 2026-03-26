@@ -58,7 +58,7 @@ export function SquatUploadForm({ previousId }: SquatUploadFormProps) {
         <div className="mt-3">
           <label
             htmlFor={inputId}
-            className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-[var(--bg-card-secondary)] px-6 py-10 transition hover:border-[var(--accent-hover)]/70"
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-[var(--bg-card-secondary)] px-6 py-10 transition hover:border-[var(--accent-hover)]/70 hover:bg-[rgba(10,132,255,0.06)]"
           >
             <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-secondary)] transition group-hover:text-[var(--text-primary)]">
               Drop a file or browse
