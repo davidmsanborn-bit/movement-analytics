@@ -250,6 +250,9 @@ export function DashboardClient({
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
   const [expandedSessions, setExpandedSessions] = useState<Record<string, boolean>>({});
+  const [expandedOverviewSessions, setExpandedOverviewSessions] = useState<Set<string>>(
+    () => new Set(),
+  );
 
   const totalSessions = squatAnalyses.length + shootingAnalyses.length;
   const bestSquatScore =
@@ -313,6 +316,15 @@ export function DashboardClient({
 
   function toggleSession(id: string) {
     setExpandedSessions((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  function toggleOverviewSession(id: string) {
+    setExpandedOverviewSessions((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
   return (
@@ -416,32 +428,117 @@ export function DashboardClient({
                 </p>
               ) : (
                 <ul className="mt-4 divide-y divide-[var(--border)]">
-                  {sessionsOverview.map(({ kind, s }) => (
+                  {sessionsOverview.map(({ kind, s }) => {
+                    const expanded = expandedOverviewSessions.has(s.id);
+                    const clips =
+                      kind === "squat"
+                        ? (squatClipsBySession.get(s.id) ?? [])
+                        : (shootingClipsBySession.get(s.id) ?? []);
+                    return (
                     <li
                       key={`${kind}-${s.id}`}
-                      className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0"
+                      className="py-3 first:pt-0 last:pb-0"
                     >
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          kind === "squat"
-                            ? "bg-[var(--accent)]/12 text-[var(--accent)]"
-                            : "bg-[var(--score-high)]/12 text-[var(--score-high)]"
+                      <button
+                        type="button"
+                        onClick={() => toggleOverviewSession(s.id)}
+                        className="group flex w-full items-center justify-between gap-4 rounded-xl px-3 py-2 text-left transition hover:bg-[#f5f5f7] dark:hover:bg-white/5"
+                        style={{ cursor: "pointer" }}
+                        aria-expanded={expanded}
+                      >
+                        <div className="flex min-w-0 items-start gap-3">
+                          <span
+                            className={`mt-0.5 inline-flex h-6 items-center rounded-full px-2.5 text-xs font-semibold ${
+                              kind === "squat"
+                                ? "bg-[var(--accent)]/12 text-[var(--accent)]"
+                                : "bg-[var(--score-high)]/12 text-[var(--score-high)]"
+                            }`}
+                          >
+                            {kind === "squat" ? "Squat" : "Shooting"}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="truncate font-medium text-[var(--text-primary)]">
+                              {s.name ??
+                                (kind === "squat" ? "Squat session" : "Shooting session")}
+                              <span className="ml-2 text-xs font-medium text-[var(--text-tertiary)]">
+                                {formatSessionDate(s.started_at)}
+                              </span>
+                            </p>
+                            <p className="mt-0.5 text-xs text-[var(--text-secondary)]">
+                              {s.clip_count} sets · Avg{" "}
+                              {s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best{" "}
+                              {s.best_score != null ? Math.round(s.best_score) : "—"}
+                            </p>
+                          </div>
+                        </div>
+                        <span
+                          className={`shrink-0 font-mono text-xs text-[var(--text-tertiary)] transition-transform duration-200 ${
+                            expanded ? "rotate-90" : ""
+                          }`}
+                          aria-hidden
+                        >
+                          {expanded ? "▼" : "▶"}
+                        </span>
+                      </button>
+
+                      <div
+                        className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+                          expanded ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
                         }`}
                       >
-                        {kind === "squat" ? "Squat" : "Shooting"}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-medium text-[var(--text-primary)]">
-                          {s.name ?? (kind === "squat" ? "Squat session" : "Shooting session")}
-                        </p>
-                        <p className="mt-0.5 text-xs text-[var(--text-secondary)]">
-                          {formatAnalyzedAt(s.started_at)} · {s.clip_count} sets · Avg{" "}
-                          {s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best{" "}
-                          {s.best_score != null ? Math.round(s.best_score) : "—"}
-                        </p>
+                        <div className="mt-3">
+                          {clips.length === 0 ? (
+                            <p className="px-3 text-sm text-[var(--text-secondary)]">
+                              No sets linked to this session yet.
+                            </p>
+                          ) : (
+                            <ul className="grid gap-3 px-3 sm:grid-cols-2 lg:grid-cols-3">
+                              {clips.map((a) => (
+                                <li key={a.id}>
+                                  <Link
+                                    href={
+                                      kind === "squat"
+                                        ? `/results/${a.id}`
+                                        : `/results/shooting/${a.id}`
+                                    }
+                                    className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
+                                  >
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="min-w-0">
+                                        <p className="truncate text-sm font-medium text-[var(--text-primary)]">
+                                          {kind === "squat"
+                                            ? (a as UserSquatAnalysisListItem).movementLabel
+                                            : (a as UserShootingAnalysisListItem).shotType.replace(
+                                                /-/g,
+                                                " ",
+                                              )}
+                                        </p>
+                                        <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                                          {formatAnalyzedAt(a.analyzedAt)}
+                                        </p>
+                                        {kind === "squat" ? (
+                                          <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+                                            {(a as UserSquatAnalysisListItem).weight
+                                              ? `Weight: ${(a as UserSquatAnalysisListItem).weight}`
+                                              : "Weight: —"}
+                                          </p>
+                                        ) : null}
+                                      </div>
+                                      <ScoreRing
+                                        score={a.overallScore}
+                                        variant={kind === "squat" ? "squat" : "shooting"}
+                                      />
+                                    </div>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
                       </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               )}
             </div>
