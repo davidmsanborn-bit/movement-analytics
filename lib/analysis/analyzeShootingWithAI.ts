@@ -11,7 +11,9 @@ const ANALYSIS_TIMEOUT_MS = 30_000;
 
 const SYSTEM_PROMPT = `You are an elite NBA player development coach analyzing BASKETBALL SHOOTING FORM from video frames.
 
-You receive three still frames from one video (captured at about 1s, 2s, and 3s). Infer shot context from what is visible, then assess shooting mechanics and movement quality.
+You are receiving 8 frames sampled evenly across the full video duration (not fixed timestamps). Infer shot context from what is visible, then assess shooting mechanics and movement quality.
+
+Identify which frames show the actual shot: ball leaving the hand, release point, and follow-through. Focus your analysis on the frames that show the shooting motion; ignore frames where the player is standing still, walking, or not performing a shot. If no frame clearly shows an actual shot release, say so explicitly in confidenceNote and score accordingly (lower confidence, conservative scores).
 
 ## Detection (from the frames only)
 - **shotType**: One of: "jumpshot" | "catch-and-shoot" | "off-dribble" | "layup" | "finger-roll" | "floater" | "dunk" | "free-throw" | "three-pointer" | "mid-range" | "unknown"
@@ -76,6 +78,7 @@ type FrameImage = { base64: string; mediaType: "image/jpeg" };
 async function extractFrames(
   videoStoragePath: string,
   analysisId: string,
+  options?: { movementType?: string },
 ): Promise<FrameImage[]> {
   const baseUrl = process.env.FRAMES_SERVICE_URL?.replace(/\/+$/, "");
   const secret = process.env.FRAMES_SERVICE_SECRET;
@@ -99,6 +102,7 @@ async function extractFrames(
       body: JSON.stringify({
         analysisId,
         storagePath: videoStoragePath,
+        movementType: options?.movementType ?? "shooting",
       }),
     });
   } catch {
@@ -290,12 +294,15 @@ export async function analyzeShootingVideo(
   storagePath: string,
   analysisId: string,
   weight: string | null,
+  options?: { movementType?: string },
 ): Promise<ShootingAnalysisResult> {
   void weight;
-  const frames = await extractFrames(storagePath, analysisId);
+  const frames = await extractFrames(storagePath, analysisId, {
+    movementType: options?.movementType ?? "shooting",
+  });
 
   const userText =
-    "These images are frames from the same basketball shooting clip at roughly 1s, 2s, and 3s. Infer shot type, release hand, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.";
+    "These 8 frames are sampled evenly across the clip. Identify the frames showing the actual shot and focus your analysis on those. Infer shot type, release hand, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.";
 
   const controller = new AbortController();
   let timeoutId: ReturnType<typeof setTimeout> | undefined;

@@ -101,6 +101,7 @@ export async function POST(request: Request) {
       storagePath,
       analysisId,
       weight,
+      { movementType: "shooting" },
     );
     let finalResult: ShootingAnalysisResult = result;
 
