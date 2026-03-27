@@ -2,7 +2,6 @@
 
 import {
   getCueIllustration,
-  type CueIllustration,
 } from "@/lib/coachingCueIllustrations";
 
 type Props = {
@@ -11,81 +10,67 @@ type Props = {
   sport: "squat" | "shooting";
 };
 
-function MiniFigure({
-  shape,
-  stroke,
-  label,
-}: {
-  shape: string;
-  stroke: string;
-  label: string;
-}) {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <svg viewBox="0 0 60 80" className="h-20 w-14" aria-hidden>
-        <circle
-          cx="30"
-          cy="10"
-          r="6"
-          fill="none"
-          stroke={stroke}
-          strokeWidth="2"
-        />
-        <path
-          d={shape}
-          fill="none"
-          stroke={stroke}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <span
-        className="text-center text-[11px] font-medium"
-        style={{ color: stroke }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
-
-function IllustrationPanel({ cue }: { cue: CueIllustration }) {
-  return (
-    <div className="w-full rounded-xl bg-[#f5f5f7] p-3">
-      <div className="flex items-center justify-center gap-2">
-        <MiniFigure shape={cue.svgFault} stroke="#ef4444" label={cue.faultLabel} />
-        <span className="text-lg font-semibold text-[var(--text-secondary)]">→</span>
-        <MiniFigure shape={cue.svgFix} stroke="#34C759" label={cue.fixLabel} />
-      </div>
-      <div className="mt-2 flex justify-center">
-        <span className="rounded-full bg-white px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-secondary)]">
-          {cue.bodyZone}
-        </span>
-      </div>
-    </div>
-  );
-}
+const ZONE_THEME: Record<
+  string,
+  { tint: string; border: string; emoji: string; label: string }
+> = {
+  trunk: { tint: "rgba(10,132,255,0.08)", border: "#0A84FF", emoji: "🏋️", label: "TRUNK" },
+  knees: { tint: "rgba(245,158,11,0.08)", border: "#F59E0B", emoji: "🦵", label: "KNEES" },
+  feet: { tint: "rgba(52,199,89,0.08)", border: "#34C759", emoji: "👟", label: "FEET" },
+  hips: { tint: "rgba(147,51,234,0.08)", border: "#9333EA", emoji: "⚡", label: "HIPS" },
+  elbow: { tint: "rgba(239,68,68,0.08)", border: "#EF4444", emoji: "💪", label: "ELBOW" },
+  release: { tint: "rgba(10,132,255,0.08)", border: "#0A84FF", emoji: "🎯", label: "RELEASE" },
+  balance: { tint: "rgba(52,199,89,0.08)", border: "#34C759", emoji: "⚖️", label: "BALANCE" },
+  arms: { tint: "rgba(245,158,11,0.08)", border: "#F59E0B", emoji: "💪", label: "ARMS" },
+  general: { tint: "rgba(107,114,128,0.10)", border: "#6B7280", emoji: "🎯", label: "FORM" },
+};
 
 export function CoachingCueCard({ cue, index, sport }: Props) {
   const illustration = getCueIllustration(cue, sport);
+  const zoneKey = illustration?.bodyZone ?? "general";
+  const zone = ZONE_THEME[zoneKey] ?? ZONE_THEME.general;
+  const emoji = illustration?.emoji ?? zone.emoji;
 
   return (
-    <li className="rounded-2xl border border-[var(--border)] border-l-[3px] border-l-[var(--accent)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+    <li
+      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
+      style={{ borderLeft: `3px solid ${zone.border}` }}
+    >
       <div className="flex flex-col gap-4 md:flex-row md:items-stretch">
-        {illustration ? (
-          <div className="md:w-2/5">
-            <IllustrationPanel cue={illustration} />
+        <div className="md:w-[35%]">
+          <div
+            className="flex h-full min-h-[138px] flex-col items-center justify-center rounded-xl px-3 py-4 text-center"
+            style={{ backgroundColor: zone.tint }}
+          >
+            <span className="text-4xl leading-none">{emoji}</span>
+            <span className="mt-3 font-mono text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-primary)]">
+              {illustration ? zone.label : "FORM"}
+            </span>
           </div>
-        ) : null}
-        <div className={illustration ? "md:w-3/5" : "w-full"}>
+        </div>
+        <div className="md:w-[65%]">
           <div className="flex items-start gap-3">
             <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] font-mono text-sm font-semibold text-[var(--accent-foreground)]">
               {index}
             </span>
-            <p className="pt-0.5 text-sm leading-relaxed text-[var(--text-primary)]">
-              {cue}
-            </p>
+            <div className="min-w-0 flex-1">
+              {illustration ? (
+                <>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="inline-flex items-center rounded-full bg-red-500/12 px-2.5 py-1 text-xs font-semibold text-red-600">
+                      {illustration.faultLabel}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-green-500/12 px-2.5 py-1 text-xs font-semibold text-green-700">
+                      {illustration.fixLabel}
+                    </span>
+                  </div>
+                  <div className="my-3 h-px w-full bg-[var(--border)]" />
+                </>
+              ) : null}
+              <p className="text-sm leading-relaxed text-[var(--text-primary)]">
+                {cue}
+              </p>
+            </div>
           </div>
         </div>
       </div>
