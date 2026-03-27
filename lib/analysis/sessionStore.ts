@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export type Session = {
   id: string;
-  movement_type: "squat" | "shooting";
+  movement_type: "squat" | "shooting" | "deadlift";
   name: string | null;
   started_at: string;
   clip_count: number;
@@ -23,7 +23,7 @@ function getServiceClient() {
 
 export async function findOrCreateSession(
   userId: string,
-  movementType: "squat" | "shooting",
+  movementType: "squat" | "shooting" | "deadlift",
 ): Promise<string> {
   const supabase = getServiceClient();
   const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
@@ -73,9 +73,17 @@ export async function updateSessionStats(sessionId: string): Promise<void> {
     throw new Error(`Failed to fetch session: ${sessionError.message}`);
   }
 
-  const movementType = sessionRow.movement_type as "squat" | "shooting";
+  const movementType = sessionRow.movement_type as
+    | "squat"
+    | "shooting"
+    | "deadlift";
 
-  const table = movementType === "shooting" ? "shooting_analyses" : "analyses";
+  const table =
+    movementType === "shooting"
+      ? "shooting_analyses"
+      : movementType === "deadlift"
+        ? "deadlift_analyses"
+        : "analyses";
   const { data: clips, error: clipsError } = await supabase
     .from(table)
     .select("result")
@@ -116,7 +124,7 @@ export async function updateSessionStats(sessionId: string): Promise<void> {
 
 export async function getUserSessions(
   userId: string,
-  movementType?: "squat" | "shooting",
+  movementType?: "squat" | "shooting" | "deadlift",
 ): Promise<Session[]> {
   const supabase = getServiceClient();
 
@@ -137,26 +145,33 @@ export async function getUserSessions(
   }
 
   const rows = (data ?? []) as Array<Record<string, unknown>>;
-  return rows.map((r) => ({
-    id: String(r.id),
-    movement_type: (r.movement_type === "shooting" ? "shooting" : "squat") as
-      | "squat"
-      | "shooting",
-    name: typeof r.name === "string" && r.name.trim() ? r.name.trim() : null,
-    started_at: String(r.started_at),
-    clip_count: Number(r.clip_count ?? 0) || 0,
-    avg_score:
-      r.avg_score === null || r.avg_score === undefined
-        ? null
-        : Number.isFinite(Number(r.avg_score))
-          ? Number(r.avg_score)
-          : null,
-    best_score:
-      r.best_score === null || r.best_score === undefined
-        ? null
-        : Number.isFinite(Number(r.best_score))
-          ? Number(r.best_score)
-          : null,
-  }));
+  return rows.map((r) => {
+    const mt = String(r.movement_type ?? "");
+    const movement_type: Session["movement_type"] =
+      mt === "shooting"
+        ? "shooting"
+        : mt === "deadlift"
+          ? "deadlift"
+          : "squat";
+    return {
+      id: String(r.id),
+      movement_type,
+      name: typeof r.name === "string" && r.name.trim() ? r.name.trim() : null,
+      started_at: String(r.started_at),
+      clip_count: Number(r.clip_count ?? 0) || 0,
+      avg_score:
+        r.avg_score === null || r.avg_score === undefined
+          ? null
+          : Number.isFinite(Number(r.avg_score))
+            ? Number(r.avg_score)
+            : null,
+      best_score:
+        r.best_score === null || r.best_score === undefined
+          ? null
+          : Number.isFinite(Number(r.best_score))
+            ? Number(r.best_score)
+            : null,
+    };
+  });
 }
 

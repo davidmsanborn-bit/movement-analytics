@@ -2,7 +2,7 @@ import { CoachingCueCard } from "./CoachingCueCard";
 
 type Props = {
   cues: [string, string, string];
-  sport: "squat" | "shooting";
+  sport: "squat" | "shooting" | "deadlift";
   mode?: "compact" | "full";
 };
 

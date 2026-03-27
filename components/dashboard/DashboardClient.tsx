@@ -1,6 +1,7 @@
 "use client";
 
 import type { UserSquatAnalysisListItem } from "@/lib/analysis/analysisStore";
+import type { UserDeadliftAnalysisListItem } from "@/lib/analysis/deadliftAnalysisStore";
 import type { UserShootingAnalysisListItem } from "@/lib/analysis/shootingAnalysisStore";
 import type { Session } from "@/lib/analysis/sessionStore";
 import Link from "next/link";
@@ -12,11 +13,13 @@ type Props = {
   firstName: string;
   squatAnalyses: UserSquatAnalysisListItem[];
   shootingAnalyses: UserShootingAnalysisListItem[];
+  deadliftAnalyses: UserDeadliftAnalysisListItem[];
   squatSessions: Session[];
   shootingSessions: Session[];
+  deadliftSessions: Session[];
 };
 
-const FILTERS = ["All", "Squat", "Jump", "Sprint"] as const;
+const FILTERS = ["All", "Squat", "Deadlift"] as const;
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -64,10 +67,11 @@ function scoreColorShooting(score: number) {
       : "var(--score-low)";
 }
 
-type RingVariant = "squat" | "shooting";
+type RingVariant = "squat" | "shooting" | "deadlift";
 
 function ScoreRing({ score, variant }: { score: number; variant: RingVariant }) {
-  const colorFn = variant === "shooting" ? scoreColorShooting : scoreColorSquat;
+  const colorFn =
+    variant === "shooting" ? scoreColorShooting : scoreColorSquat;
   const size = 56;
   const stroke = 5;
   const radius = (size - stroke) / 2;
@@ -135,9 +139,8 @@ function trendDelta(first: number | null, last: number | null) {
 function unitLabelForMovementType(movementType: unknown): "sets" | "attempts" | "clips" {
   const mt = typeof movementType === "string" ? movementType.trim().toLowerCase() : "";
   if (mt === "shooting") return "attempts";
-  if (mt === "squat") return "sets";
+  if (mt === "squat" || mt === "deadlift") return "sets";
   if (!mt) return "clips";
-  // safe fallback for future types we haven't categorized yet
   return mt.includes("shoot") || mt.includes("sport") ? "attempts" : "sets";
 }
 
@@ -253,8 +256,10 @@ export function DashboardClient({
   firstName,
   squatAnalyses,
   shootingAnalyses,
+  deadliftAnalyses,
   squatSessions,
   shootingSessions,
+  deadliftSessions,
 }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
@@ -263,7 +268,8 @@ export function DashboardClient({
     () => new Set(),
   );
 
-  const totalSessions = squatAnalyses.length + shootingAnalyses.length;
+  const totalSessions =
+    squatAnalyses.length + shootingAnalyses.length + deadliftAnalyses.length;
   const bestSquatScore =
     squatAnalyses.length > 0
       ? Math.max(...squatAnalyses.map((a) => a.overallScore))
@@ -271,6 +277,10 @@ export function DashboardClient({
   const bestShootingScore =
     shootingAnalyses.length > 0
       ? Math.max(...shootingAnalyses.map((a) => a.overallScore))
+      : null;
+  const bestDeadliftScore =
+    deadliftAnalyses.length > 0
+      ? Math.max(...deadliftAnalyses.map((a) => a.overallScore))
       : null;
 
   const squatChartSeries: ChartPoint[] = squatAnalyses.map((a) => ({
@@ -283,9 +293,15 @@ export function DashboardClient({
     overallScore: s.overallScore,
   }));
 
+  const deadliftChartSeries: ChartPoint[] = deadliftAnalyses.map((a) => ({
+    analyzedAt: a.analyzedAt,
+    overallScore: a.overallScore,
+  }));
+
   const sessionsOverview = useMemo(() => {
     const rows = [
       ...squatSessions.map((s) => ({ kind: "squat" as const, s })),
+      ...deadliftSessions.map((s) => ({ kind: "deadlift" as const, s })),
       ...shootingSessions.map((s) => ({ kind: "shooting" as const, s })),
     ];
     rows.sort(
@@ -293,7 +309,7 @@ export function DashboardClient({
         new Date(b.s.started_at).getTime() - new Date(a.s.started_at).getTime(),
     );
     return rows.slice(0, 5);
-  }, [squatSessions, shootingSessions]);
+  }, [squatSessions, deadliftSessions, shootingSessions]);
 
   const squatClipsBySession = useMemo(() => {
     const map = new Map<string, UserSquatAnalysisListItem[]>();
@@ -322,6 +338,42 @@ export function DashboardClient({
     }
     return map;
   }, [shootingAnalyses]);
+
+  const deadliftClipsBySession = useMemo(() => {
+    const map = new Map<string, UserDeadliftAnalysisListItem[]>();
+    for (const a of deadliftAnalyses) {
+      if (!a.session_id) continue;
+      const arr = map.get(a.session_id) ?? [];
+      arr.push(a);
+      map.set(a.session_id, arr);
+    }
+    for (const [, arr] of map) {
+      arr.sort((x, y) => new Date(x.analyzedAt).getTime() - new Date(y.analyzedAt).getTime());
+    }
+    return map;
+  }, [deadliftAnalyses]);
+
+  const trainingSessionsMerged = useMemo(() => {
+    const rows: Array<{ kind: "squat" | "deadlift"; s: Session }> = [
+      ...squatSessions.map((s) => ({ kind: "squat" as const, s })),
+      ...deadliftSessions.map((s) => ({ kind: "deadlift" as const, s })),
+    ];
+    rows.sort(
+      (a, b) =>
+        new Date(b.s.started_at).getTime() - new Date(a.s.started_at).getTime(),
+    );
+    return rows;
+  }, [squatSessions, deadliftSessions]);
+
+  const filteredTrainingSessions = useMemo(() => {
+    if (activeFilter === "Squat") {
+      return trainingSessionsMerged.filter((r) => r.kind === "squat");
+    }
+    if (activeFilter === "Deadlift") {
+      return trainingSessionsMerged.filter((r) => r.kind === "deadlift");
+    }
+    return trainingSessionsMerged;
+  }, [trainingSessionsMerged, activeFilter]);
 
   function toggleSession(id: string) {
     setExpandedSessions((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -373,7 +425,7 @@ export function DashboardClient({
 
         {activeTab === "overview" ? (
           <>
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
                 <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
                   Total sessions
@@ -382,7 +434,7 @@ export function DashboardClient({
                   {totalSessions}
                 </p>
                 <p className="mt-2 text-sm text-[var(--text-secondary)]">
-                  Squat + shooting combined.
+                  All analyses (squat, deadlift, shooting).
                 </p>
               </div>
 
@@ -402,7 +454,28 @@ export function DashboardClient({
                     <span className="ml-2 text-base font-medium text-[var(--text-secondary)]">/100</span>
                   ) : null}
                 </p>
-                <p className="mt-2 text-sm text-[var(--text-secondary)]">Training analyses.</p>
+                <p className="mt-2 text-sm text-[var(--text-secondary)]">Squat analyses.</p>
+              </div>
+
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+                <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
+                  Best deadlift score
+                </p>
+                <p
+                  className="mt-3 text-4xl font-semibold tabular-nums"
+                  style={{
+                    color:
+                      bestDeadliftScore != null
+                        ? scoreColorSquat(bestDeadliftScore)
+                        : "var(--text-primary)",
+                  }}
+                >
+                  {bestDeadliftScore != null ? bestDeadliftScore : "—"}
+                  {bestDeadliftScore != null ? (
+                    <span className="ml-2 text-base font-medium text-[var(--text-secondary)]">/100</span>
+                  ) : null}
+                </p>
+                <p className="mt-2 text-sm text-[var(--text-secondary)]">Deadlift analyses.</p>
               </div>
 
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
@@ -442,8 +515,28 @@ export function DashboardClient({
                     const clips =
                       kind === "squat"
                         ? (squatClipsBySession.get(s.id) ?? [])
-                        : (shootingClipsBySession.get(s.id) ?? []);
+                        : kind === "deadlift"
+                          ? (deadliftClipsBySession.get(s.id) ?? [])
+                          : (shootingClipsBySession.get(s.id) ?? []);
                     const unit = unitLabelForMovementType(s.movement_type);
+                    const badgeClass =
+                      kind === "squat"
+                        ? "bg-[var(--accent)]/12 text-[var(--accent)]"
+                        : kind === "deadlift"
+                          ? "bg-[#9333EA]/12 text-[#9333EA]"
+                          : "bg-[var(--score-high)]/12 text-[var(--score-high)]";
+                    const kindLabel =
+                      kind === "squat"
+                        ? "Squat"
+                        : kind === "deadlift"
+                          ? "Deadlift"
+                          : "Shooting";
+                    const defaultSessionName =
+                      kind === "squat"
+                        ? "Squat session"
+                        : kind === "deadlift"
+                          ? "Deadlift session"
+                          : "Shooting session";
                     return (
                     <li
                       key={`${kind}-${s.id}`}
@@ -458,18 +551,13 @@ export function DashboardClient({
                       >
                         <div className="flex min-w-0 items-start gap-3">
                           <span
-                            className={`mt-0.5 inline-flex h-6 items-center rounded-full px-2.5 text-xs font-semibold ${
-                              kind === "squat"
-                                ? "bg-[var(--accent)]/12 text-[var(--accent)]"
-                                : "bg-[var(--score-high)]/12 text-[var(--score-high)]"
-                            }`}
+                            className={`mt-0.5 inline-flex h-6 items-center rounded-full px-2.5 text-xs font-semibold ${badgeClass}`}
                           >
-                            {kind === "squat" ? "Squat" : "Shooting"}
+                            {kindLabel}
                           </span>
                           <div className="min-w-0">
                             <p className="truncate font-medium text-[var(--text-primary)]">
-                              {s.name ??
-                                (kind === "squat" ? "Squat session" : "Shooting session")}
+                              {s.name ?? defaultSessionName}
                               <span className="ml-2 text-xs font-medium text-[var(--text-tertiary)]">
                                 {formatSessionDate(s.started_at)}
                               </span>
@@ -508,7 +596,9 @@ export function DashboardClient({
                                     href={
                                       kind === "squat"
                                         ? `/results/${a.id}`
-                                        : `/results/shooting/${a.id}`
+                                        : kind === "deadlift"
+                                          ? `/results/deadlift/${a.id}`
+                                          : `/results/shooting/${a.id}`
                                     }
                                     className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
                                   >
@@ -517,25 +607,33 @@ export function DashboardClient({
                                         <p className="truncate text-sm font-medium text-[var(--text-primary)]">
                                           {kind === "squat"
                                             ? (a as UserSquatAnalysisListItem).movementLabel
-                                            : (a as UserShootingAnalysisListItem).shotType.replace(
-                                                /-/g,
-                                                " ",
-                                              )}
+                                            : kind === "deadlift"
+                                              ? (a as UserDeadliftAnalysisListItem).movementLabel
+                                              : (a as UserShootingAnalysisListItem).shotType.replace(
+                                                  /-/g,
+                                                  " ",
+                                                )}
                                         </p>
                                         <p className="mt-1 text-xs text-[var(--text-secondary)]">
                                           {formatAnalyzedAt(a.analyzedAt)}
                                         </p>
-                                        {kind === "squat" ? (
+                                        {kind === "squat" || kind === "deadlift" ? (
                                           <p className="mt-1 text-xs text-[var(--text-tertiary)]">
-                                            {(a as UserSquatAnalysisListItem).weight
-                                              ? `Weight: ${(a as UserSquatAnalysisListItem).weight}`
-                                              : "Weight: —"}
+                                            {kind === "squat"
+                                              ? (a as UserSquatAnalysisListItem).weight
+                                                ? `Weight: ${(a as UserSquatAnalysisListItem).weight}`
+                                                : "Weight: —"
+                                              : (a as UserDeadliftAnalysisListItem).weight
+                                                ? `Weight: ${(a as UserDeadliftAnalysisListItem).weight}`
+                                                : "Weight: —"}
                                           </p>
                                         ) : null}
                                       </div>
                                       <ScoreRing
                                         score={a.overallScore}
-                                        variant={kind === "squat" ? "squat" : "shooting"}
+                                        variant={
+                                          kind === "shooting" ? "shooting" : kind === "deadlift" ? "deadlift" : "squat"
+                                        }
                                       />
                                     </div>
                                   </Link>
@@ -561,10 +659,10 @@ export function DashboardClient({
                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
                   <div className="flex items-end justify-between gap-4">
                     <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
-                      Score history
+                      Squat score history
                     </h2>
                     <p className="text-sm text-[var(--text-secondary)]">
-                      Last {Math.min(10, squatAnalyses.length)} sessions
+                      Last {Math.min(10, squatAnalyses.length)} clips
                     </p>
                   </div>
                   <ScoreHistoryChart
@@ -594,6 +692,44 @@ export function DashboardClient({
               </div>
             </div>
 
+            <div className="mt-8 grid gap-6 lg:grid-cols-5">
+              <div className="lg:col-span-3">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+                  <div className="flex items-end justify-between gap-4">
+                    <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
+                      Deadlift score history
+                    </h2>
+                    <p className="text-sm text-[var(--text-secondary)]">
+                      Last {Math.min(10, deadliftAnalyses.length)} clips
+                    </p>
+                  </div>
+                  <ScoreHistoryChart
+                    series={deadliftChartSeries}
+                    emptyHint="Run your first deadlift analysis to see your trend."
+                  />
+                </div>
+              </div>
+
+              <div className="lg:col-span-2">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+                  <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
+                    Deadlift
+                  </h2>
+                  <div className="mt-3">
+                    <Link
+                      href="/analyze/deadlift"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-[#9333EA]/40 bg-[#9333EA]/10 px-6 text-sm font-semibold text-[#9333EA] transition hover:bg-[#9333EA]/15"
+                    >
+                      Start a deadlift analysis
+                    </Link>
+                  </div>
+                  <p className="mt-3 text-sm text-[var(--text-secondary)]">
+                    Side-view conventional, sumo, or Romanian.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-8">
               <div className="flex flex-wrap items-center gap-2">
                 {FILTERS.map((f) => (
@@ -613,26 +749,36 @@ export function DashboardClient({
               </div>
             </div>
 
-            {squatSessions.length === 0 ? (
+            {filteredTrainingSessions.length === 0 ? (
               <p className="mt-6 text-sm text-[var(--text-secondary)]">
-                No squat sessions yet.{" "}
+                No matching training sessions yet.{" "}
                 <Link href="/analyze/squat" className="font-medium text-[var(--accent)] hover:underline">
-                  Upload your first clip
+                  Squat
+                </Link>
+                {" · "}
+                <Link href="/analyze/deadlift" className="font-medium text-[#9333EA] hover:underline">
+                  Deadlift
                 </Link>
                 .
               </p>
             ) : (
               <div className="mt-6 space-y-4">
-                {squatSessions.map((s) => {
-                  const clips = squatClipsBySession.get(s.id) ?? [];
+                {filteredTrainingSessions.map(({ kind, s }) => {
+                  const clips =
+                    kind === "squat"
+                      ? (squatClipsBySession.get(s.id) ?? [])
+                      : (deadliftClipsBySession.get(s.id) ?? []);
                   const first = clips[0]?.overallScore ?? null;
                   const last = clips.length ? clips[clips.length - 1]?.overallScore ?? null : null;
                   const tr = trendDelta(first, last);
                   const expanded = !!expandedSessions[s.id];
                   const summary = `${s.clip_count} sets · Avg ${s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best ${s.best_score != null ? Math.round(s.best_score) : "—"}`;
+                  const sessionDefault =
+                    kind === "squat" ? "Squat session" : "Deadlift session";
+                  const ringVariant: RingVariant = kind === "deadlift" ? "deadlift" : "squat";
                   return (
                     <div
-                      key={s.id}
+                      key={`${kind}-${s.id}`}
                       className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
                     >
                       <button
@@ -642,7 +788,16 @@ export function DashboardClient({
                       >
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-[var(--text-primary)]">
-                            {s.name ?? "Squat session"}{" "}
+                            <span
+                              className={`mr-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+                                kind === "squat"
+                                  ? "bg-[var(--accent)]/12 text-[var(--accent)]"
+                                  : "bg-[#9333EA]/12 text-[#9333EA]"
+                              }`}
+                            >
+                              {kind === "squat" ? "Squat" : "Deadlift"}
+                            </span>
+                            {s.name ?? sessionDefault}{" "}
                             <span className="ml-2 text-xs font-medium text-[var(--text-tertiary)]">
                               {formatSessionDate(s.started_at)}
                             </span>
@@ -677,7 +832,11 @@ export function DashboardClient({
                               {clips.map((a) => (
                                 <li key={a.id}>
                                   <Link
-                                    href={`/results/${a.id}`}
+                                    href={
+                                      kind === "squat"
+                                        ? `/results/${a.id}`
+                                        : `/results/deadlift/${a.id}`
+                                    }
                                     className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
                                   >
                                     <div className="flex items-start justify-between gap-3">
@@ -692,7 +851,7 @@ export function DashboardClient({
                                           {a.weight ? `Weight: ${a.weight}` : "Weight: —"}
                                         </p>
                                       </div>
-                                      <ScoreRing score={a.overallScore} variant="squat" />
+                                      <ScoreRing score={a.overallScore} variant={ringVariant} />
                                     </div>
                                   </Link>
                                 </li>

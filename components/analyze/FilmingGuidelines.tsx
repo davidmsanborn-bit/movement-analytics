@@ -1,13 +1,24 @@
-export function FilmingGuidelines() {
+type FilmingGuidelinesProps = {
+  title?: string;
+  intro?: string;
+  /** Optional emphasis line (e.g. why side view matters for this lift). */
+  angleTip?: string;
+};
+
+export function FilmingGuidelines({
+  title = "Film from the side",
+  intro = "Full body in frame, hip height or slightly below, 3–5 meters back. One smooth rep is enough for a solid read.",
+  angleTip,
+}: FilmingGuidelinesProps = {}) {
   return (
     <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-[var(--shadow-card)]">
       <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
-        Film from the side
+        {title}
       </h2>
-      <p className="mt-2 text-sm text-[var(--text-secondary)]">
-        Full body in frame, hip height or slightly below, 3–5 meters back. One
-        smooth rep is enough for a solid read.
-      </p>
+      {angleTip ? (
+        <p className="mt-2 text-sm font-medium text-[var(--text-primary)]">{angleTip}</p>
+      ) : null}
+      <p className="mt-2 text-sm text-[var(--text-secondary)]">{intro}</p>
       <ul className="mt-4 space-y-2 text-sm text-[var(--text-secondary)]">
         <li className="flex gap-2">
           <span className="font-mono text-[var(--accent)]">·</span>

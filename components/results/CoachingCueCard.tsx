@@ -7,7 +7,7 @@ import {
 type Props = {
   cue: string;
   index: number;
-  sport: "squat" | "shooting";
+  sport: "squat" | "shooting" | "deadlift";
   compact?: boolean;
 };
 

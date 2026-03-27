@@ -10,7 +10,7 @@ export type CueIllustration = {
     | "elbow"
     | "release"
     | "balance";
-  sport: "squat" | "shooting" | "general";
+  sport: "squat" | "shooting" | "deadlift" | "general";
   emoji: string;
   faultLabel: string;
   fixLabel: string;
@@ -125,11 +125,77 @@ export const CUES: CueIllustration[] = [
     faultLabel: "Guide hand pushes",
     fixLabel: "Guide hand stays",
   },
+  {
+    id: "hip-hinge",
+    keywords: [
+      "hip",
+      "hinge",
+      "hips back",
+      "sit back",
+      "squat the deadlift",
+      "chest up",
+    ],
+    bodyZone: "hips",
+    sport: "deadlift",
+    emoji: "⚡",
+    faultLabel: "Squatting it",
+    fixLabel: "Hinge back",
+  },
+  {
+    id: "bar-drift",
+    keywords: ["bar", "drift", "away", "close", "contact", "legs", "path"],
+    bodyZone: "arms",
+    sport: "deadlift",
+    emoji: "📏",
+    faultLabel: "Bar drifting",
+    fixLabel: "Bar stays close",
+  },
+  {
+    id: "back-rounding",
+    keywords: [
+      "round",
+      "rounding",
+      "lumbar",
+      "thoracic",
+      "spine",
+      "neutral",
+      "back",
+    ],
+    bodyZone: "trunk",
+    sport: "deadlift",
+    emoji: "🏋️",
+    faultLabel: "Back rounding",
+    fixLabel: "Neutral spine",
+  },
+  {
+    id: "lockout-hyper",
+    keywords: [
+      "lockout",
+      "hyperextend",
+      "lean back",
+      "full extension",
+      "glute",
+    ],
+    bodyZone: "hips",
+    sport: "deadlift",
+    emoji: "⚡",
+    faultLabel: "Hyperextending",
+    fixLabel: "Stand tall",
+  },
+  {
+    id: "shin-angle",
+    keywords: ["shin", "angle", "bar position", "setup", "over bar"],
+    bodyZone: "feet",
+    sport: "deadlift",
+    emoji: "👟",
+    faultLabel: "Poor setup",
+    fixLabel: "Shins vertical",
+  },
 ];
 
 export function getCueIllustration(
   cueText: string,
-  sport: "squat" | "shooting",
+  sport: "squat" | "shooting" | "deadlift",
 ): CueIllustration | null {
   const text = cueText.toLowerCase();
   const matches = CUES.filter((cue) =>

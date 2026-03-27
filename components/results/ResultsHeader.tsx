@@ -11,7 +11,10 @@ type Props = Pick<
   | "additionalAngleBenefit"
   | "analyzedAt"
   | "id"
->;
+> & {
+  /** Override "Add another angle" destination (default: squat flow). */
+  addAngleHref?: string;
+};
 
 function formatTime(iso: string) {
   try {
@@ -42,10 +45,11 @@ export function ResultsHeader({
   additionalAngleBenefit,
   analyzedAt,
   id,
+  addAngleHref: addAngleHrefProp,
 }: Props) {
-  const addAngleHref = `/analyze/squat?previousId=${encodeURIComponent(
-    id,
-  )}&addAngle=true`;
+  const addAngleHref =
+    addAngleHrefProp ??
+    `/analyze/squat?previousId=${encodeURIComponent(id)}&addAngle=true`;
 
   return (
     <div className="flex flex-col gap-2 border-b border-[var(--border)] pb-8 md:flex-row md:items-end md:justify-between">

@@ -54,13 +54,15 @@ export default function AnalyzeHubPage() {
               </div>
             </Link>
 
-            <div className="cursor-not-allowed rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 opacity-50">
-              <div className="text-[var(--text-secondary)]"><DeadliftIcon /></div>
+            <Link href="/analyze/deadlift" className="group rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-[var(--shadow-card)] transition hover:border-[var(--accent)]/50">
+              <div className="text-[var(--accent)]"><DeadliftIcon /></div>
               <h2 className="mt-4 font-sans text-xl font-semibold text-[var(--text-primary)]">Deadlift</h2>
-              <div className="mt-4">
-                <span className="rounded-full bg-[var(--bg-card-secondary)] px-3 py-1 text-xs font-semibold text-[var(--text-secondary)]">Coming soon</span>
+              <p className="mt-2 text-sm text-[var(--text-secondary)]">Conventional, sumo, or Romanian — any deadlift variation</p>
+              <div className="mt-4 flex items-center justify-between">
+                <span className="rounded-full bg-[rgba(10,132,255,0.10)] px-3 py-1 text-xs font-semibold text-[var(--accent)]">5 sub-scores</span>
+                <span className="text-sm font-semibold text-[var(--accent)]">Start →</span>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
 
