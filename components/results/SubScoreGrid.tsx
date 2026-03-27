@@ -1,10 +1,20 @@
-import type { SubScore } from "@/lib/analysis/types";
-
-type Props = {
-  subScores: SubScore[];
+export type SubScoreRow = {
+  dimension: string;
+  label: string;
+  score: number;
+  summary: string;
 };
 
-export function SubScoreGrid({ subScores }: Props) {
+type Props = {
+  subScores: SubScoreRow[];
+  /** Optional blurb under the section title (defaults to squat copy). */
+  description?: string;
+};
+
+export function SubScoreGrid({
+  subScores,
+  description = 'Five dimensions from your side-view clip. Scores describe quality ranges, not a single “perfect” squat.',
+}: Props) {
   const scoreColor = (score: number) =>
     score >= 75
       ? "var(--score-high)"
@@ -18,8 +28,7 @@ export function SubScoreGrid({ subScores }: Props) {
         Sub-scores
       </h2>
       <p className="mt-1 text-sm text-[var(--text-secondary)]">
-        Five dimensions from your side-view clip. Scores describe quality
-        ranges, not a single “perfect” squat.
+        {description}
       </p>
       <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {subScores.map((s) => (

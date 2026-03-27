@@ -65,6 +65,12 @@ export function SiteHeader({ user }: Props) {
                 <Link href="/dashboard" className="transition hover:text-black">
                   Dashboard
                 </Link>
+                <Link
+                  href="/analyze/shooting"
+                  className="transition hover:text-black"
+                >
+                  Shooting form
+                </Link>
                 <div className="flex items-center gap-2">
                   <span
                     className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-xs font-semibold text-[var(--accent-foreground)]"
