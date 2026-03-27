@@ -117,7 +117,7 @@ export async function compressVideo(
         };
       });
 
-      recorder.start(500);
+      recorder.start(100);
 
       try {
         await video.play();
@@ -139,6 +139,18 @@ export async function compressVideo(
       onProgress?.(100);
 
       const compressedBlob = new Blob(chunks, { type: "video/webm" });
+      console.log("[compress] result:", {
+        originalSize: file.size,
+        compressedSize: compressedBlob.size,
+        type: compressedBlob.type,
+        duration: video.duration,
+      });
+
+      if (compressedBlob.size >= file.size * 0.9) {
+        console.log("[compress] compression ineffective, using original");
+        return file;
+      }
+
       const baseName = file.name.replace(/\.[^/.]+$/, "");
       return new File([compressedBlob], `${baseName}.webm`, {
         type: "video/webm",
