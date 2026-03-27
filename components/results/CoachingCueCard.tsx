@@ -8,6 +8,7 @@ type Props = {
   cue: string;
   index: number;
   sport: "squat" | "shooting";
+  compact?: boolean;
 };
 
 const ZONE_THEME: Record<
@@ -25,7 +26,7 @@ const ZONE_THEME: Record<
   general: { tint: "rgba(107,114,128,0.10)", border: "#6B7280", emoji: "🎯", label: "FORM" },
 };
 
-export function CoachingCueCard({ cue, index, sport }: Props) {
+export function CoachingCueCard({ cue, index, sport, compact = false }: Props) {
   const illustration = getCueIllustration(cue, sport);
   const zoneKey = illustration?.bodyZone ?? "general";
   const zone = ZONE_THEME[zoneKey] ?? ZONE_THEME.general;
@@ -33,41 +34,53 @@ export function CoachingCueCard({ cue, index, sport }: Props) {
 
   return (
     <li
-      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
+      className={`rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-card)] ${
+        compact ? "p-3" : "p-5"
+      }`}
       style={{ borderLeft: `3px solid ${zone.border}` }}
     >
-      <div className="flex flex-col gap-4 md:flex-row md:items-stretch">
-        <div className="md:w-[35%]">
+      <div className={`flex gap-3 ${compact ? "items-center" : "flex-col md:flex-row md:items-stretch"}`}>
+        <div className={compact ? "shrink-0" : "md:w-20"}>
           <div
-            className="flex h-full min-h-[138px] flex-col items-center justify-center rounded-xl px-3 py-4 text-center"
+            className={`flex items-center justify-center rounded-xl text-center ${
+              compact ? "h-14 w-14" : "h-full min-h-[120px] w-full px-2 py-3"
+            }`}
             style={{ backgroundColor: zone.tint }}
           >
-            <span className="text-4xl leading-none">{emoji}</span>
-            <span className="mt-3 font-mono text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-primary)]">
-              {illustration ? zone.label : "FORM"}
-            </span>
+            <span className={compact ? "text-[2.5rem] leading-none" : "text-5xl leading-none"}>{emoji}</span>
           </div>
         </div>
-        <div className="md:w-[65%]">
+        <div className="min-w-0 flex-1">
           <div className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] font-mono text-sm font-semibold text-[var(--accent-foreground)]">
+            <span
+              className={`mt-0.5 flex shrink-0 items-center justify-center rounded-full bg-[var(--accent)] font-mono font-semibold text-[var(--accent-foreground)] ${
+                compact ? "h-6 w-6 text-xs" : "h-8 w-8 text-sm"
+              }`}
+            >
               {index}
             </span>
             <div className="min-w-0 flex-1">
               {illustration ? (
                 <>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="inline-flex items-center rounded-full bg-red-500/12 px-2.5 py-1 text-xs font-semibold text-red-600">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className={`inline-flex items-center rounded-full bg-red-500/12 font-semibold text-red-600 ${compact ? "px-2 py-0.5 text-[11px]" : "px-2.5 py-1 text-xs"}`}>
                       {illustration.faultLabel}
                     </span>
-                    <span className="inline-flex items-center rounded-full bg-green-500/12 px-2.5 py-1 text-xs font-semibold text-green-700">
+                    <span className="text-xs text-[var(--text-tertiary)]">→</span>
+                    <span className={`inline-flex items-center rounded-full bg-green-500/12 font-semibold text-green-700 ${compact ? "px-2 py-0.5 text-[11px]" : "px-2.5 py-1 text-xs"}`}>
                       {illustration.fixLabel}
                     </span>
                   </div>
-                  <div className="my-3 h-px w-full bg-[var(--border)]" />
+                  <div className={`${compact ? "my-2" : "my-3"} h-px w-full bg-[var(--border)]`} />
                 </>
               ) : null}
-              <p className="text-sm leading-relaxed text-[var(--text-primary)]">
+              <p
+                className={`text-[var(--text-primary)] ${
+                  compact
+                    ? "truncate text-sm font-medium"
+                    : "overflow-hidden text-base font-semibold leading-relaxed [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]"
+                }`}
+              >
                 {cue}
               </p>
             </div>

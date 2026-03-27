@@ -30,11 +30,11 @@ export function SubScoreGrid({
       <p className="mt-1 text-sm text-[var(--text-secondary)]">
         {description}
       </p>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-6 flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:pb-0">
         {subScores.map((s) => (
           <li
             key={s.dimension}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
+            className="min-w-[240px] rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)] md:min-w-0"
           >
             <div className="flex items-start justify-between gap-3">
               <p className="text-sm font-medium text-[var(--text-primary)]">{s.label}</p>

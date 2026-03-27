@@ -1,4 +1,5 @@
 import { CoachingCues } from "@/components/results/CoachingCues";
+import { CollapsibleSection } from "@/components/results/CollapsibleSection";
 import { DisclaimerStrip } from "@/components/results/DisclaimerStrip";
 import { NextStepCard } from "@/components/results/NextStepCard";
 import { ObservationsList } from "@/components/results/ObservationsList";
@@ -94,18 +95,28 @@ export default async function ShootingResultsPage({
           analyzedAt={result.analyzedAt}
           id={result.id}
         />
-        <OverallScoreCard
-          overallScore={result.overallScore}
-          confidence={result.confidence}
-          confidenceNote={result.confidenceNote}
-        />
+        <section className="grid gap-6 lg:grid-cols-2 lg:items-start">
+          <OverallScoreCard
+            overallScore={result.overallScore}
+            confidence={result.confidence}
+            confidenceNote={result.confidenceNote}
+          />
+          <CoachingCues
+            cues={result.coachingCues}
+            sport="shooting"
+            mode="compact"
+          />
+        </section>
         <SubScoreGrid
           subScores={result.subScores}
           description="Five dimensions from your clip. Scores describe quality ranges for this shot."
         />
-        <ObservationsList observations={result.observations} />
-        <CoachingCues cues={result.coachingCues} sport="shooting" />
-        <NextStepCard nextStep={result.nextStep} />
+        <section className="space-y-6">
+          <CollapsibleSection title="What we noticed" defaultOpen={false}>
+            <ObservationsList observations={result.observations} showHeader={false} />
+          </CollapsibleSection>
+          <NextStepCard nextStep={result.nextStep} />
+        </section>
         <DisclaimerStrip />
         <Link
           href="/analyze/shooting?sessionContinue=true"
