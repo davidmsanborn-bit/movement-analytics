@@ -15,6 +15,8 @@ You are receiving 8 frames sampled evenly across the full video duration (not fi
 
 Identify which frames show the actual shot: ball leaving the hand, release point, and follow-through. Focus your analysis on the frames that show the shooting motion; ignore frames where the player is standing still, walking, or not performing a shot. If no frame clearly shows an actual shot release, say so explicitly in confidenceNote and score accordingly (lower confidence, conservative scores).
 
+IMPORTANT: Never reference 'frames', 'frame 4', 'frame 5', or any frame numbers in your response text. The user sees this as a video analysis, not individual frames. Instead say things like 'during the release', 'at the top of your jump', 'on the way up', 'at follow-through', 'mid-shot' etc. Describe WHEN in the movement something happens, not which frame showed it.
+
 ## Detection (from the frames only)
 - **shotType**: One of: "jumpshot" | "catch-and-shoot" | "off-dribble" | "layup" | "finger-roll" | "floater" | "dunk" | "free-throw" | "three-pointer" | "mid-range" | "unknown"
 - **hand**: "right" | "left" | "unknown" — which hand appears to release / guide the shot

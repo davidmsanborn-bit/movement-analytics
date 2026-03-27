@@ -62,6 +62,63 @@ export async function saveShootingAnalysis(
   }
 }
 
+const MAX_USER_SHOOTING_ANALYSES = 50;
+
+/** Row for dashboard lists; `movementLabel` is derived from shot type (shooting results have no stored movement label). */
+export type UserShootingAnalysisListItem = {
+  id: string;
+  overallScore: number;
+  movementLabel: string;
+  shotType: string;
+  analyzedAt: string;
+  created_at: string;
+};
+
+function shootingMovementLabel(result: ShootingAnalysisResult): string {
+  const st = (result.shotType ?? "").trim().toLowerCase();
+  if (!st || st === "unknown") return "Basketball shooting";
+  return st
+    .split("-")
+    .map((w) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : w))
+    .join(" ");
+}
+
+export async function getUserShootingAnalyses(
+  userId: string,
+): Promise<UserShootingAnalysisListItem[]> {
+  const supabase = getServiceClient();
+
+  const { data, error } = await supabase
+    .from("shooting_analyses")
+    .select("id, result, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(MAX_USER_SHOOTING_ANALYSES);
+
+  if (error) {
+    throw new Error(`Failed to list shooting analyses: ${error.message}`);
+  }
+
+  const rows = data ?? [];
+  return rows.map((row) => {
+    const r = normalizeStoredShooting(row.result);
+    const created_at =
+      row.created_at != null
+        ? typeof row.created_at === "string"
+          ? row.created_at
+          : new Date(row.created_at as string | number | Date).toISOString()
+        : r.analyzedAt;
+    return {
+      id: row.id,
+      overallScore: r.overallScore,
+      movementLabel: shootingMovementLabel(r),
+      shotType: r.shotType,
+      analyzedAt: r.analyzedAt,
+      created_at,
+    };
+  });
+}
+
 export async function fetchShootingAnalysis(
   id: string,
 ): Promise<ShootingAnalysisResult | null> {

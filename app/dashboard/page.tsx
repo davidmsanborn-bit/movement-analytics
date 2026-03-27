@@ -1,5 +1,6 @@
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
 import { getUserAnalyses } from "@/lib/analysis/analysisStore";
+import { getUserShootingAnalyses } from "@/lib/analysis/shootingAnalysisStore";
 import { createClient } from "@/lib/supabase/server";
 import type { User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
@@ -48,6 +49,16 @@ export default async function DashboardPage() {
   }
 
   const firstName = deriveFirstName(user);
-  const analyses = await getUserAnalyses(user.id);
-  return <DashboardClient firstName={firstName} analyses={analyses} />;
+  const [squatAnalyses, shootingAnalyses] = await Promise.all([
+    getUserAnalyses(user.id),
+    getUserShootingAnalyses(user.id),
+  ]);
+
+  return (
+    <DashboardClient
+      firstName={firstName}
+      squatAnalyses={squatAnalyses}
+      shootingAnalyses={shootingAnalyses}
+    />
+  );
 }
