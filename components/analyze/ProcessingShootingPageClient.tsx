@@ -2,6 +2,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { consumePendingUpload } from "@/lib/analysis/pendingUpload";
+import { compressVideo } from "@/lib/client/compressVideo";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 const POLL_INTERVAL_MS = 2500;
 /** Wall-clock cap for status polling (independent of upload duration). */
 const MAX_STATUS_POLL_MS = 60_000;
+const COMPRESS_THRESHOLD_BYTES = 20 * 1024 * 1024;
 
 type Props = {
   id: string;
@@ -93,6 +95,29 @@ export function ProcessingShootingPageClient({
       }
 
       try {
+        let fileToUpload = file;
+        if (file.size > COMPRESS_THRESHOLD_BYTES) {
+          setProgressStage("Compressing video...");
+          try {
+            const compressed = await compressVideo(file, (pct) => {
+              setProgressStage(`Compressing video... ${Math.max(0, Math.min(100, Math.round(pct)))}%`);
+            });
+            fileToUpload = compressed;
+            console.log("[processing] compression complete", {
+              analysisId: id,
+              originalSize: file.size,
+              compressedSize: compressed.size,
+              savedBytes: file.size - compressed.size,
+            });
+          } catch {
+            fileToUpload = file;
+            console.log("[processing] compression failed, using original", {
+              analysisId: id,
+              originalSize: file.size,
+            });
+          }
+        }
+
         setProgressStage("Uploading video...");
 
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -105,7 +130,7 @@ export function ProcessingShootingPageClient({
         const storagePath = `${id}/input.mov`;
         const { error: uploadError } = await supabase.storage
           .from("videos")
-          .upload(storagePath, file);
+          .upload(storagePath, fileToUpload);
 
         if (uploadError) {
           throw uploadError;
@@ -113,8 +138,8 @@ export function ProcessingShootingPageClient({
 
         console.log("[processing] POST /api/analyze-shooting start", {
           analysisId: id,
-          fileName: file.name,
-          fileSize: file.size,
+          fileName: fileToUpload.name,
+          fileSize: fileToUpload.size,
         });
         const res = await fetch("/api/analyze-shooting", {
           method: "POST",

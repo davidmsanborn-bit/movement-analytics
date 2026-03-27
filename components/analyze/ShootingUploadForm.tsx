@@ -9,6 +9,8 @@ type Props = {
   addAngle?: boolean;
 };
 
+const MAX_FILE_BYTES = 500 * 1024 * 1024;
+
 export function ShootingUploadForm({ previousId, addAngle }: Props) {
   const router = useRouter();
   const inputId = useId();
@@ -18,6 +20,12 @@ export function ShootingUploadForm({ previousId, addAngle }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const onFile = useCallback((f: File | undefined) => {
+    if (f && f.size > MAX_FILE_BYTES) {
+      setFile(null);
+      setFileName(null);
+      setError("File exceeds 500MB technical limit.");
+      return;
+    }
     setFile(f ?? null);
     setFileName(f?.name ?? null);
     setError(null);
@@ -52,8 +60,7 @@ export function ShootingUploadForm({ previousId, addAngle }: Props) {
           Video file
         </label>
         <p className="mt-1 text-xs text-[var(--text-secondary)]">
-          MP4 or MOV, up to 100 MB. Upload is encrypted in transit; analysis
-          runs after you submit.
+          Any length · Auto-compressed before upload
         </p>
         <div className="mt-3">
           <label
