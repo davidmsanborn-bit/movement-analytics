@@ -118,12 +118,12 @@ const MAX_USER_ANALYSES = 50;
 
 export async function getUserAnalyses(
   userId: string,
-): Promise<SquatAnalysisResult[]> {
+): Promise<UserSquatAnalysisListItem[]> {
   const supabase = getServiceClient();
 
   const { data, error } = await supabase
     .from("analyses")
-    .select("result, created_at")
+    .select("id, result, created_at, session_id")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(MAX_USER_ANALYSES);
@@ -142,11 +142,29 @@ export async function getUserAnalyses(
           : new Date(row.created_at as string | number | Date).toISOString()
         : base.analyzedAt;
     return {
-      ...base,
+      id: String((row as { id: unknown }).id ?? base.id),
+      session_id:
+        (row as { session_id?: unknown }).session_id == null
+          ? null
+          : String((row as { session_id: unknown }).session_id),
+      created_at: created,
       analyzedAt: created,
+      overallScore: base.overallScore,
+      movementLabel: base.movementLabel,
+      weight: base.weight,
     };
   });
 }
+
+export type UserSquatAnalysisListItem = {
+  id: string;
+  session_id: string | null;
+  created_at: string;
+  analyzedAt: string;
+  overallScore: number;
+  movementLabel: string;
+  weight: string | null;
+};
 
 export async function fetchAnalysis(
   id: string,

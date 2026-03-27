@@ -15,6 +15,7 @@ type PageProps = {
   searchParams: Promise<{
     previousId?: string | string[];
     addAngle?: string | string[];
+    sessionContinue?: string | string[];
   }>;
 };
 
@@ -46,14 +47,39 @@ export default async function AnalyzeSquatPage({ searchParams }: PageProps) {
         : undefined;
   const addAngle = addAngleParam === "true" || addAngleParam === "1";
 
+  const sessionContinueRaw = sp.sessionContinue;
+  const sessionContinueParam =
+    typeof sessionContinueRaw === "string"
+      ? sessionContinueRaw
+      : Array.isArray(sessionContinueRaw)
+        ? sessionContinueRaw[0]
+        : undefined;
+  const sessionContinue =
+    sessionContinueParam === "true" || sessionContinueParam === "1";
+
   return (
     <main className="min-h-full bg-[var(--bg-page)] pb-24 pt-12 md:pt-16">
       <PageSection>
+        {sessionContinue ? (
+          <div className="mb-6 rounded-xl border border-emerald-600/25 bg-emerald-600/10 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-200">
+            <span className="font-semibold">
+              Session in progress
+            </span>
+            <span className="text-emerald-900/80 dark:text-emerald-200/80">
+              {" "}
+              — your previous results are saved
+            </span>
+          </div>
+        ) : null}
         <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
           Squat · Side view
         </p>
         <h1 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-tight text-[var(--text-primary)] md:text-4xl">
-          {addAngle ? "Add another angle" : "Upload your video"}
+          {addAngle
+            ? "Add another angle"
+            : sessionContinue
+              ? "Film your next set"
+              : "Upload your video"}
         </h1>
         <p className="mt-4 max-w-2xl text-[var(--text-secondary)]">
           {addAngle

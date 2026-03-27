@@ -2,6 +2,10 @@ import { createClient } from "@supabase/supabase-js";
 import { analyzeSquatVideo } from "@/lib/analysis/analyzeWithAI";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
 import { fetchAnalysis, saveAnalysis } from "@/lib/analysis/analysisStore";
+import {
+  findOrCreateSession,
+  updateSessionStats,
+} from "@/lib/analysis/sessionStore";
 import { setProgress } from "@/lib/analysis/progressStore";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
@@ -132,6 +136,23 @@ export async function POST(request: Request) {
     await saveAnalysis(finalResult, userId);
 
     console.log("[analyze] saveAnalysis done", { analysisId });
+
+    if (userId) {
+      const sessionId = await findOrCreateSession(userId, "squat");
+      const { error: sessionLinkError } = await supabase
+        .from("analyses")
+        .update({ session_id: sessionId })
+        .eq("id", analysisId);
+      if (sessionLinkError) {
+        console.error("[analyze] failed to link analysis to session", {
+          analysisId,
+          sessionId,
+          message: sessionLinkError.message,
+        });
+      } else {
+        await updateSessionStats(sessionId);
+      }
+    }
 
     const { error: deleteError } = await supabase.storage
       .from("videos")

@@ -1,7 +1,8 @@
 "use client";
 
-import type { SquatAnalysisResult } from "@/lib/analysis/types";
+import type { UserSquatAnalysisListItem } from "@/lib/analysis/analysisStore";
 import type { UserShootingAnalysisListItem } from "@/lib/analysis/shootingAnalysisStore";
+import type { Session } from "@/lib/analysis/sessionStore";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -9,8 +10,10 @@ type TabId = "overview" | "training" | "sports";
 
 type Props = {
   firstName: string;
-  squatAnalyses: SquatAnalysisResult[];
+  squatAnalyses: UserSquatAnalysisListItem[];
   shootingAnalyses: UserShootingAnalysisListItem[];
+  squatSessions: Session[];
+  shootingSessions: Session[];
 };
 
 const FILTERS = ["All", "Squat", "Jump", "Sprint"] as const;
@@ -108,6 +111,26 @@ function ScoreRing({ score, variant }: { score: number; variant: RingVariant }) 
 }
 
 type ChartPoint = { analyzedAt: string; overallScore: number };
+
+function formatSessionDate(iso: string) {
+  try {
+    return new Intl.DateTimeFormat("en", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
+
+function trendDelta(first: number | null, last: number | null) {
+  if (first == null || last == null) return { dir: "flat" as const, delta: 0 };
+  const d = Math.round(last - first);
+  if (d >= 2) return { dir: "up" as const, delta: d };
+  if (d <= -2) return { dir: "down" as const, delta: d };
+  return { dir: "flat" as const, delta: d };
+}
 
 function ScoreHistoryChart({
   series,
@@ -221,15 +244,12 @@ export function DashboardClient({
   firstName,
   squatAnalyses,
   shootingAnalyses,
+  squatSessions,
+  shootingSessions,
 }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
-
-  const filteredSquat = useMemo(() => {
-    if (activeFilter === "All") return squatAnalyses;
-    const q = activeFilter.toLowerCase();
-    return squatAnalyses.filter((a) => a.movementLabel.toLowerCase().includes(q));
-  }, [squatAnalyses, activeFilter]);
+  const [expandedSessions, setExpandedSessions] = useState<Record<string, boolean>>({});
 
   const totalSessions = squatAnalyses.length + shootingAnalyses.length;
   const bestSquatScore =
@@ -241,31 +261,6 @@ export function DashboardClient({
       ? Math.max(...shootingAnalyses.map((a) => a.overallScore))
       : null;
 
-  const recentActivity = useMemo(() => {
-    type Row =
-      | { kind: "squat"; id: string; at: string; label: string; score: number }
-      | { kind: "shooting"; id: string; at: string; label: string; score: number; shotType: string };
-    const rows: Row[] = [
-      ...squatAnalyses.map((a) => ({
-        kind: "squat" as const,
-        id: a.id,
-        at: a.analyzedAt,
-        label: a.movementLabel,
-        score: a.overallScore,
-      })),
-      ...shootingAnalyses.map((s) => ({
-        kind: "shooting" as const,
-        id: s.id,
-        at: s.analyzedAt,
-        label: s.movementLabel,
-        score: s.overallScore,
-        shotType: s.shotType,
-      })),
-    ];
-    rows.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
-    return rows.slice(0, 5);
-  }, [squatAnalyses, shootingAnalyses]);
-
   const squatChartSeries: ChartPoint[] = squatAnalyses.map((a) => ({
     analyzedAt: a.analyzedAt,
     overallScore: a.overallScore,
@@ -275,6 +270,50 @@ export function DashboardClient({
     analyzedAt: s.analyzedAt,
     overallScore: s.overallScore,
   }));
+
+  const sessionsOverview = useMemo(() => {
+    const rows = [
+      ...squatSessions.map((s) => ({ kind: "squat" as const, s })),
+      ...shootingSessions.map((s) => ({ kind: "shooting" as const, s })),
+    ];
+    rows.sort(
+      (a, b) =>
+        new Date(b.s.started_at).getTime() - new Date(a.s.started_at).getTime(),
+    );
+    return rows.slice(0, 5);
+  }, [squatSessions, shootingSessions]);
+
+  const squatClipsBySession = useMemo(() => {
+    const map = new Map<string, UserSquatAnalysisListItem[]>();
+    for (const a of squatAnalyses) {
+      if (!a.session_id) continue;
+      const arr = map.get(a.session_id) ?? [];
+      arr.push(a);
+      map.set(a.session_id, arr);
+    }
+    for (const [, arr] of map) {
+      arr.sort((x, y) => new Date(x.analyzedAt).getTime() - new Date(y.analyzedAt).getTime());
+    }
+    return map;
+  }, [squatAnalyses]);
+
+  const shootingClipsBySession = useMemo(() => {
+    const map = new Map<string, UserShootingAnalysisListItem[]>();
+    for (const a of shootingAnalyses) {
+      if (!a.session_id) continue;
+      const arr = map.get(a.session_id) ?? [];
+      arr.push(a);
+      map.set(a.session_id, arr);
+    }
+    for (const [, arr] of map) {
+      arr.sort((x, y) => new Date(x.analyzedAt).getTime() - new Date(y.analyzedAt).getTime());
+    }
+    return map;
+  }, [shootingAnalyses]);
+
+  function toggleSession(id: string) {
+    setExpandedSessions((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
 
   return (
     <main className="min-h-full bg-[var(--bg-page)] pb-24 pt-12 md:pt-16">
@@ -369,36 +408,38 @@ export function DashboardClient({
 
             <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
               <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
-                Recent activity
+                Recent sessions
               </h2>
-              {recentActivity.length === 0 ? (
+              {sessionsOverview.length === 0 ? (
                 <p className="mt-4 text-sm text-[var(--text-secondary)]">
                   No sessions yet. Start from the Training or Sports tab.
                 </p>
               ) : (
                 <ul className="mt-4 divide-y divide-[var(--border)]">
-                  {recentActivity.map((row) => (
-                    <li key={`${row.kind}-${row.id}`} className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0">
+                  {sessionsOverview.map(({ kind, s }) => (
+                    <li
+                      key={`${kind}-${s.id}`}
+                      className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0"
+                    >
                       <span
                         className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          row.kind === "squat"
+                          kind === "squat"
                             ? "bg-[var(--accent)]/12 text-[var(--accent)]"
                             : "bg-[var(--score-high)]/12 text-[var(--score-high)]"
                         }`}
                       >
-                        {row.kind === "squat" ? "Squat" : "Shooting"}
+                        {kind === "squat" ? "Squat" : "Shooting"}
                       </span>
-                      <Link
-                        href={row.kind === "squat" ? `/results/${row.id}` : `/results/shooting/${row.id}`}
-                        className="min-w-0 flex-1 font-medium text-[var(--text-primary)] hover:text-[var(--accent)]"
-                      >
-                        <span className="block truncate">
-                          {row.kind === "squat" ? row.label : `${row.label} · ${row.shotType}`}
-                        </span>
-                        <span className="block text-xs font-normal text-[var(--text-secondary)]">
-                          {formatAnalyzedAt(row.at)} · Score {row.score}
-                        </span>
-                      </Link>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-medium text-[var(--text-primary)]">
+                          {s.name ?? (kind === "squat" ? "Squat session" : "Shooting session")}
+                        </p>
+                        <p className="mt-0.5 text-xs text-[var(--text-secondary)]">
+                          {formatAnalyzedAt(s.started_at)} · {s.clip_count} sets · Avg{" "}
+                          {s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best{" "}
+                          {s.best_score != null ? Math.round(s.best_score) : "—"}
+                        </p>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -466,7 +507,7 @@ export function DashboardClient({
               </div>
             </div>
 
-            {squatAnalyses.length === 0 ? (
+            {squatSessions.length === 0 ? (
               <p className="mt-6 text-sm text-[var(--text-secondary)]">
                 No squat sessions yet.{" "}
                 <Link href="/analyze/squat" className="font-medium text-[var(--accent)] hover:underline">
@@ -474,38 +515,88 @@ export function DashboardClient({
                 </Link>
                 .
               </p>
-            ) : filteredSquat.length > 0 ? (
-              <div className="mt-4">
-                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {filteredSquat.map((a) => (
-                    <li key={a.id}>
-                      <Link
-                        href={`/results/${a.id}`}
-                        className="block rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)] transition hover:border-[var(--accent-hover)]"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="text-sm font-medium text-[var(--text-primary)]">
-                              {a.movementLabel}
-                            </p>
-                            <p className="mt-1 text-xs text-[var(--text-secondary)]">
-                              {formatAnalyzedAt(a.analyzedAt)}
-                            </p>
-                            <p className="mt-1 text-xs text-[var(--text-tertiary)]">
-                              {a.weight ? `Weight: ${a.weight}` : "Weight: —"}
-                            </p>
-                          </div>
-                          <ScoreRing score={a.overallScore} variant="squat" />
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             ) : (
-              <p className="mt-4 text-sm text-[var(--text-secondary)]">
-                No sessions match this movement filter.
-              </p>
+              <div className="mt-6 space-y-4">
+                {squatSessions.map((s) => {
+                  const clips = squatClipsBySession.get(s.id) ?? [];
+                  const first = clips[0]?.overallScore ?? null;
+                  const last = clips.length ? clips[clips.length - 1]?.overallScore ?? null : null;
+                  const tr = trendDelta(first, last);
+                  const expanded = !!expandedSessions[s.id];
+                  const summary = `${s.clip_count} sets · Avg ${s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best ${s.best_score != null ? Math.round(s.best_score) : "—"}`;
+                  return (
+                    <div
+                      key={s.id}
+                      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleSession(s.id)}
+                        className="flex w-full items-start justify-between gap-4 text-left"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-[var(--text-primary)]">
+                            {s.name ?? "Squat session"}{" "}
+                            <span className="ml-2 text-xs font-medium text-[var(--text-tertiary)]">
+                              {formatSessionDate(s.started_at)}
+                            </span>
+                          </p>
+                          <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                            {summary}
+                          </p>
+                          <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+                            Trend:{" "}
+                            {tr.dir === "up"
+                              ? `↑ +${tr.delta}`
+                              : tr.dir === "down"
+                                ? `↓ ${tr.delta}`
+                                : "→"}
+                          </p>
+                        </div>
+                        <span className="text-xs font-semibold text-[var(--accent)]">
+                          {expanded ? "Hide sets" : "View sets"}
+                        </span>
+                      </button>
+
+                      {expanded ? (
+                        <div className="mt-4">
+                          {clips.length === 0 ? (
+                            <p className="text-sm text-[var(--text-secondary)]">
+                              No clips linked to this session yet.
+                            </p>
+                          ) : (
+                            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                              {clips.map((a) => (
+                                <li key={a.id}>
+                                  <Link
+                                    href={`/results/${a.id}`}
+                                    className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
+                                  >
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="min-w-0">
+                                        <p className="truncate text-sm font-medium text-[var(--text-primary)]">
+                                          {a.movementLabel}
+                                        </p>
+                                        <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                                          {formatAnalyzedAt(a.analyzedAt)}
+                                        </p>
+                                        <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+                                          {a.weight ? `Weight: ${a.weight}` : "Weight: —"}
+                                        </p>
+                                      </div>
+                                      <ScoreRing score={a.overallScore} variant="squat" />
+                                    </div>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </>
         ) : null}
@@ -550,7 +641,7 @@ export function DashboardClient({
               </div>
             </div>
 
-            {shootingAnalyses.length === 0 ? (
+            {shootingSessions.length === 0 ? (
               <p className="mt-8 text-sm text-[var(--text-secondary)]">
                 No shooting sessions yet.{" "}
                 <Link href="/analyze/shooting" className="font-medium text-[var(--accent)] hover:underline">
@@ -559,32 +650,86 @@ export function DashboardClient({
                 .
               </p>
             ) : (
-              <div className="mt-8">
-                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {shootingAnalyses.map((s) => (
-                    <li key={s.id}>
-                      <Link
-                        href={`/results/shooting/${s.id}`}
-                        className="block rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)] transition hover:border-[var(--accent-hover)]"
+              <div className="mt-6 space-y-4">
+                {shootingSessions.map((s) => {
+                  const clips = shootingClipsBySession.get(s.id) ?? [];
+                  const first = clips[0]?.overallScore ?? null;
+                  const last = clips.length ? clips[clips.length - 1]?.overallScore ?? null : null;
+                  const tr = trendDelta(first, last);
+                  const expanded = !!expandedSessions[s.id];
+                  const summary = `${s.clip_count} sets · Avg ${s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best ${s.best_score != null ? Math.round(s.best_score) : "—"}`;
+                  return (
+                    <div
+                      key={s.id}
+                      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleSession(s.id)}
+                        className="flex w-full items-start justify-between gap-4 text-left"
                       >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <p className="text-sm font-medium capitalize text-[var(--text-primary)]">
-                              {s.shotType.replace(/-/g, " ")}
-                            </p>
-                            <p className="mt-1 truncate text-xs text-[var(--text-secondary)]">
-                              {s.movementLabel}
-                            </p>
-                            <p className="mt-1 text-xs text-[var(--text-tertiary)]">
-                              {formatAnalyzedAt(s.analyzedAt)}
-                            </p>
-                          </div>
-                          <ScoreRing score={s.overallScore} variant="shooting" />
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-[var(--text-primary)]">
+                            {s.name ?? "Shooting session"}{" "}
+                            <span className="ml-2 text-xs font-medium text-[var(--text-tertiary)]">
+                              {formatSessionDate(s.started_at)}
+                            </span>
+                          </p>
+                          <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                            {summary}
+                          </p>
+                          <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+                            Trend:{" "}
+                            {tr.dir === "up"
+                              ? `↑ +${tr.delta}`
+                              : tr.dir === "down"
+                                ? `↓ ${tr.delta}`
+                                : "→"}
+                          </p>
                         </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                        <span className="text-xs font-semibold text-[var(--accent)]">
+                          {expanded ? "Hide sets" : "View sets"}
+                        </span>
+                      </button>
+
+                      {expanded ? (
+                        <div className="mt-4">
+                          {clips.length === 0 ? (
+                            <p className="text-sm text-[var(--text-secondary)]">
+                              No clips linked to this session yet.
+                            </p>
+                          ) : (
+                            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                              {clips.map((a) => (
+                                <li key={a.id}>
+                                  <Link
+                                    href={`/results/shooting/${a.id}`}
+                                    className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
+                                  >
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="min-w-0">
+                                        <p className="text-sm font-medium capitalize text-[var(--text-primary)]">
+                                          {a.shotType.replace(/-/g, " ")}
+                                        </p>
+                                        <p className="mt-1 truncate text-xs text-[var(--text-secondary)]">
+                                          {a.movementLabel}
+                                        </p>
+                                        <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+                                          {formatAnalyzedAt(a.analyzedAt)}
+                                        </p>
+                                      </div>
+                                      <ScoreRing score={a.overallScore} variant="shooting" />
+                                    </div>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </>

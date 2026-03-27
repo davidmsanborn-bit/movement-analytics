@@ -67,6 +67,7 @@ const MAX_USER_SHOOTING_ANALYSES = 50;
 /** Row for dashboard lists; `movementLabel` is derived from shot type (shooting results have no stored movement label). */
 export type UserShootingAnalysisListItem = {
   id: string;
+  session_id: string | null;
   overallScore: number;
   movementLabel: string;
   shotType: string;
@@ -90,7 +91,7 @@ export async function getUserShootingAnalyses(
 
   const { data, error } = await supabase
     .from("shooting_analyses")
-    .select("id, result, created_at")
+    .select("id, result, created_at, session_id")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(MAX_USER_SHOOTING_ANALYSES);
@@ -110,6 +111,7 @@ export async function getUserShootingAnalyses(
         : r.analyzedAt;
     return {
       id: row.id,
+      session_id: row.session_id == null ? null : String(row.session_id),
       overallScore: r.overallScore,
       movementLabel: shootingMovementLabel(r),
       shotType: r.shotType,

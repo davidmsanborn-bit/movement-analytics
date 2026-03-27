@@ -98,6 +98,12 @@ export default async function ResultsPage({ params, searchParams }: Props) {
         <CoachingCues cues={result.coachingCues} />
         <NextStepCard nextStep={result.nextStep} />
         <DisclaimerStrip />
+        <Link
+          href="/analyze/squat?sessionContinue=true"
+          className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-[var(--accent)] bg-transparent px-5 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--accent)]/5"
+        >
+          🎥 Film next set →
+        </Link>
       </PageSection>
     </main>
   );

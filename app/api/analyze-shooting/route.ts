@@ -5,6 +5,10 @@ import {
   fetchShootingAnalysis,
   saveShootingAnalysis,
 } from "@/lib/analysis/shootingAnalysisStore";
+import {
+  findOrCreateSession,
+  updateSessionStats,
+} from "@/lib/analysis/sessionStore";
 import { setProgress } from "@/lib/analysis/progressStore";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
@@ -116,6 +120,23 @@ export async function POST(request: Request) {
     setProgress(analysisId, "Scoring your movement...");
     setProgress(analysisId, "Saving your results...");
     await saveShootingAnalysis(finalResult, userId);
+
+    if (userId) {
+      const sessionId = await findOrCreateSession(userId, "shooting");
+      const { error: sessionLinkError } = await supabase
+        .from("shooting_analyses")
+        .update({ session_id: sessionId })
+        .eq("id", analysisId);
+      if (sessionLinkError) {
+        console.error("[analyze-shooting] failed to link analysis to session", {
+          analysisId,
+          sessionId,
+          message: sessionLinkError.message,
+        });
+      } else {
+        await updateSessionStats(sessionId);
+      }
+    }
 
     const { error: deleteError } = await supabase.storage
       .from("videos")
