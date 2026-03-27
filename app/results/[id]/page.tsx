@@ -95,7 +95,7 @@ export default async function ResultsPage({ params, searchParams }: Props) {
         />
         <SubScoreGrid subScores={result.subScores} />
         <ObservationsList observations={result.observations} />
-        <CoachingCues cues={result.coachingCues} />
+        <CoachingCues cues={result.coachingCues} sport="squat" />
         <NextStepCard nextStep={result.nextStep} />
         <DisclaimerStrip />
         <Link

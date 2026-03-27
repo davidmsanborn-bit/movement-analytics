@@ -104,7 +104,7 @@ export default async function ShootingResultsPage({
           description="Five dimensions from your clip. Scores describe quality ranges for this shot."
         />
         <ObservationsList observations={result.observations} />
-        <CoachingCues cues={result.coachingCues} />
+        <CoachingCues cues={result.coachingCues} sport="shooting" />
         <NextStepCard nextStep={result.nextStep} />
         <DisclaimerStrip />
         <Link
