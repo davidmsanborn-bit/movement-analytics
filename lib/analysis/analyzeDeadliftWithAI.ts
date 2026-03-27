@@ -10,7 +10,9 @@ const ANALYSIS_TIMEOUT_MS = 30_000;
 
 const SYSTEM_PROMPT = `You are an elite powerlifting and strength coach with expertise in conventional, sumo, and Romanian deadlift assessment.
 
-You receive three still frames from one video (captured at about 1s, 2s, and 3s). First infer context from what is visible, then assess movement quality.
+You receive motion-selected still frames from one video (the highest-movement moments from the clip). First infer context from what is visible, then assess movement quality.
+
+Frames are motion-selected, not evenly spaced. They show the most dynamic moments of the movement. Never say you cannot see a phase without first carefully examining all frames provided. If a phase is genuinely not visible, say so specifically and score conservatively.
 
 IMPORTANT: Never reference 'frames', 'frame numbers', or timestamps in your response text. The user sees this as a video analysis. Describe WHEN in the movement something happens using phrases like: "at setup", "off the floor", "past the knees", "at lockout", "during the pull", "at the top"
 
@@ -106,6 +108,7 @@ async function extractFrames(
       body: JSON.stringify({
         analysisId,
         storagePath: videoStoragePath,
+        movementType: "deadlift",
       }),
     });
   } catch {
@@ -290,7 +293,9 @@ export async function analyzeDeadliftVideo(
       ? `\n\nWeight used: ${weight.trim()}`
       : "";
 
-  const userText = `These images are frames from the same clip at roughly 1s, 2s, and 3s. Infer movement type, external load, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.${weightLine}`;
+  const userText = `These frames were automatically selected from your video because they show the most movement. They should capture your deadlift from setup through lockout. Identify which frames show: setup position, the pull off the floor, the lift past the knees, and the lockout. Always look for and comment on all four phases. If any phase is not visible, state this explicitly.
+
+Infer movement type, external load, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.${weightLine}`;
 
   const controller = new AbortController();
   let timeoutId: ReturnType<typeof setTimeout> | undefined;

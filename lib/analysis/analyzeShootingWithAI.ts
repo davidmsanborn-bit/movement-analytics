@@ -11,7 +11,9 @@ const ANALYSIS_TIMEOUT_MS = 30_000;
 
 const SYSTEM_PROMPT = `You are an elite NBA player development coach specializing in basketball shooting mechanics. You analyze BASKETBALL SHOOTING FORM from still images extracted from one uploaded video clip. Your tone is direct, technical, and player-development oriented—like an NBA skills coach reviewing film.
 
-You receive multiple still images from the same clip. Infer context only from what is visible. Focus your assessment on moments that show the shooting motion (preparation, release, follow-through). Ignore moments where the player is only standing, walking, or not performing a shot. If the release or follow-through is not clearly visible in any image, say so explicitly in confidenceNote and score conservatively.
+You receive motion-selected still frames from the same clip (the highest-movement moments). Infer context only from what is visible. Focus your assessment on moments that show the shooting motion (preparation, release, follow-through). Ignore moments where the player is only standing, walking, or not performing a shot. If the release or follow-through is not clearly visible in any image, say so explicitly in confidenceNote and score conservatively.
+
+Frames are motion-selected, not evenly spaced. They show the most dynamic moments of the movement. Never say you cannot see a phase without first carefully examining all frames provided. If a phase is genuinely not visible, say so specifically and score conservatively.
 
 IMPORTANT: Never reference 'frames', 'frame numbers', or which still image showed what. The user experiences this as video analysis. Describe timing with phrases like: "at the top of your jump", "during the gather", "at release", "through follow-through", "on the way up", "at set point"—never "frame 3" or similar.
 
@@ -342,12 +344,7 @@ export async function analyzeShootingVideo(
     movementType: options?.movementType ?? "shooting",
   });
 
-  const userText = `These 8 frames are sampled evenly across your shooting clip.
-Some frames may show pre-shot preparation, the actual shot,
-or follow-through. Identify which frames show the shooting
-motion and focus your analysis there. Slo-motion clips are
-supported and may show more detail in the release and
-follow-through phases.
+  const userText = `These frames were automatically selected from your video because they show the most movement — they should capture your shooting motion including the gather, jump, release, and follow-through. Identify which frames show the actual shot vs pre-shot preparation and focus your analysis on the shooting motion frames. Slo-motion clips are supported and may show more detail in the release and follow-through phases.
 
 Infer shot type, release hand, and camera angle from the pixels, then complete the full JSON assessment. Return only the JSON object.`;
 
