@@ -23,10 +23,10 @@ export function Hero() {
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
-              href="/analyze/squat"
+              href="/analyze"
               className="inline-flex h-12 items-center justify-center rounded-md bg-[#0A84FF] px-8 text-sm font-semibold text-white transition hover:bg-[#0066CC]"
             >
-              Analyze my squat -&gt;
+              Get Started -&gt;
             </Link>
             <a
               href="#how-it-works"

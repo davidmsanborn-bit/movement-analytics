@@ -58,18 +58,12 @@ export function SiteHeader({ user }: Props) {
         </Link>
         <nav className="flex flex-wrap items-center justify-end gap-4 sm:gap-6">
           {/* Desktop/tablet: show dashboard + sign-in/out + user name.
-              Mobile: keep it minimal (logo + Analyze only). */}
+              Mobile: keep it minimal (logo + Get Started only). */}
           <div className="hidden items-center gap-4 sm:flex">
             {user ? (
               <>
                 <Link href="/dashboard" className="transition hover:text-black">
                   Dashboard
-                </Link>
-                <Link
-                  href="/analyze/shooting"
-                  className="transition hover:text-black"
-                >
-                  Shooting form
                 </Link>
                 <div className="flex items-center gap-2">
                   <span
@@ -99,10 +93,10 @@ export function SiteHeader({ user }: Props) {
           </div>
 
           <Link
-            href="/analyze/squat"
+            href="/analyze"
             className="inline-flex h-10 items-center justify-center rounded-lg bg-[var(--accent)] px-4 text-xs font-semibold text-[var(--accent-foreground)] transition hover:bg-[var(--accent-hover)] sm:h-9 sm:px-5"
           >
-            Analyze squat
+            Get Started
           </Link>
         </nav>
       </div>
