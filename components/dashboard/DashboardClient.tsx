@@ -132,6 +132,15 @@ function trendDelta(first: number | null, last: number | null) {
   return { dir: "flat" as const, delta: d };
 }
 
+function unitLabelForMovementType(movementType: unknown): "sets" | "attempts" | "clips" {
+  const mt = typeof movementType === "string" ? movementType.trim().toLowerCase() : "";
+  if (mt === "shooting") return "attempts";
+  if (mt === "squat") return "sets";
+  if (!mt) return "clips";
+  // safe fallback for future types we haven't categorized yet
+  return mt.includes("shoot") || mt.includes("sport") ? "attempts" : "sets";
+}
+
 function ScoreHistoryChart({
   series,
   emptyHint,
@@ -434,6 +443,7 @@ export function DashboardClient({
                       kind === "squat"
                         ? (squatClipsBySession.get(s.id) ?? [])
                         : (shootingClipsBySession.get(s.id) ?? []);
+                    const unit = unitLabelForMovementType(s.movement_type);
                     return (
                     <li
                       key={`${kind}-${s.id}`}
@@ -465,19 +475,18 @@ export function DashboardClient({
                               </span>
                             </p>
                             <p className="mt-0.5 text-xs text-[var(--text-secondary)]">
-                              {s.clip_count} sets · Avg{" "}
+                              {s.clip_count} {unit} · Avg{" "}
                               {s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best{" "}
                               {s.best_score != null ? Math.round(s.best_score) : "—"}
                             </p>
                           </div>
                         </div>
-                        <span
-                          className={`shrink-0 font-mono text-xs text-[var(--text-tertiary)] transition-transform duration-200 ${
-                            expanded ? "rotate-90" : ""
-                          }`}
-                          aria-hidden
-                        >
-                          {expanded ? "▼" : "▶"}
+                        <span className="shrink-0 text-right">
+                          <span className="text-sm font-medium text-[#0A84FF] group-hover:underline">
+                            {expanded
+                              ? `Hide ${s.clip_count} ${unit} ▲`
+                              : `Show ${s.clip_count} ${unit} ▼`}
+                          </span>
                         </span>
                       </button>
 
@@ -650,8 +659,10 @@ export function DashboardClient({
                                 : "→"}
                           </p>
                         </div>
-                        <span className="text-xs font-semibold text-[var(--accent)]">
-                          {expanded ? "Hide sets" : "View sets"}
+                        <span className="text-right text-sm font-medium text-[#0A84FF] hover:underline">
+                          {expanded
+                            ? `Hide ${s.clip_count} sets ▲`
+                            : `Show ${s.clip_count} sets ▼`}
                         </span>
                       </button>
 
@@ -754,7 +765,7 @@ export function DashboardClient({
                   const last = clips.length ? clips[clips.length - 1]?.overallScore ?? null : null;
                   const tr = trendDelta(first, last);
                   const expanded = !!expandedSessions[s.id];
-                  const summary = `${s.clip_count} sets · Avg ${s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best ${s.best_score != null ? Math.round(s.best_score) : "—"}`;
+                  const summary = `${s.clip_count} attempts · Avg ${s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best ${s.best_score != null ? Math.round(s.best_score) : "—"}`;
                   return (
                     <div
                       key={s.id}
@@ -784,8 +795,10 @@ export function DashboardClient({
                                 : "→"}
                           </p>
                         </div>
-                        <span className="text-xs font-semibold text-[var(--accent)]">
-                          {expanded ? "Hide sets" : "View sets"}
+                        <span className="text-right text-sm font-medium text-[#0A84FF] hover:underline">
+                          {expanded
+                            ? `Hide ${s.clip_count} attempts ▲`
+                            : `Show ${s.clip_count} attempts ▼`}
                         </span>
                       </button>
 
