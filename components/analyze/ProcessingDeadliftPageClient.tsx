@@ -230,7 +230,7 @@ export function ProcessingDeadliftPageClient({ id, previousId, addAngle }: Props
             previousId && isValidAnalysisId(previousId)
               ? `?previousId=${encodeURIComponent(previousId)}`
               : "";
-          router.push(`/results/${id}${resultsQs}`);
+          router.push(`/results/deadlift/${id}${resultsQs}`);
           return;
         }
 
