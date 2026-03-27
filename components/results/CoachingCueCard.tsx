@@ -39,7 +39,11 @@ export function CoachingCueCard({ cue, index, sport, compact = false }: Props) {
       }`}
       style={{ borderLeft: `3px solid ${zone.border}` }}
     >
-      <div className={`flex gap-3 ${compact ? "items-center" : "flex-col md:flex-row md:items-stretch"}`}>
+      <div
+        className={`flex gap-3 ${
+          compact ? "items-start" : "flex-col md:flex-row md:items-stretch"
+        }`}
+      >
         <div className={compact ? "shrink-0" : "md:w-20"}>
           <div
             className={`flex items-center justify-center rounded-xl text-center ${
@@ -59,7 +63,7 @@ export function CoachingCueCard({ cue, index, sport, compact = false }: Props) {
             >
               {index}
             </span>
-            <div className="min-w-0 flex-1">
+            <div className="flex min-w-0 flex-1 flex-col gap-2">
               {illustration ? (
                 <>
                   <div className="flex flex-wrap items-center gap-1.5">
@@ -71,13 +75,13 @@ export function CoachingCueCard({ cue, index, sport, compact = false }: Props) {
                       {illustration.fixLabel}
                     </span>
                   </div>
-                  <div className={`${compact ? "my-2" : "my-3"} h-px w-full bg-[var(--border)]`} />
+                  <div className={`${compact ? "" : "my-1"} h-px w-full bg-[var(--border)]`} />
                 </>
               ) : null}
               <p
                 className={`text-[var(--text-primary)] ${
                   compact
-                    ? "truncate text-sm font-medium"
+                    ? "text-sm font-medium leading-relaxed"
                     : "overflow-hidden text-base font-semibold leading-relaxed [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]"
                 }`}
               >

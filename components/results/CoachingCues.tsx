@@ -12,14 +12,18 @@ export function CoachingCues({ cues, sport, mode = "full" }: Props) {
       {mode === "full" ? (
         <>
           <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
-            Fix these first
+            Coach says
           </h2>
           <p className="mt-1 text-sm text-[var(--text-secondary)]">
             Top three coaching cues for your next session.
           </p>
         </>
-      ) : null}
-      <ol className={`${mode === "compact" ? "space-y-3" : "mt-6 space-y-4"}`}>
+      ) : (
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)]">
+          Coach says
+        </p>
+      )}
+      <ol className={`${mode === "compact" ? "mt-3 space-y-3" : "mt-6 space-y-4"}`}>
         {cues.map((cue, i) => (
           <CoachingCueCard
             key={i}
