@@ -10,7 +10,7 @@ export type CueIllustration = {
     | "elbow"
     | "release"
     | "balance";
-  sport: "squat" | "shooting" | "deadlift" | "general";
+  sport: "squat" | "shooting" | "deadlift" | "bench" | "general";
   emoji: string;
   faultLabel: string;
   fixLabel: string;
@@ -191,11 +191,89 @@ export const CUES: CueIllustration[] = [
     faultLabel: "Poor setup",
     fixLabel: "Shins vertical",
   },
+  {
+    id: "bar-path-bench",
+    keywords: [
+      "bar path",
+      "vertical",
+      "diagonal",
+      "j-curve",
+      "drift",
+      "belly",
+      "face",
+    ],
+    bodyZone: "arms",
+    sport: "bench",
+    emoji: "📐",
+    faultLabel: "Wrong path",
+    fixLabel: "J-curve path",
+  },
+  {
+    id: "elbow-flare-bench",
+    keywords: ["elbow", "flare", "flared", "tuck", "angle", "90", "shoulder"],
+    bodyZone: "elbow",
+    sport: "bench",
+    emoji: "💪",
+    faultLabel: "Elbows flared",
+    fixLabel: "Elbows tucked",
+  },
+  {
+    id: "arch-setup",
+    keywords: [
+      "arch",
+      "setup",
+      "retract",
+      "shoulder",
+      "blade",
+      "shelf",
+      "tight",
+      "upper back",
+    ],
+    bodyZone: "trunk",
+    sport: "bench",
+    emoji: "🏋️",
+    faultLabel: "Loose setup",
+    fixLabel: "Tight arch",
+  },
+  {
+    id: "leg-drive-bench",
+    keywords: ["leg", "drive", "feet", "floor", "floating", "tension", "plant"],
+    bodyZone: "feet",
+    sport: "bench",
+    emoji: "👟",
+    faultLabel: "No leg drive",
+    fixLabel: "Drive the floor",
+  },
+  {
+    id: "lockout-bench",
+    keywords: [
+      "lockout",
+      "extension",
+      "soft",
+      "complete",
+      "tricep",
+      "finish",
+    ],
+    bodyZone: "arms",
+    sport: "bench",
+    emoji: "💪",
+    faultLabel: "Soft lockout",
+    fixLabel: "Full extension",
+  },
+  {
+    id: "wrist-bench",
+    keywords: ["wrist", "bent", "straight", "heel of palm", "bar position"],
+    bodyZone: "arms",
+    sport: "bench",
+    emoji: "🤝",
+    faultLabel: "Bent wrists",
+    fixLabel: "Straight wrists",
+  },
 ];
 
 export function getCueIllustration(
   cueText: string,
-  sport: "squat" | "shooting" | "deadlift",
+  sport: "squat" | "shooting" | "deadlift" | "bench",
 ): CueIllustration | null {
   const text = cueText.toLowerCase();
   const matches = CUES.filter((cue) =>

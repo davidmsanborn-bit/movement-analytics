@@ -19,6 +19,7 @@ const PORT = Number(process.env.PORT) || 3000;
 const FIXED_FALLBACK = {
   shooting: [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5],
   deadlift: [1, 2, 3, 4, 5, 6, 7, 8],
+  bench: [1, 2, 3, 4, 5, 6, 7, 8],
   default: [1, 2, 3],
 };
 
@@ -214,12 +215,14 @@ function normalizeMovementType(raw) {
   const s = raw.trim().toLowerCase();
   if (s === "shooting") return "shooting";
   if (s === "deadlift") return "deadlift";
+  if (s === "bench") return "bench";
   return "default";
 }
 
 function fixedTimestampsForMovement(movementKey) {
   if (movementKey === "shooting") return FIXED_FALLBACK.shooting;
   if (movementKey === "deadlift") return FIXED_FALLBACK.deadlift;
+  if (movementKey === "bench") return FIXED_FALLBACK.bench;
   return FIXED_FALLBACK.default;
 }
 

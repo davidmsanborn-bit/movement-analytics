@@ -18,6 +18,16 @@ function DeadliftIcon() {
   );
 }
 
+function BenchPressIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M3 10h18M5 8v4M19 8v4" />
+      <circle cx="12" cy="5" r="2" />
+      <path d="M12 7v2l-2.5 1.5v3h5v-3L12 9" />
+    </svg>
+  );
+}
+
 function BasketballIcon() {
   return (
     <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -58,6 +68,16 @@ export default function AnalyzeHubPage() {
               <div className="text-[var(--accent)]"><DeadliftIcon /></div>
               <h2 className="mt-4 font-sans text-xl font-semibold text-[var(--text-primary)]">Deadlift</h2>
               <p className="mt-2 text-sm text-[var(--text-secondary)]">Conventional, sumo, or Romanian — any deadlift variation</p>
+              <div className="mt-4 flex items-center justify-between">
+                <span className="rounded-full bg-[rgba(10,132,255,0.10)] px-3 py-1 text-xs font-semibold text-[var(--accent)]">5 sub-scores</span>
+                <span className="text-sm font-semibold text-[var(--accent)]">Start →</span>
+              </div>
+            </Link>
+
+            <Link href="/analyze/bench" className="group rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-[var(--shadow-card)] transition hover:border-[var(--accent)]/50">
+              <div className="text-[var(--accent)]"><BenchPressIcon /></div>
+              <h2 className="mt-4 font-sans text-xl font-semibold text-[var(--text-primary)]">Bench Press</h2>
+              <p className="mt-2 text-sm text-[var(--text-secondary)]">Barbell, dumbbell, or any pressing variation</p>
               <div className="mt-4 flex items-center justify-between">
                 <span className="rounded-full bg-[rgba(10,132,255,0.10)] px-3 py-1 text-xs font-semibold text-[var(--accent)]">5 sub-scores</span>
                 <span className="text-sm font-semibold text-[var(--accent)]">Start →</span>

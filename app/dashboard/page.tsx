@@ -1,5 +1,6 @@
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
 import { getUserAnalyses } from "@/lib/analysis/analysisStore";
+import { getUserBenchAnalyses } from "@/lib/analysis/benchAnalysisStore";
 import { getUserDeadliftAnalyses } from "@/lib/analysis/deadliftAnalysisStore";
 import { getUserShootingAnalyses } from "@/lib/analysis/shootingAnalysisStore";
 import { getUserSessions } from "@/lib/analysis/sessionStore";
@@ -55,16 +56,20 @@ export default async function DashboardPage() {
     squatAnalyses,
     shootingAnalyses,
     deadliftAnalyses,
+    benchAnalyses,
     squatSessions,
     shootingSessions,
     deadliftSessions,
+    benchSessions,
   ] = await Promise.all([
     getUserAnalyses(user.id),
     getUserShootingAnalyses(user.id),
     getUserDeadliftAnalyses(user.id),
+    getUserBenchAnalyses(user.id),
     getUserSessions(user.id, "squat"),
     getUserSessions(user.id, "shooting"),
     getUserSessions(user.id, "deadlift"),
+    getUserSessions(user.id, "bench"),
   ]);
 
   return (
@@ -73,9 +78,11 @@ export default async function DashboardPage() {
       squatAnalyses={squatAnalyses}
       shootingAnalyses={shootingAnalyses}
       deadliftAnalyses={deadliftAnalyses}
+      benchAnalyses={benchAnalyses}
       squatSessions={squatSessions}
       shootingSessions={shootingSessions}
       deadliftSessions={deadliftSessions}
+      benchSessions={benchSessions}
     />
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type { UserSquatAnalysisListItem } from "@/lib/analysis/analysisStore";
+import type { UserBenchAnalysisListItem } from "@/lib/analysis/benchAnalysisStore";
 import type { UserDeadliftAnalysisListItem } from "@/lib/analysis/deadliftAnalysisStore";
 import type { UserShootingAnalysisListItem } from "@/lib/analysis/shootingAnalysisStore";
 import type { Session } from "@/lib/analysis/sessionStore";
@@ -14,12 +15,14 @@ type Props = {
   squatAnalyses: UserSquatAnalysisListItem[];
   shootingAnalyses: UserShootingAnalysisListItem[];
   deadliftAnalyses: UserDeadliftAnalysisListItem[];
+  benchAnalyses: UserBenchAnalysisListItem[];
   squatSessions: Session[];
   shootingSessions: Session[];
   deadliftSessions: Session[];
+  benchSessions: Session[];
 };
 
-const FILTERS = ["All", "Squat", "Deadlift"] as const;
+const FILTERS = ["All", "Squat", "Deadlift", "Bench"] as const;
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -67,7 +70,7 @@ function scoreColorShooting(score: number) {
       : "var(--score-low)";
 }
 
-type RingVariant = "squat" | "shooting" | "deadlift";
+type RingVariant = "squat" | "shooting" | "deadlift" | "bench";
 
 function ScoreRing({ score, variant }: { score: number; variant: RingVariant }) {
   const colorFn =
@@ -139,7 +142,7 @@ function trendDelta(first: number | null, last: number | null) {
 function unitLabelForMovementType(movementType: unknown): "sets" | "attempts" | "clips" {
   const mt = typeof movementType === "string" ? movementType.trim().toLowerCase() : "";
   if (mt === "shooting") return "attempts";
-  if (mt === "squat" || mt === "deadlift") return "sets";
+  if (mt === "squat" || mt === "deadlift" || mt === "bench") return "sets";
   if (!mt) return "clips";
   return mt.includes("shoot") || mt.includes("sport") ? "attempts" : "sets";
 }
@@ -257,9 +260,11 @@ export function DashboardClient({
   squatAnalyses,
   shootingAnalyses,
   deadliftAnalyses,
+  benchAnalyses,
   squatSessions,
   shootingSessions,
   deadliftSessions,
+  benchSessions,
 }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
@@ -269,7 +274,10 @@ export function DashboardClient({
   );
 
   const totalSessions =
-    squatAnalyses.length + shootingAnalyses.length + deadliftAnalyses.length;
+    squatAnalyses.length +
+    shootingAnalyses.length +
+    deadliftAnalyses.length +
+    benchAnalyses.length;
   const bestSquatScore =
     squatAnalyses.length > 0
       ? Math.max(...squatAnalyses.map((a) => a.overallScore))
@@ -281,6 +289,10 @@ export function DashboardClient({
   const bestDeadliftScore =
     deadliftAnalyses.length > 0
       ? Math.max(...deadliftAnalyses.map((a) => a.overallScore))
+      : null;
+  const bestBenchScore =
+    benchAnalyses.length > 0
+      ? Math.max(...benchAnalyses.map((a) => a.overallScore))
       : null;
 
   const squatChartSeries: ChartPoint[] = squatAnalyses.map((a) => ({
@@ -298,10 +310,16 @@ export function DashboardClient({
     overallScore: a.overallScore,
   }));
 
+  const benchChartSeries: ChartPoint[] = benchAnalyses.map((a) => ({
+    analyzedAt: a.analyzedAt,
+    overallScore: a.overallScore,
+  }));
+
   const sessionsOverview = useMemo(() => {
     const rows = [
       ...squatSessions.map((s) => ({ kind: "squat" as const, s })),
       ...deadliftSessions.map((s) => ({ kind: "deadlift" as const, s })),
+      ...benchSessions.map((s) => ({ kind: "bench" as const, s })),
       ...shootingSessions.map((s) => ({ kind: "shooting" as const, s })),
     ];
     rows.sort(
@@ -309,7 +327,7 @@ export function DashboardClient({
         new Date(b.s.started_at).getTime() - new Date(a.s.started_at).getTime(),
     );
     return rows.slice(0, 5);
-  }, [squatSessions, deadliftSessions, shootingSessions]);
+  }, [squatSessions, deadliftSessions, benchSessions, shootingSessions]);
 
   const squatClipsBySession = useMemo(() => {
     const map = new Map<string, UserSquatAnalysisListItem[]>();
@@ -353,17 +371,32 @@ export function DashboardClient({
     return map;
   }, [deadliftAnalyses]);
 
+  const benchClipsBySession = useMemo(() => {
+    const map = new Map<string, UserBenchAnalysisListItem[]>();
+    for (const a of benchAnalyses) {
+      if (!a.session_id) continue;
+      const arr = map.get(a.session_id) ?? [];
+      arr.push(a);
+      map.set(a.session_id, arr);
+    }
+    for (const [, arr] of map) {
+      arr.sort((x, y) => new Date(x.analyzedAt).getTime() - new Date(y.analyzedAt).getTime());
+    }
+    return map;
+  }, [benchAnalyses]);
+
   const trainingSessionsMerged = useMemo(() => {
-    const rows: Array<{ kind: "squat" | "deadlift"; s: Session }> = [
+    const rows: Array<{ kind: "squat" | "deadlift" | "bench"; s: Session }> = [
       ...squatSessions.map((s) => ({ kind: "squat" as const, s })),
       ...deadliftSessions.map((s) => ({ kind: "deadlift" as const, s })),
+      ...benchSessions.map((s) => ({ kind: "bench" as const, s })),
     ];
     rows.sort(
       (a, b) =>
         new Date(b.s.started_at).getTime() - new Date(a.s.started_at).getTime(),
     );
     return rows;
-  }, [squatSessions, deadliftSessions]);
+  }, [squatSessions, deadliftSessions, benchSessions]);
 
   const filteredTrainingSessions = useMemo(() => {
     if (activeFilter === "Squat") {
@@ -371,6 +404,9 @@ export function DashboardClient({
     }
     if (activeFilter === "Deadlift") {
       return trainingSessionsMerged.filter((r) => r.kind === "deadlift");
+    }
+    if (activeFilter === "Bench") {
+      return trainingSessionsMerged.filter((r) => r.kind === "bench");
     }
     return trainingSessionsMerged;
   }, [trainingSessionsMerged, activeFilter]);
@@ -425,7 +461,7 @@ export function DashboardClient({
 
         {activeTab === "overview" ? (
           <>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
                 <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
                   Total sessions
@@ -434,7 +470,7 @@ export function DashboardClient({
                   {totalSessions}
                 </p>
                 <p className="mt-2 text-sm text-[var(--text-secondary)]">
-                  All analyses (squat, deadlift, shooting).
+                  All analyses (squat, deadlift, bench, shooting).
                 </p>
               </div>
 
@@ -480,6 +516,27 @@ export function DashboardClient({
 
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
                 <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
+                  Best bench score
+                </p>
+                <p
+                  className="mt-3 text-4xl font-semibold tabular-nums"
+                  style={{
+                    color:
+                      bestBenchScore != null
+                        ? scoreColorSquat(bestBenchScore)
+                        : "var(--text-primary)",
+                  }}
+                >
+                  {bestBenchScore != null ? bestBenchScore : "—"}
+                  {bestBenchScore != null ? (
+                    <span className="ml-2 text-base font-medium text-[var(--text-secondary)]">/100</span>
+                  ) : null}
+                </p>
+                <p className="mt-2 text-sm text-[var(--text-secondary)]">Bench press analyses.</p>
+              </div>
+
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+                <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
                   Best shooting score
                 </p>
                 <p
@@ -517,26 +574,34 @@ export function DashboardClient({
                         ? (squatClipsBySession.get(s.id) ?? [])
                         : kind === "deadlift"
                           ? (deadliftClipsBySession.get(s.id) ?? [])
-                          : (shootingClipsBySession.get(s.id) ?? []);
+                          : kind === "bench"
+                            ? (benchClipsBySession.get(s.id) ?? [])
+                            : (shootingClipsBySession.get(s.id) ?? []);
                     const unit = unitLabelForMovementType(s.movement_type);
                     const badgeClass =
                       kind === "squat"
                         ? "bg-[var(--accent)]/12 text-[var(--accent)]"
                         : kind === "deadlift"
                           ? "bg-[#9333EA]/12 text-[#9333EA]"
-                          : "bg-[var(--score-high)]/12 text-[var(--score-high)]";
+                          : kind === "bench"
+                            ? "bg-[#EA580C]/12 text-[#EA580C]"
+                            : "bg-[var(--score-high)]/12 text-[var(--score-high)]";
                     const kindLabel =
                       kind === "squat"
                         ? "Squat"
                         : kind === "deadlift"
                           ? "Deadlift"
-                          : "Shooting";
+                          : kind === "bench"
+                            ? "Bench"
+                            : "Shooting";
                     const defaultSessionName =
                       kind === "squat"
                         ? "Squat session"
                         : kind === "deadlift"
                           ? "Deadlift session"
-                          : "Shooting session";
+                          : kind === "bench"
+                            ? "Bench session"
+                            : "Shooting session";
                     return (
                     <li
                       key={`${kind}-${s.id}`}
@@ -598,7 +663,9 @@ export function DashboardClient({
                                         ? `/results/${a.id}`
                                         : kind === "deadlift"
                                           ? `/results/deadlift/${a.id}`
-                                          : `/results/shooting/${a.id}`
+                                          : kind === "bench"
+                                            ? `/results/bench/${a.id}`
+                                            : `/results/shooting/${a.id}`
                                     }
                                     className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
                                   >
@@ -609,30 +676,44 @@ export function DashboardClient({
                                             ? (a as UserSquatAnalysisListItem).movementLabel
                                             : kind === "deadlift"
                                               ? (a as UserDeadliftAnalysisListItem).movementLabel
-                                              : (a as UserShootingAnalysisListItem).shotType.replace(
-                                                  /-/g,
-                                                  " ",
-                                                )}
+                                              : kind === "bench"
+                                                ? (a as UserBenchAnalysisListItem).movementLabel
+                                                : (a as UserShootingAnalysisListItem).shotType.replace(
+                                                    /-/g,
+                                                    " ",
+                                                  )}
                                         </p>
                                         <p className="mt-1 text-xs text-[var(--text-secondary)]">
                                           {formatAnalyzedAt(a.analyzedAt)}
                                         </p>
-                                        {kind === "squat" || kind === "deadlift" ? (
+                                        {kind === "squat" ||
+                                        kind === "deadlift" ||
+                                        kind === "bench" ? (
                                           <p className="mt-1 text-xs text-[var(--text-tertiary)]">
                                             {kind === "squat"
                                               ? (a as UserSquatAnalysisListItem).weight
                                                 ? `Weight: ${(a as UserSquatAnalysisListItem).weight}`
                                                 : "Weight: —"
-                                              : (a as UserDeadliftAnalysisListItem).weight
-                                                ? `Weight: ${(a as UserDeadliftAnalysisListItem).weight}`
-                                                : "Weight: —"}
+                                              : kind === "deadlift"
+                                                ? (a as UserDeadliftAnalysisListItem).weight
+                                                  ? `Weight: ${(a as UserDeadliftAnalysisListItem).weight}`
+                                                  : "Weight: —"
+                                                : (a as UserBenchAnalysisListItem).weight
+                                                  ? `Weight: ${(a as UserBenchAnalysisListItem).weight}`
+                                                  : "Weight: —"}
                                           </p>
                                         ) : null}
                                       </div>
                                       <ScoreRing
                                         score={a.overallScore}
                                         variant={
-                                          kind === "shooting" ? "shooting" : kind === "deadlift" ? "deadlift" : "squat"
+                                          kind === "shooting"
+                                            ? "shooting"
+                                            : kind === "deadlift"
+                                              ? "deadlift"
+                                              : kind === "bench"
+                                                ? "bench"
+                                                : "squat"
                                         }
                                       />
                                     </div>
@@ -730,6 +811,44 @@ export function DashboardClient({
               </div>
             </div>
 
+            <div className="mt-8 grid gap-6 lg:grid-cols-5">
+              <div className="lg:col-span-3">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+                  <div className="flex items-end justify-between gap-4">
+                    <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
+                      Bench press score history
+                    </h2>
+                    <p className="text-sm text-[var(--text-secondary)]">
+                      Last {Math.min(10, benchAnalyses.length)} clips
+                    </p>
+                  </div>
+                  <ScoreHistoryChart
+                    series={benchChartSeries}
+                    emptyHint="Run your first bench press analysis to see your trend."
+                  />
+                </div>
+              </div>
+
+              <div className="lg:col-span-2">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)]">
+                  <h2 className="font-sans text-lg font-semibold text-[var(--text-primary)]">
+                    Bench press
+                  </h2>
+                  <div className="mt-3">
+                    <Link
+                      href="/analyze/bench"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-[#EA580C]/40 bg-[#EA580C]/10 px-6 text-sm font-semibold text-[#EA580C] transition hover:bg-[#EA580C]/15"
+                    >
+                      Start a bench analysis
+                    </Link>
+                  </div>
+                  <p className="mt-3 text-sm text-[var(--text-secondary)]">
+                    Side or spotter view — barbell or dumbbell.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-8">
               <div className="flex flex-wrap items-center gap-2">
                 {FILTERS.map((f) => (
@@ -759,6 +878,10 @@ export function DashboardClient({
                 <Link href="/analyze/deadlift" className="font-medium text-[#9333EA] hover:underline">
                   Deadlift
                 </Link>
+                {" · "}
+                <Link href="/analyze/bench" className="font-medium text-[#EA580C] hover:underline">
+                  Bench
+                </Link>
                 .
               </p>
             ) : (
@@ -767,15 +890,22 @@ export function DashboardClient({
                   const clips =
                     kind === "squat"
                       ? (squatClipsBySession.get(s.id) ?? [])
-                      : (deadliftClipsBySession.get(s.id) ?? []);
+                      : kind === "deadlift"
+                        ? (deadliftClipsBySession.get(s.id) ?? [])
+                        : (benchClipsBySession.get(s.id) ?? []);
                   const first = clips[0]?.overallScore ?? null;
                   const last = clips.length ? clips[clips.length - 1]?.overallScore ?? null : null;
                   const tr = trendDelta(first, last);
                   const expanded = !!expandedSessions[s.id];
                   const summary = `${s.clip_count} sets · Avg ${s.avg_score != null ? Math.round(s.avg_score) : "—"} · Best ${s.best_score != null ? Math.round(s.best_score) : "—"}`;
                   const sessionDefault =
-                    kind === "squat" ? "Squat session" : "Deadlift session";
-                  const ringVariant: RingVariant = kind === "deadlift" ? "deadlift" : "squat";
+                    kind === "squat"
+                      ? "Squat session"
+                      : kind === "deadlift"
+                        ? "Deadlift session"
+                        : "Bench session";
+                  const ringVariant: RingVariant =
+                    kind === "deadlift" ? "deadlift" : kind === "bench" ? "bench" : "squat";
                   return (
                     <div
                       key={`${kind}-${s.id}`}
@@ -792,10 +922,16 @@ export function DashboardClient({
                               className={`mr-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
                                 kind === "squat"
                                   ? "bg-[var(--accent)]/12 text-[var(--accent)]"
-                                  : "bg-[#9333EA]/12 text-[#9333EA]"
+                                  : kind === "deadlift"
+                                    ? "bg-[#9333EA]/12 text-[#9333EA]"
+                                    : "bg-[#EA580C]/12 text-[#EA580C]"
                               }`}
                             >
-                              {kind === "squat" ? "Squat" : "Deadlift"}
+                              {kind === "squat"
+                                ? "Squat"
+                                : kind === "deadlift"
+                                  ? "Deadlift"
+                                  : "Bench"}
                             </span>
                             {s.name ?? sessionDefault}{" "}
                             <span className="ml-2 text-xs font-medium text-[var(--text-tertiary)]">
@@ -835,7 +971,9 @@ export function DashboardClient({
                                     href={
                                       kind === "squat"
                                         ? `/results/${a.id}`
-                                        : `/results/deadlift/${a.id}`
+                                        : kind === "deadlift"
+                                          ? `/results/deadlift/${a.id}`
+                                          : `/results/bench/${a.id}`
                                     }
                                     className="block rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--accent-hover)]"
                                   >

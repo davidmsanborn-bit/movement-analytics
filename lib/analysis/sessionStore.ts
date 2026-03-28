@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export type Session = {
   id: string;
-  movement_type: "squat" | "shooting" | "deadlift";
+  movement_type: "squat" | "shooting" | "deadlift" | "bench";
   name: string | null;
   started_at: string;
   clip_count: number;
@@ -23,7 +23,7 @@ function getServiceClient() {
 
 export async function findOrCreateSession(
   userId: string,
-  movementType: "squat" | "shooting" | "deadlift",
+  movementType: "squat" | "shooting" | "deadlift" | "bench",
 ): Promise<string> {
   const supabase = getServiceClient();
   const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
@@ -76,14 +76,17 @@ export async function updateSessionStats(sessionId: string): Promise<void> {
   const movementType = sessionRow.movement_type as
     | "squat"
     | "shooting"
-    | "deadlift";
+    | "deadlift"
+    | "bench";
 
   const table =
     movementType === "shooting"
       ? "shooting_analyses"
       : movementType === "deadlift"
         ? "deadlift_analyses"
-        : "analyses";
+        : movementType === "bench"
+          ? "bench_analyses"
+          : "analyses";
   const { data: clips, error: clipsError } = await supabase
     .from(table)
     .select("result")
@@ -124,7 +127,7 @@ export async function updateSessionStats(sessionId: string): Promise<void> {
 
 export async function getUserSessions(
   userId: string,
-  movementType?: "squat" | "shooting" | "deadlift",
+  movementType?: "squat" | "shooting" | "deadlift" | "bench",
 ): Promise<Session[]> {
   const supabase = getServiceClient();
 
@@ -152,7 +155,9 @@ export async function getUserSessions(
         ? "shooting"
         : mt === "deadlift"
           ? "deadlift"
-          : "squat";
+          : mt === "bench"
+            ? "bench"
+            : "squat";
     return {
       id: String(r.id),
       movement_type,
