@@ -75,6 +75,7 @@ type FrameImage = { base64: string; mediaType: "image/jpeg" };
 async function extractFrames(
   videoStoragePath: string,
   analysisId: string,
+  movementPosition?: string,
 ): Promise<FrameImage[]> {
   const baseUrl = process.env.FRAMES_SERVICE_URL?.replace(/\/+$/, "");
   const secret = process.env.FRAMES_SERVICE_SECRET;
@@ -99,6 +100,7 @@ async function extractFrames(
         analysisId,
         storagePath: videoStoragePath,
         movementType: "squat",
+        movementPosition: movementPosition ?? "unknown",
       }),
     });
   } catch {
@@ -278,10 +280,9 @@ export async function analyzeSquatVideo(
   storagePath: string,
   analysisId: string,
   weight: string | null,
-  userId: string | null,
+  movementPosition?: string,
 ): Promise<SquatAnalysisResult> {
-  void userId;
-  const frames = await extractFrames(storagePath, analysisId);
+  const frames = await extractFrames(storagePath, analysisId, movementPosition);
 
   const weightLine =
     typeof weight === "string" && weight.trim()

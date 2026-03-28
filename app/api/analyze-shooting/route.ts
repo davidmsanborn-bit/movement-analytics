@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { analyzeShootingVideo } from "@/lib/analysis/analyzeShootingWithAI";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+import { preScanVideo } from "@/lib/analysis/preScanner";
 import {
   fetchShootingAnalysis,
   saveShootingAnalysis,
@@ -99,13 +100,26 @@ export async function POST(request: Request) {
   setProgress(analysisId, "Extracting frames from your video...");
 
   try {
+    const { data: videoBlob, error: downloadError } = await supabase.storage
+      .from("videos")
+      .download(storagePath);
+    if (downloadError || !videoBlob) {
+      throw new Error(
+        downloadError?.message ?? "Failed to download video from storage",
+      );
+    }
+    const arrayBuffer = await videoBlob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const preScan = await preScanVideo(buffer, analysisId);
+    console.log("[analyze-shooting] preScan:", preScan);
+
     setProgress(analysisId, "Sending to AI for analysis...");
 
     const result = await analyzeShootingVideo(
       storagePath,
       analysisId,
       weight,
-      { movementType: "shooting" },
+      preScan.movementPosition,
     );
     let finalResult: ShootingAnalysisResult = result;
 

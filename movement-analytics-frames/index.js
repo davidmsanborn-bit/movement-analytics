@@ -52,14 +52,40 @@ async function getDurationSeconds(inputPath) {
   return Number.isFinite(d) && d > 0 ? d : null;
 }
 
+/** Duration in seconds, or 0 if unknown (for window math). */
+async function getVideoDurationSec(inputPath) {
+  const d = await getDurationSeconds(inputPath);
+  return d != null && d > 0 ? d : 0;
+}
+
 /**
  * Run scene-change detection; writes scene_${analysisId}_NNN.jpg into outputDir.
+ * @param {null | { ss: number, t: number }} windowOpts - If set, adds -ss and -t before -i (seconds).
  */
-async function runSceneDetection(inputPath, outputDir, analysisId, threshold) {
+async function runSceneDetection(
+  inputPath,
+  outputDir,
+  analysisId,
+  threshold,
+  windowOpts,
+) {
   const pattern = path.join(outputDir, `scene_${analysisId}_%03d.jpg`);
   const vf = `select=gt(scene\\,${threshold}),scale=800:-1,fps=30`;
-  const args = [
-    ...ffmpegInputArgs(inputPath),
+  const args = ["-y", "-hide_banner", "-loglevel", "error"];
+  if (
+    windowOpts &&
+    typeof windowOpts.ss === "number" &&
+    typeof windowOpts.t === "number" &&
+    windowOpts.t > 0
+  ) {
+    args.push("-ss", String(windowOpts.ss), "-t", String(windowOpts.t));
+  }
+  if (isWebm(inputPath)) {
+    args.push("-fflags", "+genpts");
+  }
+  args.push(
+    "-i",
+    inputPath,
     "-an",
     "-vf",
     vf,
@@ -70,7 +96,7 @@ async function runSceneDetection(inputPath, outputDir, analysisId, threshold) {
     "-q:v",
     "2",
     pattern,
-  ];
+  );
   await execFileAsync(FFMPEG, args, { maxBuffer: 10 * 1024 * 1024 });
 }
 
@@ -238,23 +264,75 @@ async function readFramesAsPayload(jpegPaths) {
   return frames;
 }
 
-async function extractUniversalFrames(inputPath, analysisId, movementTypeRaw) {
+async function extractUniversalFrames(
+  inputPath,
+  analysisId,
+  movementTypeRaw,
+  movementPositionRaw,
+) {
   const movementKey = normalizeMovementType(movementTypeRaw);
   const tmpRoot = fs.mkdtempSync(
     path.join(require("os").tmpdir(), `frames_${analysisId}_`),
   );
 
+  // Movement position window mapping
+  const windowMap = {
+    early: { start: 0.0, end: 0.6 },
+    middle: { start: 0.2, end: 0.8 },
+    late: { start: 0.4, end: 1.0 },
+    unknown: { start: 0.0, end: 1.0 },
+  };
+  const mpKey =
+    typeof movementPositionRaw === "string"
+      ? movementPositionRaw.trim().toLowerCase()
+      : "unknown";
+  const movementPosition = windowMap[mpKey] ? mpKey : "unknown";
+  const window = windowMap[movementPosition] ?? windowMap.unknown;
+
+  console.log("[frames] movementPosition:", movementPosition);
+
+  const duration = await getVideoDurationSec(inputPath);
+
+  const windowStart = duration > 0 ? duration * window.start : 0;
+  const windowDuration =
+    duration > 0 ? duration * (window.end - window.start) : 999;
+
+  const useWindowSeek = duration > 0 && movementPosition !== "unknown";
+
+  console.log("[frames] window:", windowStart, "to", windowStart + windowDuration);
+
   let strategyName = "unknown";
   let jpegPaths = [];
 
   try {
-    // --- STEP 1: scene detection 0.15
-    try {
-      await runSceneDetection(inputPath, tmpRoot, analysisId, 0.15);
-    } catch {
-      /* may produce zero files */
+    // --- STEP 1: scene detection 0.15 (windowed first when applicable, then full-video retry if < 4 frames)
+    if (useWindowSeek) {
+      try {
+        await runSceneDetection(inputPath, tmpRoot, analysisId, 0.15, {
+          ss: windowStart,
+          t: windowDuration,
+        });
+      } catch {
+        /* may produce zero files */
+      }
+      jpegPaths = listSceneFrames(tmpRoot, analysisId);
+      if (jpegPaths.length < 4) {
+        unlinkSceneFrames(tmpRoot, analysisId);
+        try {
+          await runSceneDetection(inputPath, tmpRoot, analysisId, 0.15, null);
+        } catch {
+          /* */
+        }
+        jpegPaths = listSceneFrames(tmpRoot, analysisId);
+      }
+    } else {
+      try {
+        await runSceneDetection(inputPath, tmpRoot, analysisId, 0.15, null);
+      } catch {
+        /* may produce zero files */
+      }
+      jpegPaths = listSceneFrames(tmpRoot, analysisId);
     }
-    jpegPaths = listSceneFrames(tmpRoot, analysisId);
     if (jpegPaths.length > 10) {
       jpegPaths = subsampleEvenly(jpegPaths, 10);
     }
@@ -264,12 +342,33 @@ async function extractUniversalFrames(inputPath, analysisId, movementTypeRaw) {
     } else {
       // --- STEP 2a: retry 0.08 (remove all scene outputs from first pass)
       unlinkSceneFrames(tmpRoot, analysisId);
-      try {
-        await runSceneDetection(inputPath, tmpRoot, analysisId, 0.08);
-      } catch {
-        /* */
+      if (useWindowSeek) {
+        try {
+          await runSceneDetection(inputPath, tmpRoot, analysisId, 0.08, {
+            ss: windowStart,
+            t: windowDuration,
+          });
+        } catch {
+          /* */
+        }
+        jpegPaths = listSceneFrames(tmpRoot, analysisId);
+        if (jpegPaths.length < 4) {
+          unlinkSceneFrames(tmpRoot, analysisId);
+          try {
+            await runSceneDetection(inputPath, tmpRoot, analysisId, 0.08, null);
+          } catch {
+            /* */
+          }
+          jpegPaths = listSceneFrames(tmpRoot, analysisId);
+        }
+      } else {
+        try {
+          await runSceneDetection(inputPath, tmpRoot, analysisId, 0.08, null);
+        } catch {
+          /* */
+        }
+        jpegPaths = listSceneFrames(tmpRoot, analysisId);
       }
-      jpegPaths = listSceneFrames(tmpRoot, analysisId);
       if (jpegPaths.length > 10) {
         jpegPaths = subsampleEvenly(jpegPaths, 10);
       }
@@ -369,7 +468,8 @@ app.post("/extract-frames", async (req, res) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { analysisId, storagePath, movementType } = req.body || {};
+  const { analysisId, storagePath, movementType, movementPosition } =
+    req.body || {};
   if (typeof analysisId !== "string" || !analysisId.trim()) {
     return res.status(400).json({ error: "analysisId required" });
   }
@@ -384,6 +484,7 @@ app.post("/extract-frames", async (req, res) => {
       inputPath,
       analysisId.trim(),
       movementType,
+      movementPosition ?? "unknown",
     );
     return res.json({ frames });
   } catch (err) {

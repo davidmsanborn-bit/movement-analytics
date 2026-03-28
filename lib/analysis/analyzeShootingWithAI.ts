@@ -121,7 +121,7 @@ type FrameImage = { base64: string; mediaType: "image/jpeg" };
 async function extractFrames(
   videoStoragePath: string,
   analysisId: string,
-  options?: { movementType?: string },
+  options?: { movementType?: string; movementPosition?: string },
 ): Promise<FrameImage[]> {
   const baseUrl = process.env.FRAMES_SERVICE_URL?.replace(/\/+$/, "");
   const secret = process.env.FRAMES_SERVICE_SECRET;
@@ -146,6 +146,7 @@ async function extractFrames(
         analysisId,
         storagePath: videoStoragePath,
         movementType: options?.movementType ?? "shooting",
+        movementPosition: options?.movementPosition ?? "unknown",
       }),
     });
   } catch {
@@ -337,11 +338,12 @@ export async function analyzeShootingVideo(
   storagePath: string,
   analysisId: string,
   weight: string | null,
-  options?: { movementType?: string },
+  movementPosition?: string,
 ): Promise<ShootingAnalysisResult> {
   void weight;
   const frames = await extractFrames(storagePath, analysisId, {
-    movementType: options?.movementType ?? "shooting",
+    movementType: "shooting",
+    movementPosition,
   });
 
   const userText = `These frames were automatically selected from your video because they show the most movement — they should capture your shooting motion including the gather, jump, release, and follow-through. Identify which frames show the actual shot vs pre-shot preparation and focus your analysis on the shooting motion frames. Slo-motion clips are supported and may show more detail in the release and follow-through phases.

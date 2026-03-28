@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { analyzeSquatVideo } from "@/lib/analysis/analyzeWithAI";
 import { isValidAnalysisId } from "@/lib/analysis/analysisId";
+import { preScanVideo } from "@/lib/analysis/preScanner";
 import { fetchAnalysis, saveAnalysis } from "@/lib/analysis/analysisStore";
 import {
   findOrCreateSession,
@@ -107,13 +108,26 @@ export async function POST(request: Request) {
       storagePath,
     });
 
+    const { data: videoBlob, error: downloadError } = await supabase.storage
+      .from("videos")
+      .download(storagePath);
+    if (downloadError || !videoBlob) {
+      throw new Error(
+        downloadError?.message ?? "Failed to download video from storage",
+      );
+    }
+    const arrayBuffer = await videoBlob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const preScan = await preScanVideo(buffer, analysisId);
+    console.log("[analyze-squat] preScan:", preScan);
+
     setProgress(analysisId, "Sending to AI for analysis...");
 
     const result = await analyzeSquatVideo(
       storagePath,
       analysisId,
       weight,
-      userId,
+      preScan.movementPosition,
     );
     let finalResult: SquatAnalysisResult = result;
 
